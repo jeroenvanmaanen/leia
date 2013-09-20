@@ -1,0 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Package 'executable'</title>
+</head>
+<body>
+
+<p>Provides classes that wrap the <b>L</b>Ex<i>Au</i> library in an executable that can be run from the command line.</p>
+
+<p>The <code>{@link org.leialearns.executable.App#main main}</code> method calls the
+    <code>{@link org.leialearns.command.Command#command command}</code>
+    method on the bean named in the first argument to the executable. This bean must implement the
+    <code>{@link org.leialearns.command.Command}</code> interface.</p>
+
+<p>The executable configures <code>java.util.logging</code> as a backend for the SLF4J loggers used in the library.</p>
+
+</body>
+</html>
