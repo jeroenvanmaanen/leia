@@ -1,0 +1,249 @@
+<?xml version='1.0' encoding="UTF-8" ?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+           ">
+
+    <context:component-scan base-package="org.leialearns"/>
+
+    <!-- Database configuration -->
+
+    <bean id="fractionDAO" class="org.leialearns.graph.model.FractionDAO" />
+    <bean id="alphabetDAO" class="org.leialearns.graph.interaction.AlphabetDAO" />
+    <bean id="symbolDAO" class="org.leialearns.graph.interaction.SymbolDAO" />
+    <bean id="interactionContextDAO" class="org.leialearns.graph.interaction.InteractionContextDAO" />
+    <bean id="nodeDAO" class="org.leialearns.graph.structure.NodeDAO" />
+    <bean id="counterDAO" class="org.leialearns.graph.model.CounterDAO" />
+    <bean id="versionDAO" class="org.leialearns.graph.model.VersionDAO" />
+    <bean id="expectedDAO" class="org.leialearns.graph.model.ExpectedDAO" />
+    <bean id="estimateDAO" class="org.leialearns.graph.model.EstimateDAO" />
+    <bean id="toggledDAO" class="org.leialearns.graph.model.ToggledDAO" />
+    <bean id="observedDAO" class="org.leialearns.graph.model.ObservedDAO" />
+    <bean id="structureDAO" class="org.leialearns.graph.structure.StructureDAO" />
+    <bean id="sessionDAO" class="org.leialearns.graph.session.SessionDAO" />
+
+    <!-- tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/ -->
+
+    <bean id="factoryInjector" class="org.leialearns.bridge.FactoryInjector"/>
+
+    <bean id="registry" class="org.leialearns.bridge.BridgeHeadTypeRegistry" />
+
+    <bean id="counterLogger" class="org.leialearns.logic.model.CounterLogger" />
+    <bean id="fractionHelper" class="org.leialearns.logic.model.FractionHelper" />
+    <bean id="expectationHelper" class="org.leialearns.logic.model.ExpectationHelper" />
+
+    <bean id="rootFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.session.RootDTO"/>
+        <constructor-arg>
+            <array>
+                <bean class="org.leialearns.logic.model.ExpectationHelper" />
+                <ref bean="fractionHelper" />
+                <ref bean="fractionDAO" />
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="alphabetFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.interaction.AlphabetDTO"/>
+        <constructor-arg>
+            <array>
+                <ref bean="alphabetDAO"/>
+                <ref bean="symbolDAO"/>
+                <null/> <!-- AlphabetDTO -->
+                <value type="java.lang.Class">org.leialearns.logic.interaction.AlphabetAugmenter</value>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="symbolFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.interaction.SymbolDTO"/>
+        <constructor-arg>
+            <array>
+                <ref bean="symbolDAO"/>
+                <null/> <!-- SymbolDTO -->
+                <value type="java.lang.Class">org.leialearns.logic.interaction.SymbolAugmenter</value>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="directedSymbolFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.interaction.DirectedSymbolDTO"/>
+        <constructor-arg><null/></constructor-arg>
+    </bean>
+
+    <bean id="interactionContextFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.interaction.InteractionContextDTO"/>
+        <constructor-arg>
+            <array>
+                <ref bean="interactionContextDAO"/>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="nodeFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.structure.NodeDTO"/>
+        <constructor-arg>
+            <array>
+                <ref bean="nodeDAO"/>
+                <bean class="org.leialearns.logic.structure.NodeHelper" />
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="counterFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.model.CounterDTO"/>
+        <constructor-arg>
+            <array>
+                <ref bean="counterDAO"/>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="counterUpdateFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.model.CounterUpdateDTO"/>
+        <constructor-arg><null/></constructor-arg>
+    </bean>
+
+    <bean id="fractionFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.model.FractionDTO"/>
+        <constructor-arg>
+            <array>
+                <ref bean="fractionHelper" />
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="versionFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.model.VersionDTO"/>
+        <constructor-arg>
+            <array>
+                <ref bean="versionDAO"/>
+                <ref bean="counterDAO"/>
+                <ref bean="expectedDAO"/>
+                <ref bean="estimateDAO"/>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="expectedFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.model.ExpectedDTO"/>
+        <constructor-arg>
+            <array>
+                <ref bean="expectationHelper"/>
+                <ref bean="expectedDAO"/>
+                <ref bean="estimateDAO"/>
+                <bean class="org.leialearns.logic.model.ExpectedHelper" />
+                <ref bean="counterLogger" />
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="toggledFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.model.ToggledDTO"/>
+        <constructor-arg>
+            <array>
+                <ref bean="expectationHelper"/>
+                <ref bean="toggledDAO"/>
+                <ref bean="estimateDAO"/>
+                <null/>
+                <value type="java.lang.Class">org.leialearns.logic.model.ToggledAugmenter</value>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="estimateFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.model.EstimateDTO" />
+        <constructor-arg><null/></constructor-arg>
+    </bean>
+
+    <bean id="observedFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.model.ObservedDTO"/>
+        <constructor-arg>
+            <array>
+                <bean class="org.leialearns.logic.model.ObservedHelper" />
+                <ref bean="observedDAO"/>
+                <ref bean="counterDAO"/>
+                <ref bean="counterLogger" />
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="countedFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.model.CountedDTO"/>
+        <constructor-arg>
+            <array>
+                <ref bean="counterLogger" />
+                <ref bean="counterDAO" />
+                <ref bean="versionDAO" />
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="structureFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.structure.StructureDTO"/>
+        <constructor-arg>
+            <array>
+                <ref bean="structureDAO"/>
+                <ref bean="nodeDAO"/>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="sessionFactory" class="org.leialearns.bridge.BridgeFactory">
+        <constructor-arg value="org.leialearns.graph.session.SessionDTO"/>
+        <constructor-arg>
+            <array>
+                <ref bean="sessionDAO"/>
+                <ref bean="versionDAO"/>
+                <null/>
+                <value type="java.lang.Class">org.leialearns.logic.session.SessionAugmenter</value>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <!-- Configuration of LExAu interaction context -->
+
+    <bean id="rootDTO" class="org.leialearns.graph.session.RootDTO"/>
+
+    <bean id="root" factory-bean="rootDTO" factory-method="getNearObject" />
+
+    <bean id="interactionContext" factory-bean="root" factory-method="createInteractionContext">
+        <constructor-arg value="http://leia.org/test/encounter" />
+    </bean>
+
+    <bean id="encounter" class="org.leialearns.command.encounter.Encounter">
+        <property name="streamAdapter" ref="symbolsAdapter" />
+        <property name="interactionContextUri" value="http://leia.org/test/encounter" />
+        <property name="limitFlag" value="true" />
+        <property name="autoExtendLimit" value="5" />
+    </bean>
+
+    <bean id="symbolsAdapter" class="org.leialearns.command.encounter.TokensAdapter">
+        <property name="tokenPattern" value="([\p{Alpha}]+|[\p{Digit}]+|\s*[\[{(]|[^\p{Alpha}\p{Digit}\[{(]\s*)" />
+    </bean>
+
+    <bean id="charactersAdapter" class="org.leialearns.command.encounter.TokensAdapter" />
+
+    <bean id="observer" class="org.leialearns.command.observer.Observer">
+        <property name="interactionContextUri" value="http://leia.org/test/encounter" />
+    </bean>
+
+    <bean id="oracle" class="org.leialearns.logic.utilities.Oracle">
+        <property name="data" value="/leia-oracle.data" />
+    </bean>
+
+    <bean id="minimizer" class="org.leialearns.command.minimizer.Minimizer">
+        <property name="interactionContextUri" value="http://leia.org/test/encounter" />
+    </bean>
+
+    <bean id="consolidator" class="org.leialearns.command.consolidator.Consolidator">
+        <property name="interactionContextUri" value="http://leia.org/test/encounter" />
+    </bean>
+
+</beans>
