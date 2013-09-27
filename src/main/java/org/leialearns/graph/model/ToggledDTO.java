@@ -1,14 +1,13 @@
 package org.leialearns.graph.model;
 
-import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.enumerations.ModelType;
+import org.leialearns.graph.BaseGraphDTO;
 import org.leialearns.logic.model.Toggled;
 import org.leialearns.graph.structure.NodeDTO;
-import org.leialearns.graph.HasId;
 import java.io.Serializable;
 
-public class ToggledDTO extends BaseBridgeFacet implements Serializable, HasId, FarObject<Toggled> {
+public class ToggledDTO extends BaseGraphDTO implements Serializable, FarObject<Toggled> {
 
     public Long getId() {
         return null; // TODO: implement

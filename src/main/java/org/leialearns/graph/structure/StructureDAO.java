@@ -1,19 +1,35 @@
 package org.leialearns.graph.structure;
 
+import org.leialearns.bridge.FarObject;
+import org.leialearns.graph.KeyGraphNodeDAO;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.interaction.SymbolDTO;
-import org.leialearns.graph.IdDaoSupport;
+import org.leialearns.logic.structure.Structure;
 import org.leialearns.utilities.TypedIterable;
+import org.neo4j.graphdb.Node;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class StructureDAO extends IdDaoSupport<StructureDTO> {
+import static org.leialearns.utilities.Static.getLoggingClass;
+
+public class StructureDAO extends KeyGraphNodeDAO<StructureDTO> {
+    private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
+
+    public StructureDAO() {
+        super("Structure", "uri");
+    }
 
     public StructureDTO find(String uri) {
         return null; // TODO: implement
     }
 
     public StructureDTO findOrCreate(String uri) {
-        return null; // TODO: implement
+        Node structureNode = getOrCreate(uri);
+        StructureDTO structureDTO = new StructureDTO();
+        structureDTO.setGraphNode(structureNode);
+        logger.debug("Alphabet: " + structureDTO.toString());
+        return structureDTO;
     }
 
     public void updateMaxDepth(final StructureDTO structure, NodeDTO node) {

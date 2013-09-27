@@ -3,6 +3,7 @@ package org.leialearns.graph.session;
 import org.leialearns.bridge.BridgeFactory;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.graph.interaction.AlphabetDTO;
+import org.leialearns.graph.interaction.InteractionContextDAO;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.logic.session.Root;
 import org.leialearns.utilities.TypedIterable;
@@ -12,12 +13,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 public class RootDTO implements FarObject<Root> {
 
     @Autowired
+    private InteractionContextDAO interactionContextDAO;
+
+    @Autowired
     @Qualifier(value = "rootFactory")
     private BridgeFactory rootFactory;
 
 
     public InteractionContextDTO createInteractionContext(String interactionContextURI) {
-        return null; // TODO: implement
+        return interactionContextDAO.findOrCreate(interactionContextURI);
     }
 
     public InteractionContextDTO createInteractionContext(String interactionContextURI, String actionsURI, String responsesURI, String structureURI) {

@@ -1,13 +1,12 @@
 package org.leialearns.graph.session;
 
-import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.graph.HasId;
+import org.leialearns.graph.BaseGraphDTO;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.logic.session.Session;
 import java.io.Serializable;
 
-public class SessionDTO extends BaseBridgeFacet implements Serializable, HasId, FarObject<Session> {
+public class SessionDTO extends BaseGraphDTO implements Serializable, FarObject<Session> {
 
     public Long getId() {
         return null; // TODO: implement

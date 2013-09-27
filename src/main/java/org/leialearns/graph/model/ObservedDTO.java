@@ -1,13 +1,12 @@
 package org.leialearns.graph.model;
 
-import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.enumerations.ModelType;
-import org.leialearns.graph.HasId;
+import org.leialearns.graph.BaseGraphDTO;
 import org.leialearns.logic.model.Observed;
 import java.io.Serializable;
 
-public class ObservedDTO extends BaseBridgeFacet implements Serializable, FarObject<Observed>, HasId {
+public class ObservedDTO extends BaseGraphDTO implements Serializable, FarObject<Observed> {
 
     public Long getId() {
         return null; // TODO: implement

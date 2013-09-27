@@ -2,10 +2,10 @@ package org.leialearns.graph.interaction;
 
 import org.leialearns.bridge.FarObject;
 import org.leialearns.enumerations.Direction;
-import org.leialearns.graph.HasId;
+import org.leialearns.graph.BaseGraphDTO;
 import org.leialearns.logic.interaction.Symbol;
 
-public class SymbolDTO implements FarObject<Symbol>, HasId {
+public class SymbolDTO extends BaseGraphDTO implements FarObject<Symbol> {
 
     public AlphabetDTO getAlphabet() {
         return null; // TODO: implement

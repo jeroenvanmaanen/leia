@@ -1,14 +1,13 @@
 package org.leialearns.graph.structure;
 
-import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.enumerations.Direction;
+import org.leialearns.graph.BaseGraphDTO;
 import org.leialearns.graph.interaction.SymbolDTO;
-import org.leialearns.graph.HasId;
 import org.leialearns.logic.structure.Node;
 import java.io.Serializable;
 
-public class NodeDTO extends BaseBridgeFacet implements Serializable, HasId, FarObject<Node>, Comparable<NodeDTO> {
+public class NodeDTO extends BaseGraphDTO implements Serializable, FarObject<Node>, Comparable<NodeDTO> {
 
     public Long getId() {
         return null; // TODO: implement

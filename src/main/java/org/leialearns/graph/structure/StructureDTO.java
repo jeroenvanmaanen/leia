@@ -1,12 +1,11 @@
 package org.leialearns.graph.structure;
 
-import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.graph.HasId;
+import org.leialearns.graph.BaseGraphDTO;
 import org.leialearns.logic.structure.Structure;
 import java.io.Serializable;
 
-public class StructureDTO extends BaseBridgeFacet implements Serializable, HasId, FarObject<Structure> {
+public class StructureDTO extends BaseGraphDTO implements Serializable, FarObject<Structure> {
 
     public Long getId() {
         return null; // TODO: implement

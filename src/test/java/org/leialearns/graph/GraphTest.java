@@ -1,10 +1,10 @@
 package org.leialearns.graph;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.leialearns.utilities.ExecutionListener;
+import org.leialearns.utilities.Expression;
+import org.leialearns.utilities.Setting;
 import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.cypher.javacompat.ExecutionResult;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -14,6 +14,7 @@ import org.neo4j.test.TestGraphDatabaseFactory;
 import org.neo4j.tooling.GlobalGraphOperations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,7 +24,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,19 +32,18 @@ import java.util.Map;
 @TestExecutionListeners(value = {DependencyInjectionTestExecutionListener.class, ExecutionListener.class})
 public class GraphTest {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private static GraphDatabaseService db;
-    private static ExecutionEngine executionEngine;
 
-    @BeforeClass
-    public static void beforeClass() throws IOException {
-        db = createDatabase();
-        executionEngine = new ExecutionEngine(db);
-    }
+    @Autowired
+    private GraphDatabaseService graphDatabaseService;
 
-    @AfterClass
-    public static void afterClass() throws IOException {
-        db.shutdown();
-    }
+    private Setting<ExecutionEngine> executionEngine = new Setting<ExecutionEngine>("Execution engine", new Expression<ExecutionEngine>() {
+        @Override
+        public ExecutionEngine get() {
+            logger.info("Graph database service: [" + String.valueOf(graphDatabaseService) + "]");
+            createDatabase(graphDatabaseService);
+            return new ExecutionEngine(graphDatabaseService);
+        }
+    });
 
     @Test
     public void testGraph() {
@@ -64,10 +63,10 @@ public class GraphTest {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put( "firstUserQuery", "name:" + firstUser );
         params.put( "secondUserQuery", "name:" + secondUser );
-        return executionEngine.execute( query, params );
+        return executionEngine.get().execute( query, params );
     }
 
-    public static GraphDatabaseService createDatabase() {
+    public static GraphDatabaseService createDatabase(GraphDatabaseService db) {
         // Create nodes
         String cypher = "CREATE\n" +
                 "(ben {name:'Ben', _label:'user'}),\n" +
@@ -88,7 +87,6 @@ public class GraphTest {
                 "gordon-[:FRIEND]->emily,\n" +
                 "emily-[:FRIEND]->kate,\n" +
                 "kate-[:FRIEND]->paula";
-        GraphDatabaseService db = new TestGraphDatabaseFactory().newImpermanentDatabase();
         ExecutionEngine engine = new ExecutionEngine( db );
         engine.execute( cypher );
 

@@ -1,18 +1,17 @@
 package org.leialearns.graph.model;
 
-import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.AgentMode;
+import org.leialearns.graph.BaseGraphDTO;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.session.SessionDTO;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.model.Version;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.graph.HasId;
 import org.leialearns.utilities.TypedIterable;
 import java.io.Serializable;
 
-public class VersionDTO extends BaseBridgeFacet implements Serializable, HasId, FarObject<Version> {
+public class VersionDTO extends BaseGraphDTO implements Serializable, FarObject<Version> {
 
     public Long getOrdinal() {
         return null; // TODO: implement
