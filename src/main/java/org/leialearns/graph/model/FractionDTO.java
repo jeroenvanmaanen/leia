@@ -1,11 +1,12 @@
 package org.leialearns.graph.model;
 
+import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.graph.BaseGraphDTO;
+import org.leialearns.graph.HasId;
 import org.leialearns.logic.model.Fraction;
 import java.io.Serializable;
 
-public class FractionDTO extends BaseGraphDTO implements Serializable, Comparable<FractionDTO>, FarObject<Fraction> {
+public class FractionDTO extends BaseBridgeFacet implements HasId, Serializable, Comparable<FractionDTO>, FarObject<Fraction> {
 
     public Long getId() {
         return null; // TODO: implement

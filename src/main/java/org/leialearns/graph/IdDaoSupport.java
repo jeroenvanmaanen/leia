@@ -55,7 +55,7 @@ public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
         return it.next();
     }
 
-    protected DTO save(DTO dto) {
+    public DTO save(DTO dto) {
         return dto; // TODO: implement
     }
 

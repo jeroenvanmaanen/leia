@@ -1,11 +1,10 @@
 package org.leialearns.graph.interaction;
 
-import org.leialearns.graph.KeyGraphNodeDAO;
+import org.leialearns.graph.repositories.InteractionContextRepository;
 import org.leialearns.graph.structure.StructureDAO;
 import org.leialearns.graph.structure.StructureDTO;
 import org.leialearns.utilities.ExceptionWrapper;
 import org.leialearns.utilities.TypedIterable;
-import org.neo4j.graphdb.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +15,17 @@ import java.net.URL;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 @Transactional("neo4jTransactionManager")
-public class InteractionContextDAO extends KeyGraphNodeDAO<InteractionContextDTO> {
+public class InteractionContextDAO {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
+
+    @Autowired
+    InteractionContextRepository repository;
 
     @Autowired
     private AlphabetDAO alphabetDAO;
 
     @Autowired
     private StructureDAO structureDAO;
-
-    public InteractionContextDAO() {
-        super("InteractionContext", "uri");
-    }
 
     public StructureDTO getStructure(InteractionContextDTO interactionContextDTO) {
         return null; // TODO: implement
@@ -67,12 +65,18 @@ public class InteractionContextDAO extends KeyGraphNodeDAO<InteractionContextDTO
     }
 
     public InteractionContextDTO findOrCreate(String uri, AlphabetDTO actions, AlphabetDTO responses, StructureDTO structure) {
-        Node interactionContextNode = getOrCreate(uri);
-        InteractionContextDTO result = new InteractionContextDTO();
-        result.setGraphNode(interactionContextNode);
-        linkTo(interactionContextNode, "ACTIONS", actions.getGraphNode());
-        linkTo(interactionContextNode, "RESPONSES", responses.getGraphNode());
-        linkTo(interactionContextNode, "STRUCTURE", structure.getGraphNode());
+        if (uri == null) {
+            throw new IllegalArgumentException("Argument URI should not be null");
+        }
+        InteractionContextDTO result = repository.getInteractionContextByUri(uri);
+        if (result == null) {
+            result = new InteractionContextDTO();
+            result.setURI(uri);
+            result.setActions(actions);
+            result.setResponses(responses);
+            result.setStructure(structure);
+            result = repository.save(result);
+        }
         return result;
     }
 

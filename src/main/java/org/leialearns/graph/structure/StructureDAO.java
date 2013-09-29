@@ -1,34 +1,34 @@
 package org.leialearns.graph.structure;
 
-import org.leialearns.bridge.FarObject;
-import org.leialearns.graph.KeyGraphNodeDAO;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.interaction.SymbolDTO;
-import org.leialearns.logic.structure.Structure;
+import org.leialearns.graph.repositories.StructureRepository;
 import org.leialearns.utilities.TypedIterable;
-import org.neo4j.graphdb.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.leialearns.utilities.Static.getLoggingClass;
 
-public class StructureDAO extends KeyGraphNodeDAO<StructureDTO> {
+public class StructureDAO {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 
-    public StructureDAO() {
-        super("Structure", "uri");
-    }
+    @Autowired
+    StructureRepository repository;
 
     public StructureDTO find(String uri) {
         return null; // TODO: implement
     }
 
     public StructureDTO findOrCreate(String uri) {
-        Node structureNode = getOrCreate(uri);
-        StructureDTO structureDTO = new StructureDTO();
-        structureDTO.setGraphNode(structureNode);
-        logger.debug("Alphabet: " + structureDTO.toString());
+        StructureDTO structureDTO = repository.getStructureByUri(uri);
+        if (structureDTO == null) {
+            structureDTO = new StructureDTO();
+            structureDTO.setURI(uri);
+            repository.save(structureDTO);
+        }
+        logger.debug("Structure: " + structureDTO);
         return structureDTO;
     }
 

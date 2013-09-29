@@ -1,29 +1,51 @@
 package org.leialearns.graph.interaction;
 
+import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.graph.BaseGraphDTO;
+import org.leialearns.graph.HasId;
 import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.graph.structure.StructureDTO;
+import org.neo4j.graphdb.Direction;
+import org.springframework.data.neo4j.annotation.GraphId;
+import org.springframework.data.neo4j.annotation.Indexed;
+import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.springframework.data.neo4j.annotation.RelatedTo;
+
 import java.io.Serializable;
 
-public class InteractionContextDTO extends BaseGraphDTO implements Serializable, Comparable<InteractionContextDTO>, FarObject<InteractionContext> {
+import static org.leialearns.utilities.Display.displayParts;
+
+@NodeEntity
+public class InteractionContextDTO extends BaseBridgeFacet implements HasId, Serializable, Comparable<InteractionContextDTO>, FarObject<InteractionContext> {
+    @GraphId
+    private Long id;
+
+    @Indexed(unique = true)
+    private String uri;
+
+    @RelatedTo(direction = Direction.OUTGOING, type = "HAS_ACTIONS")
     private AlphabetDTO actions;
+
+    @RelatedTo(direction = Direction.OUTGOING, type = "HAS_RESPONSES")
     private AlphabetDTO responses;
+
+    @RelatedTo(direction = Direction.OUTGOING, type = "HAS_STRUCTURE")
+    private StructureDTO structure;
 
     public Long getId() {
         return null; // TODO: implement
     }
 
     public void setId(Long id) {
-        // TODO: implement
+        this.id = id;
     }
 
     public String getURI() {
-        return null; // TODO: implement
+        return uri;
     }
 
     public void setURI(String uri) {
-        // TODO: implement
+        this.uri = uri;
     }
 
     public AlphabetDTO getActions() {
@@ -43,25 +65,29 @@ public class InteractionContextDTO extends BaseGraphDTO implements Serializable,
     }
 
     public StructureDTO getStructure() {
-        return null; // TODO: implement
+        return structure;
     }
 
     public void setStructure(StructureDTO structure) {
-        // TODO: implement
+        this.structure = structure;
     }
+
 
     public int compareTo(InteractionContextDTO interactionContext) {
-        return 0; // TODO: implement
+        return this.uri.compareTo(interactionContext.getURI());
     }
 
+    @Override
     public boolean equals(Object other) {
-        return false; // TODO: implement
+        return other instanceof InteractionContextDTO && uri.equals(((InteractionContextDTO) other).getURI());
     }
 
+    @Override
     public String toString() {
-        return null; // TODO: implement
+        return displayParts("InteractionContext", id, uri);
     }
 
+    @Override
     public InteractionContext declareNearType() {
         throw new UnsupportedOperationException("This method is for declaration only");
     }

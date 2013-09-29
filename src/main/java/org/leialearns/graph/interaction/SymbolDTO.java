@@ -1,33 +1,85 @@
 package org.leialearns.graph.interaction;
 
+import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.enumerations.Direction;
-import org.leialearns.graph.BaseGraphDTO;
+import org.leialearns.graph.HasId;
 import org.leialearns.logic.interaction.Symbol;
+import org.springframework.data.neo4j.annotation.GraphId;
+import org.springframework.data.neo4j.annotation.Indexed;
+import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.springframework.data.neo4j.annotation.RelatedTo;
 
-public class SymbolDTO extends BaseGraphDTO implements FarObject<Symbol> {
+import static org.leialearns.utilities.Display.displayParts;
+import static org.leialearns.utilities.Display.show;
+import static org.leialearns.utilities.L.literal;
+import static org.neo4j.graphdb.Direction.*;
 
-    public AlphabetDTO getAlphabet() {
-        return null; // TODO: implement
+@NodeEntity
+public class SymbolDTO extends BaseBridgeFacet implements HasId, FarObject<Symbol>, Comparable<SymbolDTO> {
+    @GraphId
+    private Long id;
+
+    @Override
+    public Long getId() {
+        return id;
     }
 
-    public Long getOrdinal() {
-        return null; // TODO: implement
+    @RelatedTo(direction = INCOMING, type = "HAS_WORD")
+    private AlphabetDTO alphabet;
+
+    @Indexed(unique = false)
+    private String denotation;
+
+    private Long ordinal;
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public AlphabetDTO getAlphabet() {
+        return alphabet;
+    }
+
+    public void setAlphabet(AlphabetDTO alphabet) {
+        this.alphabet = alphabet;
     }
 
     public String getDenotation() {
-        return null; // TODO: implement
+        return denotation;
+    }
+
+    public void setDenotation(String denotation) {
+        this.denotation = denotation;
+    }
+
+    public Long getOrdinal() {
+        return ordinal;
+    }
+
+    public void setOrdinal(Long ordinal) {
+        if (this.ordinal != null) {
+            throw new IllegalArgumentException("Ordinal is already set");
+        }
+        this.ordinal = ordinal;
+    }
+
+    @Override
+    public String toString() {
+        return toString(null);
     }
 
     public String toString(Direction direction) {
-        return null; // TODO: implement
+        return displayParts("Symbol", id, ordinal, toShortString(direction));
     }
 
-    public String toShortString(Direction direction) {
-        return null; // TODO: implement
+    public Object toShortString(Direction direction) {
+        char directionChar = (direction == null ? '?' : direction.toChar());
+        return literal(directionChar + show(denotation));
     }
 
-    public String toShortString() {
+    public Object toShortString() {
         return toShortString(null);
     }
 
@@ -35,8 +87,30 @@ public class SymbolDTO extends BaseGraphDTO implements FarObject<Symbol> {
         return null; // TODO: implement
     }
 
+    @Override
     public int compareTo(SymbolDTO symbol) {
-        return -1; // TODO: implement
+        int result = this.alphabet.compareTo(symbol.getAlphabet());
+        if (result == 0) {
+            result = this.denotation.compareTo(symbol.getDenotation());
+        }
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        boolean result;
+        if (other instanceof SymbolDTO) {
+            SymbolDTO otherSymbol = (SymbolDTO) other;
+            result = alphabet.equals(otherSymbol.getAlphabet()) && denotation.equals(otherSymbol.getDenotation());
+        } else {
+            result = false;
+        }
+        return result;
+    }
+
+    @Override
+    public int hashCode() {
+        return (alphabet == null ? 0 : alphabet.hashCode()) + (denotation == null ? 0 : denotation.hashCode());
     }
 
     @Override

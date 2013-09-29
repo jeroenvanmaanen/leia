@@ -1,49 +1,78 @@
 package org.leialearns.graph.interaction;
 
+import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.bridge.GenericBridgeFacet;
-import org.leialearns.graph.BaseGraphDTO;
+import org.leialearns.graph.HasId;
 import org.leialearns.logic.interaction.Alphabet;
+import org.springframework.data.neo4j.annotation.GraphId;
+import org.springframework.data.neo4j.annotation.Indexed;
+import org.springframework.data.neo4j.annotation.NodeEntity;
 
 import java.io.Serializable;
 
-public class AlphabetDTO extends BaseGraphDTO implements Serializable, GenericBridgeFacet, Comparable<AlphabetDTO>, FarObject<Alphabet> {
+import static org.leialearns.utilities.Display.displayParts;
+
+@NodeEntity
+public class AlphabetDTO extends BaseBridgeFacet implements HasId, Serializable, Comparable<AlphabetDTO>, FarObject<Alphabet> {
+    @GraphId
+    private Long id;
+
+    @Indexed(unique = true)
+    private String uri;
+
+    private boolean fixated = false;
+
+    @Override
     public Long getId() {
-        return null; // TODO: implement
+        return id;
     }
 
+    @Override
     public void setId(Long id) {
-        // TODO: implement
+        this.id = id;
     }
 
     public String getURI() {
-        return null; // TODO: implement
+        return uri;
     }
 
     public void setURI(String uri) {
-        // TODO: implement
+        this.uri = uri;
     }
 
     public Boolean getFixated() {
-        return null; // TODO: implement
+        return fixated;
     }
 
     public boolean isFixated() {
-        return false; // TODO: implement
+        return fixated;
     }
 
     public void markFixated() {
-        // TODO: implement
+        fixated = true;
     }
 
+    @Override
     public String toString() {
-        return null; // TODO: implement
+        return displayParts("Alphabet", id, fixated, uri);
     }
 
+    @Override
     public int compareTo(AlphabetDTO alphabet) {
-        return 0; // TODO: implement
+        return this.uri.compareTo(alphabet.getURI());
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof AlphabetDTO && uri.equals(((AlphabetDTO) other).getURI());
+    }
+
+    @Override
+    public int hashCode() {
+        return uri == null ? 0 : uri.hashCode();
+    }
+
+    @Override
     public Alphabet declareNearType() {
         throw new UnsupportedOperationException("This method is for declaration only");
     }
