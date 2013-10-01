@@ -8,12 +8,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.leialearns.bridge.Static.getFarObject;
 import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class AlphabetDAO {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
+    private Map<Long,Boolean> isFixated = new HashMap<>();
 
     @Autowired
     AlphabetRepository repository;
@@ -29,7 +33,7 @@ public class AlphabetDAO {
     }
 
     public AlphabetDTO find(String uri) {
-        return null; // TODO: implement
+        return repository.getAlphabetByUri(uri);
     }
 
     public AlphabetDTO findOrCreate(String uri) {
@@ -72,7 +76,21 @@ public class AlphabetDAO {
     }
 
     public void fixate(AlphabetDTO alphabetDTO) {
-        // TODO: implement
+        alphabetDTO.markFixated();
+        repository.save(alphabetDTO);
+        logger.debug("Fixated alphabet: [" + alphabetDTO + "]");
+    }
+
+    public boolean isFixated(AlphabetDTO alphabet) {
+        Long alphabetId = alphabet.getId();
+        boolean result;
+        if (isFixated.containsKey(alphabetId)) {
+            result = isFixated.get(alphabetId);
+        } else {
+            result = alphabet.getFixated();
+            isFixated.put(alphabetId, result);
+        }
+        return result;
     }
 
     public boolean equals(AlphabetDTO alphabet, Object other) {

@@ -19,4 +19,8 @@ public interface AlphabetRepository extends GraphRepository<AlphabetDTO> {
 
     @Query("START alphabet=node({0}) MATCH alphabet-[:NEXT_WORD*1..]->symbol-[:NEXT_WORD*1..]->alphabet RETURN count(filter(s in symbol: s.ordinal! >= 0))")
     Integer countWordChain(AlphabetDTO alphabet);
+
+    @Query("START alphabet=node({0}) MATCH last-[:NEXT_WORD]->alphabet RETURN coalesce(last.ordinal?, -1)")
+    Long findLargestSymbolOrdinal(AlphabetDTO alphabet);
+
 }

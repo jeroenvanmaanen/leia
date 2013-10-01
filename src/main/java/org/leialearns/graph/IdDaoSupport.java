@@ -1,7 +1,6 @@
 package org.leialearns.graph;
 
 import org.leialearns.bridge.FarObject;
-import org.leialearns.utilities.ExceptionWrapper;
 import org.leialearns.utilities.Expression;
 import org.leialearns.utilities.Setting;
 import org.neo4j.cypher.javacompat.ExecutionEngine;

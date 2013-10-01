@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.leialearns.utilities.Display.displayWithTypes;
+import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -66,13 +66,17 @@ public class InteractionTest {
                 Symbol light = responses.internalize("light");
                 Symbol dim = responses.internalize("dim");
                 responses.fixate();
-                logger.debug("Responses: " + displayWithTypes(responses));
-                assertTrue("Not fixated: " + responses + ": " + responses.isFixated(), responses.isFixated());
+                logger.debug("Responses: " + display(responses) + ": " + System.identityHashCode(responses));
+                Alphabet darkAlphabet = dark.getAlphabet();
+                logger.debug("Dark alphabet: " + display(darkAlphabet) + ": " + System.identityHashCode(darkAlphabet));
+                assertTrue("Responses.isFixated" + responses, responses.isFixated());
+                assertTrue("Dark.alphabet.isFixated" + darkAlphabet, darkAlphabet.isFixated());
                 long responseSymbolsDescriptionLength = responses.getFixatedDescriptionLength();
+                logger.debug("Response symbols description length: " + responseSymbolsDescriptionLength);
                 assertEquals(2, responseSymbolsDescriptionLength);
-                assertEquals(responseSymbolsDescriptionLength, dark.descriptionLength());
-                assertEquals(responseSymbolsDescriptionLength, light.descriptionLength());
-                assertEquals(responseSymbolsDescriptionLength, dim.descriptionLength());
+                assertEquals("Description length of 'dark'", responseSymbolsDescriptionLength, dark.descriptionLength());
+                assertEquals("Description length of 'light'", responseSymbolsDescriptionLength, light.descriptionLength());
+                assertEquals("Description length of 'dim'", responseSymbolsDescriptionLength, dim.descriptionLength());
             }
         });
     }

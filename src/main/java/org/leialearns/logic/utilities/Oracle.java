@@ -2,7 +2,6 @@ package org.leialearns.logic.utilities;
 
 import org.leialearns.logic.interaction.Symbol;
 import org.leialearns.logic.model.Counter;
-import org.leialearns.logic.model.Estimate;
 import org.leialearns.logic.model.Expectation;
 import org.leialearns.logic.model.Fraction;
 import org.leialearns.logic.model.Histogram;
@@ -15,7 +14,6 @@ import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class SymbolDAO extends IdDaoSupport<SymbolDTO> {
@@ -14,8 +15,9 @@ public class SymbolDAO extends IdDaoSupport<SymbolDTO> {
     @Autowired
     private AlphabetRepository alphabetRepository;
 
-    public Long findLargestSymbolOrdinal(AlphabetDTO alphabetDTO) {
-        return null; // TODO: implement
+    public Long findLargestSymbolOrdinal(AlphabetDTO alphabet) {
+        Long result = alphabetRepository.findLargestSymbolOrdinal(alphabet);
+        return result < 0 ? null : result;
     }
 
     public SymbolDTO find(AlphabetDTO alphabet, String denotation) {
@@ -25,8 +27,8 @@ public class SymbolDAO extends IdDaoSupport<SymbolDTO> {
     public void setOrdinal(SymbolDTO symbolDTO) {
         if (symbolDTO.getOrdinal() == null) {
             Long ordinal = alphabetRepository.getOrdinal(symbolDTO);
-            logger.trace("Set ordinal of: [" + symbolDTO.getDenotation() + "]: to: " + ordinal);
-            symbolDTO.setOrdinal(ordinal);
+            logger.trace("Set ordinal of: [" + display(symbolDTO) + "]: to: " + ordinal);
+            //symbolDTO.setOrdinal(ordinal);
         } else {
             logger.trace("Ordinal was already set: [" + symbolDTO + "]");
         }

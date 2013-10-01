@@ -8,3 +8,5 @@ http\://www.springframework.org/schema/lang=org.springframework.scripting.config
 http\://www.springframework.org/schema/task=org.springframework.scheduling.config.TaskNamespaceHandler
 http\://www.springframework.org/schema/cache=org.springframework.cache.config.CacheNamespaceHandler
 http\://www.springframework.org/schema/tx=org.springframework.transaction.config.TxNamespaceHandler
+http\://www.springframework.org/schema/data/repository=org.springframework.data.repository.config.RepositoryNameSpaceHandler
+http\://www.springframework.org/schema/data/neo4j=org.springframework.data.neo4j.config.Neo4jNamespaceHandler

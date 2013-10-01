@@ -60,7 +60,7 @@ public class SymbolDTO extends BaseBridgeFacet implements HasId, FarObject<Symbo
 
     public void setOrdinal(Long ordinal) {
         if (this.ordinal != null) {
-            throw new IllegalArgumentException("Ordinal is already set");
+            throw new IllegalArgumentException("Ordinal is already set to: " + this.ordinal + ": (" + ordinal + ")");
         }
         this.ordinal = ordinal;
     }
