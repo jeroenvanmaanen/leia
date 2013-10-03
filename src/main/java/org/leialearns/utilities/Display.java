@@ -108,6 +108,14 @@ public class Display {
         return builder.toString();
     }
 
+    public static Object asDisplay(final Object object) {
+        return new Object() {
+            public String toString() {
+                return display(object);
+            }
+        };
+    }
+
     /**
      * Displays the given object excluding type information.
      * @param object The object to display

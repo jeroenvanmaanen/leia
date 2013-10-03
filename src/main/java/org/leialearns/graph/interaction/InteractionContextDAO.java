@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URL;
 
+import static org.leialearns.utilities.Display.asDisplay;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 @Transactional("neo4jTransactionManager")
@@ -26,10 +27,6 @@ public class InteractionContextDAO {
 
     @Autowired
     private StructureDAO structureDAO;
-
-    public StructureDTO getStructure(InteractionContextDTO interactionContextDTO) {
-        return null; // TODO: implement
-    }
 
     public TypedIterable<InteractionContextDTO> findAll() {
         return null; // TODO: implement
@@ -49,11 +46,10 @@ public class InteractionContextDAO {
             actionsURI = new URL(base, "actions").toString();
             responsesURI = new URL(base, "responses").toString();
             structureURI = new URL(base, "structure").toString();
-            logger.debug("Base URI: [" + base + "]");
-            logger.debug("Actions URI: [" + actionsURI + "]");
-            logger.debug("Responses URI: [" + responsesURI + "]");
-            logger.debug("Structure URI: [" + structureURI + "]");
-            logger.trace("Stack trace", new Throwable());
+            logger.debug("Base URI: [{}]", base);
+            logger.debug("Actions URI: [{}]", actionsURI);
+            logger.debug("Responses URI: [{}]", responsesURI);
+            logger.debug("Structure URI: [{}]", structureURI);
         } catch (Throwable e) {
             throw ExceptionWrapper.wrap(e);
         }
