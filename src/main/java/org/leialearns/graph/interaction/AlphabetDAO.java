@@ -37,7 +37,7 @@ public class AlphabetDAO {
     }
 
     public AlphabetDTO findOrCreate(String uri) {
-        AlphabetDTO alphabet = repository.getAlphabetByUri(uri);
+        AlphabetDTO alphabet = find(uri);
         if (alphabet == null) {
             alphabet = new AlphabetDTO();
             alphabet.setURI(uri);

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.leialearns.bridge.Static.getFarObject;
+import static org.leialearns.utilities.Display.asDisplayWithTypes;
 import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Display.displayWithTypes;
 import static org.leialearns.utilities.Display.displayParts;
@@ -671,7 +672,7 @@ public class BridgeFactory {
                 Iterable<?> iterable = (Iterable<?>) nearObject;
                 result = getTransformingIterable(iterable, adapterFarType.get());
             }
-            logger.debug("Adapted: " + displayWithTypes(nearObject.getClass()) + " -> " + displayWithTypes(result.getClass()));
+            logger.debug("Adapted: {} -> {}", asDisplayWithTypes(getType(nearObject)), asDisplayWithTypes(getType(result)));
             return result;
         }
 
@@ -707,6 +708,10 @@ public class BridgeFactory {
             throw new IllegalArgumentException("Does not extend FarObject: [" + farTypeName + "]");
         }
         return (Class<? extends FarObject<?>>) result;
+    }
+
+    protected static Class<?> getType(Object object) {
+        return object == null ? null : object.getClass();
     }
 
     protected static class Signature {

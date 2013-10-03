@@ -84,7 +84,7 @@ public class SymbolDTO extends BaseBridgeFacet implements HasId, FarObject<Symbo
     }
 
     public DirectedSymbolDTO createDirectedSymbol(Direction direction) {
-        return null; // TODO: implement
+        return new DirectedSymbolDTO(direction, this);
     }
 
     @Override

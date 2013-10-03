@@ -6,6 +6,7 @@ import org.leialearns.graph.HasId;
 import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.graph.structure.StructureDTO;
 import org.neo4j.graphdb.Direction;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -23,17 +24,20 @@ public class InteractionContextDTO extends BaseBridgeFacet implements HasId, Ser
     @Indexed(unique = true)
     private String uri;
 
+    @Fetch
     @RelatedTo(direction = Direction.OUTGOING, type = "HAS_ACTIONS")
     private AlphabetDTO actions;
 
+    @Fetch
     @RelatedTo(direction = Direction.OUTGOING, type = "HAS_RESPONSES")
     private AlphabetDTO responses;
 
+    @Fetch
     @RelatedTo(direction = Direction.OUTGOING, type = "HAS_STRUCTURE")
     private StructureDTO structure;
 
     public Long getId() {
-        return null; // TODO: implement
+        return id;
     }
 
     public void setId(Long id) {

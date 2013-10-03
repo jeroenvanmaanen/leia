@@ -1,6 +1,7 @@
 package org.leialearns.graph;
 
 import org.leialearns.bridge.FarObject;
+import org.leialearns.utilities.ExceptionWrapper;
 import org.leialearns.utilities.Expression;
 import org.leialearns.utilities.Setting;
 import org.neo4j.cypher.javacompat.ExecutionEngine;
@@ -10,9 +11,12 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import static org.leialearns.bridge.Static.getFarObject;
 
 public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
 
@@ -55,11 +59,30 @@ public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
     }
 
     public DTO save(DTO dto) {
-        return dto; // TODO: implement
+        throw new UnsupportedOperationException("Yet to be implemented"); // TODO: implement
     }
 
-    protected Object adapt(Object object) {
-        return null; // TODO: implement
+    protected <FT extends FarObject<NT>, NT> FT adapt(Object object, Class<FT> type) {
+        Class<NT> nearType = getNearClass(type);
+        FT adapted;
+        if (!type.isInstance(object) && nearType.isInstance(object)) {
+            adapted = getFarObject(nearType.cast(object), type);
+        } else {
+            adapted = type.cast(object);
+        }
+        return adapted;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <FT extends FarObject<NT>, NT> Class<NT> getNearClass(Class<FT> farClass) {
+        Class<NT> nearType;
+        try {
+            Method typeGetter = farClass.getMethod("declareNearType");
+            nearType = (Class<NT>) typeGetter.getReturnType();
+        } catch (Exception exception) {
+            throw ExceptionWrapper.wrap(exception);
+        }
+        return nearType;
     }
 
 }

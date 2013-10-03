@@ -1,5 +1,6 @@
 package org.leialearns.graph.interaction;
 
+import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.repositories.InteractionContextRepository;
 import org.leialearns.graph.structure.StructureDAO;
 import org.leialearns.graph.structure.StructureDTO;
@@ -11,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.leialearns.utilities.Display.asDisplay;
 import static org.leialearns.utilities.Static.getLoggingClass;
@@ -85,7 +90,16 @@ public class InteractionContextDAO {
     }
 
     public TypedIterable<DirectedSymbolDTO> createPath(InteractionContextDTO interactionContext, String... path) {
-        return null; // TODO: implement
+        Map<Direction,AlphabetDTO> map = new HashMap<Direction,AlphabetDTO>();
+        map.put(Direction.ACTION, interactionContext.getActions());
+        map.put(Direction.RESPONSE, interactionContext.getResponses());
+        List<DirectedSymbolDTO> result = new ArrayList<DirectedSymbolDTO>();
+        for (String denotation : path) {
+            Direction direction = Direction.valueOf(denotation.charAt(0));
+            SymbolDTO symbol = alphabetDAO.internalize(map.get(direction), denotation.substring(1));
+            result.add(symbol.createDirectedSymbol(direction));
+        }
+        return new TypedIterable<DirectedSymbolDTO>(result, DirectedSymbolDTO.class);
     }
 
     public void save(AlphabetDTO alphabet) {

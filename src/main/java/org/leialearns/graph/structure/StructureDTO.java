@@ -11,6 +11,7 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import java.io.Serializable;
 
 import static org.leialearns.utilities.Display.displayParts;
+import static org.leialearns.utilities.Static.equal;
 
 @NodeEntity
 public class StructureDTO extends BaseBridgeFacet implements HasId, Serializable, FarObject<Structure> {
@@ -24,12 +25,12 @@ public class StructureDTO extends BaseBridgeFacet implements HasId, Serializable
 
     @Override
     public Long getId() {
-        return null; // TODO: implement
+        return id;
     }
 
     @Override
     public void setId(Long id) {
-        // TODO: implement
+        this.id = id;
     }
 
     public String getURI() {
@@ -50,21 +51,29 @@ public class StructureDTO extends BaseBridgeFacet implements HasId, Serializable
 
     @Override
     public String toString() {
-        return displayParts("Structure", uri, maxDepth);
+        return displayParts("Structure", id, uri, maxDepth);
     }
 
     public void markExtensible(NodeDTO node) {
-        // TODO: implement
+        if (!this.equals(node.getStructure())) {
+            throw new IllegalArgumentException("Node does not belong to this structure: [" + node + "]: [" + this + "]");
+        }
+        node.setExtensible(true);
     }
 
     @Override
     public boolean equals(Object other) {
-        return false; // TODO: implement
+        return other instanceof StructureDTO && equal(uri, ((StructureDTO) other).getURI());
+    }
+
+    @Override
+    public int hashCode() {
+        return uri == null ? 0 : uri.hashCode();
     }
 
     @Override
     public Structure declareNearType() {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("This method is for declaration only");
     }
 
 }

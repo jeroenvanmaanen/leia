@@ -20,7 +20,7 @@
 
     <bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="graphDatabaseFactory" factory-method="newImpermanentDatabase" />
 
-    <neo4j:config graphDatabaseService="graphDatabaseService" />
+    <neo4j:config base-package="org.leialearns.graph" graphDatabaseService="graphDatabaseService" />
     <neo4j:repositories base-package="org.leialearns.graph.repositories" />
 
     <bean id="neo4jTransactionManager"
@@ -40,7 +40,7 @@
     <bean id="transactionHelper" class="org.leialearns.graph.GraphTransactionHelper" />
 
     <bean id="interactionContextUri" class="java.lang.String">
-        <constructor-arg value="http://lexau.org/test/encounter"/>
+        <constructor-arg value="http://leialearns.org/test/encounter"/>
     </bean>
 
 </beans>

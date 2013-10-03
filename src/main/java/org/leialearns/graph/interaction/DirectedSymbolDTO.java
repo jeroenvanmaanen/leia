@@ -5,13 +5,24 @@ import org.leialearns.enumerations.Direction;
 import org.leialearns.logic.interaction.DirectedSymbol;
 
 public class DirectedSymbolDTO implements FarObject<DirectedSymbol> {
+    private Direction direction;
+    private SymbolDTO symbol;
+
+    public DirectedSymbolDTO(Direction direction, SymbolDTO symbol) {
+        this.direction = direction;
+        this.symbol = symbol;
+    }
 
     public SymbolDTO getSymbol() {
-        return null; // TODO: implement
+        return symbol;
     }
 
     public Direction getDirection() {
-        return null; // TODO: implement
+        return direction;
+    }
+
+    public String toString() {
+        return symbol.toString(direction);
     }
 
     @Override

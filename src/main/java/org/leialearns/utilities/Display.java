@@ -97,6 +97,14 @@ public class Display {
         return builder.toString();
     }
 
+    public static Object asDisplayWithTypes(final Object object) {
+        return new Object() {
+            public String toString() {
+                return displayWithTypes(object);
+            }
+        };
+    }
+
     /**
      * Displays the given object including type information.
      * @param object The object to display

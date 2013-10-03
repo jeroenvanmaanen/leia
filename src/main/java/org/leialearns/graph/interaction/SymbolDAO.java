@@ -35,7 +35,7 @@ public class SymbolDAO extends IdDaoSupport<SymbolDTO> {
     }
 
     public int compareTo(SymbolDTO thisSymbol, Object that) {
-        return thisSymbol.compareTo((SymbolDTO) adapt(that));
+        return thisSymbol.compareTo((SymbolDTO) adapt(that, SymbolDTO.class));
     }
 
 }

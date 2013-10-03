@@ -83,10 +83,11 @@ public class TestUtilities {
         responses.internalize("light");
 
         Structure structure = interactionContext.getStructure();
+        assertNotNull("Structure", structure);
         Node leftNode = structure.findOrCreateNode(left, Direction.ACTION);
-        assertNotNull(leftNode);
+        assertNotNull("Left node", leftNode);
         Node rightNode = structure.findOrCreateNode(right, Direction.ACTION);
-        assertNotNull(rightNode);
+        assertNotNull("Right node", rightNode);
 
         structure.markExtensible(leftNode);
         Node darkLeftNode = leftNode.findOrCreate(dark, Direction.RESPONSE);
