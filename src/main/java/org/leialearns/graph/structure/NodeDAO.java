@@ -23,27 +23,27 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
     private NodeRepository nodeRepository;
 
     public TypedIterable<NodeDTO> findAll() {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public TypedIterable<NodeDTO> findNodes(StructureDTO structure) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public TypedIterable<NodeDTO> findNodes(StructureDTO structure, int depth) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public TypedIterable<NodeDTO> findRootNodes(StructureDTO structure) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public TypedIterable<NodeDTO> findChildren(NodeDTO node) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public NodeDTO find(StructureDTO structure, TypedIterable<DirectedSymbolDTO> path) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public NodeDTO findOrCreate(StructureDTO structure, SymbolDTO symbol, Direction direction) {
@@ -80,6 +80,7 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
             logger.trace("  Symbol: [" + result.getSymbol().toString(result.getDirection()) + "]");
             logger.trace("}");
             result = nodeRepository.save(result);
+            logger.debug("Node structure after save: [{}]", result.getStructure());
             structureDAO.updateMaxDepth(structure, result);
         }
         return result;

@@ -21,7 +21,7 @@ public class SymbolDAO extends IdDaoSupport<SymbolDTO> {
     }
 
     public SymbolDTO find(AlphabetDTO alphabet, String denotation) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public void setOrdinal(SymbolDTO symbolDTO) {

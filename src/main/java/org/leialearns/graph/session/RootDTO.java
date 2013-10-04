@@ -47,15 +47,15 @@ public class RootDTO implements FarObject<Root> {
     }
 
     public SessionDTO createSession(String interactionContextURI) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public SessionDTO createSession(InteractionContextDTO interactionContext) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public TypedIterable<AlphabetDTO> findAlphabets() {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public Root declareNearType() {

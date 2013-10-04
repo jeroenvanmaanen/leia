@@ -7,19 +7,19 @@ import org.leialearns.utilities.TypedIterable;
 public class FractionDAO {
 
     public TypedIterable<FractionDTO> findFractions(RootDTO root) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public FractionDTO findFraction(RootDTO root, long index) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public FractionDTO findOrCreateFraction(RootDTO root, Fraction fraction) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public FractionDTO findOrCreateFraction(RootDTO root, long index, long numerator, long denominator) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public FractionDTO createFraction(RootDTO root, long index, long numerator, long denominator) {
@@ -27,7 +27,7 @@ public class FractionDAO {
     }
 
     public FractionDTO createFraction(RootDTO root, long index, long numerator, long denominator, boolean inOracle) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
 }

@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +50,20 @@ public class StructureDAO {
     }
 
     public void updateMaxDepth(final StructureDTO structure, NodeDTO node) {
-        // TODO: implement
+        if (!node.getStructure().equals(structure)) {
+            throw new IllegalArgumentException("Node does not belong to structure: [" + node + "]: [" + structure + "]");
+        }
+        final int nodeDepth = node.getDepth();
+        logger.debug("Update max depth: [" + structure + "]: [" + node + "]: " + nodeDepth);
+        if (nodeDepth > structure.getMaxDepth()) {
+            repository.updateMaxDepth(structure, nodeDepth);
+            logger.debug("Updated max depth: [" + structure + "]");
+            if (structure.getMaxDepth() < nodeDepth) {
+                RuntimeException exception = new IllegalStateException("Structure max depth less than node depth: " + structure.getMaxDepth() + ": " + nodeDepth);
+                logger.warn("Exception", exception);
+                throw exception;
+            }
+        }
     }
 
     public NodeDTO findOrCreateNode(StructureDTO structure, TypedIterable<DirectedSymbolDTO> path) {
@@ -92,7 +108,7 @@ public class StructureDAO {
     }
 
     public void logNodes(StructureDTO structure) {
-        // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public boolean equals(StructureDTO structure, Object other) {

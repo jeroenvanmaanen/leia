@@ -6,51 +6,51 @@ import org.leialearns.utilities.TypedIterable;
 public class ObservedDAO extends IdDaoSupport<ObservedDTO> {
 
     public ObservedDTO find(VersionDTO version) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public ObservedDTO create(VersionDTO version) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public ObservedDTO findOrCreate(VersionDTO version) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public VersionDTO getOrCreateDelta(ObservedDTO observed) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public CountedDTO getCounted(ObservedDTO observed) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public void attachCounted(ObservedDTO newObserved, ObservedDTO oldObserved) {
-        // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public void attachToggled(ObservedDTO observed) {
-        // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public void attachExpected(ObservedDTO observed) {
-        // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public void copyCountersFromLastObserved(ObservedDTO toObserved, VersionDTO lastObserved) {
-        // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public void copyCountersFromLastObserved(VersionDTO lastObserved, VersionDTO toVersion) {
-        // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public TypedIterable<CounterUpdateDTO> findCounterUpdates(ObservedDTO newObserved, ObservedDTO oldObserved) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public void copyCountersFromLastDelta(ObservedDTO newObserved, ObservedDTO oldObserved) {
-        // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
 }

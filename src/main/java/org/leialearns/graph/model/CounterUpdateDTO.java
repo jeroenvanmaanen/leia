@@ -6,15 +6,15 @@ import org.leialearns.logic.model.CounterUpdate;
 public class CounterUpdateDTO implements FarObject<CounterUpdate> {
 
     public CounterDTO getCounter() {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public long getAmount() {
-        return 0; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public CounterUpdate declareNearType() {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
 }

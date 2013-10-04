@@ -31,7 +31,8 @@ public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
     });
 
     public static String toID(String label, HasId object) {
-        return "???"; // TODO: implement
+        String prefix = label == null || label.isEmpty() ? "" : label + ":";
+        return prefix + (object == null ? "?" : object.getId());
     }
 
     protected ExecutionEngine getExecutionEngine() {
@@ -59,7 +60,7 @@ public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
     }
 
     public DTO save(DTO dto) {
-        throw new UnsupportedOperationException("Yet to be implemented"); // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     protected <FT extends FarObject<NT>, NT> FT adapt(Object object, Class<FT> type) {

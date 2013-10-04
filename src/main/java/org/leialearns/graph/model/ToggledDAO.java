@@ -7,15 +7,15 @@ import org.leialearns.graph.IdDaoSupport;
 public class ToggledDAO extends IdDaoSupport<ToggledDTO> {
 
     public ToggledDTO create(SessionDTO owner, NodeDTO node, boolean include) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public ToggledDTO find(VersionDTO version) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public boolean equals(ToggledDTO toggledDTO, Object other) {
-        return false; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
 }

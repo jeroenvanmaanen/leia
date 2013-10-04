@@ -34,11 +34,11 @@ public class InteractionContextDAO {
     private StructureDAO structureDAO;
 
     public TypedIterable<InteractionContextDTO> findAll() {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public InteractionContextDTO find(String uri) {
-        return null; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public InteractionContextDTO findOrCreate(String uri) {
@@ -82,11 +82,11 @@ public class InteractionContextDAO {
     }
 
     public void setActions(InteractionContextDTO interactionContextDTO, AlphabetDTO actions) {
-        // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public void setResponses(InteractionContextDTO interactionContextDTO, AlphabetDTO responses) {
-        // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public TypedIterable<DirectedSymbolDTO> createPath(InteractionContextDTO interactionContext, String... path) {
@@ -103,11 +103,11 @@ public class InteractionContextDAO {
     }
 
     public void save(AlphabetDTO alphabet) {
-        // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public boolean equals(InteractionContextDTO interactionContext, Object other) {
-        return false; // TODO: implement
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
 }
