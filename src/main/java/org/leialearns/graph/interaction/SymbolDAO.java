@@ -2,6 +2,7 @@ package org.leialearns.graph.interaction;
 
 import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.repositories.AlphabetRepository;
+import org.leialearns.graph.repositories.SymbolRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,11 @@ public class SymbolDAO extends IdDaoSupport<SymbolDTO> {
 
     @Autowired
     private AlphabetRepository alphabetRepository;
+
+    @Autowired
+    public SymbolDAO(SymbolRepository repository) {
+        super(repository);
+    }
 
     public Long findLargestSymbolOrdinal(AlphabetDTO alphabet) {
         Long result = alphabetRepository.findLargestSymbolOrdinal(alphabet);
