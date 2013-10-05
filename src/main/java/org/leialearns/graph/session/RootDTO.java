@@ -31,6 +31,9 @@ public class RootDTO implements FarObject<Root> {
     private StructureDAO structureDAO;
 
     @Autowired
+    private SessionDAO sessionDAO;
+
+    @Autowired
     @Qualifier(value = "rootFactory")
     private BridgeFactory rootFactory;
 
@@ -47,15 +50,16 @@ public class RootDTO implements FarObject<Root> {
     }
 
     public SessionDTO createSession(String interactionContextURI) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        InteractionContextDTO interactionContext = interactionContextDAO.findOrCreate(interactionContextURI);
+        return createSession(interactionContext);
     }
 
     public SessionDTO createSession(InteractionContextDTO interactionContext) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return sessionDAO.create(this, interactionContext);
     }
 
     public TypedIterable<AlphabetDTO> findAlphabets() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return alphabetDAO.findAll();
     }
 
     public Root declareNearType() {

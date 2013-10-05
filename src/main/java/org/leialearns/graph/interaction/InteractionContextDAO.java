@@ -1,6 +1,7 @@
 package org.leialearns.graph.interaction;
 
 import org.leialearns.enumerations.Direction;
+import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.repositories.InteractionContextRepository;
 import org.leialearns.graph.structure.StructureDAO;
 import org.leialearns.graph.structure.StructureDTO;
@@ -17,11 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.leialearns.utilities.Display.asDisplay;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 @Transactional("neo4jTransactionManager")
-public class InteractionContextDAO {
+public class InteractionContextDAO extends IdDaoSupport<InteractionContextDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 
     @Autowired
@@ -107,7 +107,7 @@ public class InteractionContextDAO {
     }
 
     public boolean equals(InteractionContextDTO interactionContext, Object other) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return interactionContext.equals(adapt(other, InteractionContextDTO.class));
     }
 
 }

@@ -5,6 +5,8 @@ import org.leialearns.graph.interaction.SymbolDTO;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 
+import java.util.Set;
+
 public interface AlphabetRepository extends GraphRepository<AlphabetDTO> {
     AlphabetDTO getAlphabetByUri(String uri);
 
@@ -22,5 +24,8 @@ public interface AlphabetRepository extends GraphRepository<AlphabetDTO> {
 
     @Query("START alphabet=node({0}) MATCH last-[:NEXT_WORD]->alphabet RETURN coalesce(last.ordinal?, -1)")
     Long findLargestSymbolOrdinal(AlphabetDTO alphabet);
+
+    @Query("START alphabet=node RETURN alphabet")
+    Set<AlphabetDTO> findAllAlphabets();
 
 }

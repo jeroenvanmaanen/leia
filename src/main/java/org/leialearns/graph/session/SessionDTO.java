@@ -5,44 +5,79 @@ import org.leialearns.bridge.FarObject;
 import org.leialearns.graph.HasId;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.logic.session.Session;
+import org.leialearns.utilities.BaseExpression;
+import org.neo4j.graphdb.Direction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.annotation.GraphId;
+import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.springframework.data.neo4j.annotation.RelatedTo;
+
 import java.io.Serializable;
 
+import static org.leialearns.utilities.Display.displayParts;
+import static org.leialearns.utilities.Static.equal;
+import static org.leialearns.utilities.Static.getLoggingClass;
+
+@NodeEntity
 public class SessionDTO extends BaseBridgeFacet implements HasId, Serializable, FarObject<Session> {
+    private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
+
+    @GraphId
+    private Long id;
+    private transient RootDTO root;
+
+    @RelatedTo(direction = Direction.INCOMING, type = "HAS_SESSION")
+    private InteractionContextDTO interactionContext;
 
     public Long getId() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return id;
     }
 
     public void setId(Long id) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.id = id;
     }
 
     public RootDTO getRoot() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return root;
     }
 
     public void setRoot(RootDTO root) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.root = root;
     }
 
     public InteractionContextDTO getInteractionContext() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return interactionContext;
     }
 
     public void setInteractionContext(InteractionContextDTO interactionContext) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.interactionContext = interactionContext;
     }
 
     public String toString() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return displayParts("Session", id, interactionContext);
+    }
+
+    public boolean equals(final Object other) {
+        logger.trace("Equals?: {}: {}: {}", new Object[]{id, other instanceof SessionDTO, new BaseExpression<String>() {
+            public String get() {
+                String result;
+                if (other instanceof SessionDTO) {
+                    Long id = ((SessionDTO) other).getId();
+                    result = String.valueOf(id);
+                } else {
+                    result = "?";
+                }
+                return result;
+            }
+        }});
+        boolean result = other instanceof SessionDTO && equal(((SessionDTO) other).getId(), id);
+        logger.trace("Result: {}", result);
+        return result;
     }
 
     public Session declareNearType() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
-    }
-
-    public boolean equals(Object other) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        throw new UnsupportedOperationException("This method is for declaration only");
     }
 
 }

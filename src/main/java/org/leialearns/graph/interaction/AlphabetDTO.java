@@ -17,7 +17,7 @@ public class AlphabetDTO extends BaseBridgeFacet implements HasId, Serializable,
     @GraphId
     private Long id;
 
-    @Indexed(unique = true)
+    @Indexed(unique = true, indexName = "alphabetUri")
     private String uri;
 
     private boolean fixated = false;

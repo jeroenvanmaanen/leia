@@ -29,7 +29,7 @@ public class AlphabetDAO {
     SymbolDAO symbolDAO;
 
     public TypedIterable<AlphabetDTO> findAll() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return new TypedIterable<AlphabetDTO>(repository.findAll(), AlphabetDTO.class);
     }
 
     public AlphabetDTO find(String uri) {
