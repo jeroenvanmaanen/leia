@@ -1,6 +1,7 @@
 package org.leialearns.utilities;
 
 import java.lang.reflect.Array;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,6 +104,12 @@ public class Static {
             result.add(item);
         }
         return result;
+    }
+
+    public static long gcd(long a, long b) {
+        BigInteger aa = BigInteger.valueOf(a);
+        BigInteger bb = BigInteger.valueOf(b);
+        return aa.gcd(bb).longValue();
     }
 
 }

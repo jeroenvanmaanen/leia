@@ -19,19 +19,19 @@ public class EstimateDAO extends IdDaoSupport<EstimateDTO> {
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
-    public EstimateDTO createEstimate(ExpectedDTO expected, NodeDTO node, SymbolDTO symbol, FractionDTO fraction) {
+    public EstimateDTO createEstimate(ExpectedDTO expected, NodeDTO node, SymbolDTO symbol, FractionBaseDTO fraction) {
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
-    public EstimateDTO createEstimate(ToggledDTO toggled, NodeDTO node, SymbolDTO symbol, FractionDTO fraction) {
+    public EstimateDTO createEstimate(ToggledDTO toggled, NodeDTO node, SymbolDTO symbol, FractionBaseDTO fraction) {
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
-    public EstimateDTO findOrCreate(VersionDTO version, NodeDTO node, SymbolDTO symbol, FractionDTO fraction) {
+    public EstimateDTO findOrCreate(VersionDTO version, NodeDTO node, SymbolDTO symbol, FractionBaseDTO fraction) {
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
-    public EstimateDTO create(VersionDTO version, NodeDTO node, SymbolDTO symbol, FractionDTO fraction) {
+    public EstimateDTO create(VersionDTO version, NodeDTO node, SymbolDTO symbol, FractionBaseDTO fraction) {
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 

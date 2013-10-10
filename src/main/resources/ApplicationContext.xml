@@ -116,7 +116,7 @@
     </bean>
 
     <bean id="fractionFactory" class="org.leialearns.bridge.BridgeFactory">
-        <constructor-arg value="org.leialearns.graph.model.FractionDTO"/>
+        <constructor-arg value="org.leialearns.graph.model.FractionBaseDTO"/>
         <constructor-arg>
             <array>
                 <ref bean="fractionHelper" />

@@ -47,7 +47,7 @@ public class SessionDAO extends IdDaoSupport<SessionDTO> {
     }
 
     public void flush(SessionDTO session) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        logger.debug("Flush called: Ignored.");
     }
 
     public boolean equals(SessionDTO sessionDTO, Object other) {

@@ -43,11 +43,11 @@ public class EstimateDTO extends BaseBridgeFacet implements HasId, Serializable,
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
-    public FractionDTO getFraction() {
+    public FractionBaseDTO getFraction() {
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
-    public void setFraction(FractionDTO fraction) {
+    public void setFraction(FractionBaseDTO fraction) {
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
