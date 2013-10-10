@@ -4,7 +4,6 @@ import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.interaction.SymbolDTO;
 import org.leialearns.graph.IdDaoSupport;
-import org.leialearns.graph.repositories.NodeRepository;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

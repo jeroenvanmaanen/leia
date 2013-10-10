@@ -1,7 +1,5 @@
-package org.leialearns.graph.repositories;
+package org.leialearns.graph.interaction;
 
-import org.leialearns.graph.interaction.AlphabetDTO;
-import org.leialearns.graph.interaction.SymbolDTO;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 

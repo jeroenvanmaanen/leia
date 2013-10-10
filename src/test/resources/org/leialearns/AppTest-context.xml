@@ -21,7 +21,6 @@
     <bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="graphDatabaseFactory" factory-method="newImpermanentDatabase" />
 
     <neo4j:config base-package="org.leialearns.graph" graphDatabaseService="graphDatabaseService" />
-    <neo4j:repositories base-package="org.leialearns.graph.repositories" />
 
     <bean id="neo4jTransactionManager"
           class="org.springframework.transaction.jta.JtaTransactionManager">

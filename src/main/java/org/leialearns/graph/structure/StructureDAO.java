@@ -3,7 +3,6 @@ package org.leialearns.graph.structure;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.interaction.SymbolDTO;
-import org.leialearns.graph.repositories.StructureRepository;
 import org.leialearns.logic.structure.Structure;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
@@ -11,9 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceException;
-import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

@@ -1,7 +1,5 @@
-package org.leialearns.graph.repositories;
+package org.leialearns.graph.structure;
 
-import org.leialearns.graph.structure.NodeDTO;
-import org.leialearns.graph.structure.StructureDTO;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 

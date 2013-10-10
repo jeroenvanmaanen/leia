@@ -3,14 +3,17 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:neo4j="http://www.springframework.org/schema/data/neo4j"
        xsi:schemaLocation="
            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/data/neo4j http://www.springframework.org/schema/data/neo4j/spring-neo4j-2.0.xsd
            ">
 
     <context:component-scan base-package="org.leialearns"/>
 
     <!-- Database configuration -->
+    <neo4j:repositories base-package="org.leialearns.graph" />
 
     <bean id="fractionDAO" class="org.leialearns.graph.model.FractionDAO" />
     <bean id="alphabetDAO" class="org.leialearns.graph.interaction.AlphabetDAO" />

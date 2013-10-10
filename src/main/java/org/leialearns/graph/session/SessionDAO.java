@@ -5,7 +5,6 @@ import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.model.CountedDTO;
 import org.leialearns.graph.model.ToggledDTO;
 import org.leialearns.graph.model.VersionDTO;
-import org.leialearns.graph.repositories.SessionRepository;
 import org.leialearns.graph.structure.NodeDTO;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;

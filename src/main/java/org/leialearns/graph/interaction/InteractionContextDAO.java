@@ -2,7 +2,6 @@ package org.leialearns.graph.interaction;
 
 import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.IdDaoSupport;
-import org.leialearns.graph.repositories.InteractionContextRepository;
 import org.leialearns.graph.structure.StructureDAO;
 import org.leialearns.graph.structure.StructureDTO;
 import org.leialearns.utilities.ExceptionWrapper;

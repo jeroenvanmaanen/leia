@@ -1,8 +1,6 @@
 package org.leialearns.graph.interaction;
 
 import org.leialearns.graph.IdDaoSupport;
-import org.leialearns.graph.repositories.AlphabetRepository;
-import org.leialearns.graph.repositories.SymbolRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

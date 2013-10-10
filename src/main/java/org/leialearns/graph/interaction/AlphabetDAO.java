@@ -1,7 +1,5 @@
 package org.leialearns.graph.interaction;
 
-import org.leialearns.graph.repositories.AlphabetRepository;
-import org.leialearns.graph.repositories.SymbolRepository;
 import org.leialearns.logic.interaction.Alphabet;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
