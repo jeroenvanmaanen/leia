@@ -42,7 +42,11 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
     }
 
     public NodeDTO find(StructureDTO structure, TypedIterable<DirectedSymbolDTO> path) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        StringBuilder builder = new StringBuilder();
+        for (DirectedSymbolDTO directedSymbol : path) {
+            appendToPath(builder, directedSymbol.getSymbol(), directedSymbol.getDirection());
+        }
+        return find(structure, builder.toString());
     }
 
     public NodeDTO findOrCreate(StructureDTO structure, SymbolDTO symbol, Direction direction) {

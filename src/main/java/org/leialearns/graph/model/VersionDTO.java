@@ -10,60 +10,100 @@ import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.model.Version;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.utilities.TypedIterable;
-import java.io.Serializable;
+import org.neo4j.graphdb.Direction;
+import org.springframework.data.neo4j.annotation.GraphId;
+import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.leialearns.graph.IdDaoSupport.toID;
+import static org.leialearns.utilities.Display.displayParts;
+import static org.leialearns.utilities.Static.equal;
+
+@NodeEntity
 public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, FarObject<Version> {
+    @GraphId
+    private Long id;
+
+    @RelatedTo(direction = Direction.OUTGOING, type = "IN_CONTEXT")
+    private InteractionContextDTO interactionContext;
+
+    private Long ordinal;
+    private Character modelTypeFlag;
+    private Character accessModeFlag;
+
+    private transient SessionDTO owner;
+    private transient Map<Long,SessionDTO> readers = new HashMap<Long,SessionDTO>();
+    private transient Map<Long,SessionDTO> writers = new HashMap<Long,SessionDTO>();
 
     public Long getOrdinal() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return ordinal;
+    }
+
+    public void setOrdinal(Long ordinal) {
+        if (this.ordinal != null) {
+            throw new IllegalArgumentException("Ordinal is already set to: " + this.ordinal + ": (" + ordinal + ")");
+        }
+        this.ordinal = ordinal;
     }
 
     public Long getId() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return id;
     }
 
     public void setId(Long id) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.id = id;
     }
 
     public ModelType getModelType() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return ModelType.valueOf(modelTypeFlag);
     }
 
     public void setModelType(ModelType modelType) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        modelTypeFlag = modelType.toChar();
     }
 
     public void setModelTypeFlag(char modelTypeFlag) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        ModelType modelType = ModelType.valueOf(modelTypeFlag);
+        if (modelType == null) {
+            throw new IllegalArgumentException("Not a valid model type flag: [" + modelTypeFlag + "]");
+        }
+        this.modelTypeFlag = modelTypeFlag;
     }
 
     public AccessMode getAccessMode() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return AccessMode.valueOf(accessModeFlag);
     }
 
     public void setAccessMode(AccessMode accessMode) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        accessModeFlag = accessMode.toChar();
     }
 
     public void setAccessModeFlag(char accessModeFlag) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        AccessMode accessMode = AccessMode.valueOf(accessModeFlag);
+        if (accessMode == null) {
+            throw new IllegalArgumentException("Not a valid access mode flag: [" + accessModeFlag + "]");
+        }
+        this.accessModeFlag = accessModeFlag;
     }
 
     public InteractionContextDTO getInteractionContext() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return interactionContext;
     }
 
     public void setInteractionContext(InteractionContextDTO interactionContext) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.interactionContext = interactionContext;
     }
 
     public SessionDTO getOwner() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return owner;
     }
 
     public void setOwner(SessionDTO owner) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.owner = owner;
     }
 
     public TypedIterable<SessionDTO> getWriters() {
@@ -90,16 +130,21 @@ public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, 
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
+    @Override
     public boolean equals(Object other) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return other instanceof VersionDTO && equal(id, ((VersionDTO) other).getId());
     }
 
+    @Override
     public String toString() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        AccessMode accessMode = getAccessMode();
+        char accessModeChar = accessMode == null ? '?' : accessMode.toChar();
+        return displayParts("Version", id, getModelType(), toID("S", owner), accessModeChar, interactionContext);
     }
 
+    @Override
     public Version declareNearType() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        throw new UnsupportedOperationException("This method is for declaration only");
     }
 
 }

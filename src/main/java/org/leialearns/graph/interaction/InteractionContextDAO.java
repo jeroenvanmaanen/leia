@@ -76,6 +76,7 @@ public class InteractionContextDAO extends IdDaoSupport<InteractionContextDTO> {
             result.setResponses(responses);
             result.setStructure(structure);
             result = repository.save(result);
+            repository.setEmptyVersionChain(result);
         }
         return result;
     }

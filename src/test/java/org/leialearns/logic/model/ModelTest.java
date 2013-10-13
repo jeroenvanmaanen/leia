@@ -11,6 +11,7 @@ import org.leialearns.logic.interaction.Symbol;
 import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.logic.structure.Structure;
+import org.leialearns.utilities.ExecutionListener;
 import org.leialearns.utilities.TestUtilities;
 import org.leialearns.utilities.TransactionHelper;
 import org.slf4j.Logger;
@@ -30,7 +31,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/ApplicationContext.xml","/org/leialearns/AppTest-context.xml"})
-@TestExecutionListeners(value = {DependencyInjectionTestExecutionListener.class})
+@TestExecutionListeners(value = {DependencyInjectionTestExecutionListener.class, ExecutionListener.class})
 public class ModelTest {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 

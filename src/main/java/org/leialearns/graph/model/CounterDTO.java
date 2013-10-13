@@ -7,56 +7,79 @@ import org.leialearns.graph.HasId;
 import org.leialearns.graph.interaction.SymbolDTO;
 import org.leialearns.graph.structure.NodeDTO;
 import org.leialearns.logic.model.Counter;
+import org.neo4j.graphdb.Direction;
+import org.springframework.data.neo4j.annotation.GraphId;
+import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.springframework.data.neo4j.annotation.RelatedTo;
+
 import java.io.Serializable;
 
+import static org.leialearns.graph.IdDaoSupport.toID;
+import static org.leialearns.utilities.Display.displayParts;
+
+@NodeEntity
 public class CounterDTO extends BaseBridgeFacet implements HasId, Serializable, FarObject<Counter>, DeclaresNearType<Counter> {
+    @GraphId
+    private Long id;
+
+    @RelatedTo(direction = Direction.OUTGOING, type = "IN_VERSION")
+    private VersionDTO version;
+
+    @RelatedTo(direction = Direction.OUTGOING, type = "FOR_NODE")
+    private NodeDTO node;
+
+    @RelatedTo(direction = Direction.OUTGOING, type = "FOR_SYMBOL")
+    private SymbolDTO symbol;
+
+    private long value;
 
     public Long getId() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return id;
     }
 
     public void setId(Long id) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.id = id;
     }
 
     public VersionDTO getVersion() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return version;
     }
 
     public void setVersion(VersionDTO version) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.version = version;
     }
 
     public NodeDTO getNode() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return node;
     }
 
     public void setNode(NodeDTO node) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.node = node;
     }
 
     public SymbolDTO getSymbol() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return symbol;
     }
 
     public void setSymbol(SymbolDTO symbol) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.symbol = symbol;
     }
 
     public long getValue() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return value;
     }
 
     public void setValue(long value) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.value = value;
     }
 
     public String toString() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        Object showSymbol = symbol == null ? null : symbol.getDenotation();
+        return displayParts("Counter", toID("C", version), node, showSymbol, value);
     }
 
     public Counter declareNearType() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        throw new UnsupportedOperationException("This method is for declaration only");
     }
 
 }
