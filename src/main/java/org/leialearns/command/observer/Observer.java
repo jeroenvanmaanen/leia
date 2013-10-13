@@ -21,7 +21,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 /**
  * Creates a new version of the model of observed behavior.
  */
-public class Observer implements Command {
+public class Observer implements org.leialearns.command.api.Observer {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private Observed lastCreated = null;
     private final Setting<String> interactionContextUri = new Setting<String>("Interaction context URI");
