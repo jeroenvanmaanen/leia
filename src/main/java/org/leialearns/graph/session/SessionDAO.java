@@ -1,9 +1,11 @@
 package org.leialearns.graph.session;
 
+import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.model.CountedDTO;
 import org.leialearns.graph.model.ToggledDTO;
+import org.leialearns.graph.model.VersionDAO;
 import org.leialearns.graph.model.VersionDTO;
 import org.leialearns.graph.structure.NodeDTO;
 import org.leialearns.utilities.TypedIterable;
@@ -15,6 +17,9 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class SessionDAO extends IdDaoSupport<SessionDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
+
+    @Autowired
+    private VersionDAO versionDAO;
 
     @Autowired
     public SessionDAO(SessionRepository repository) {
@@ -35,7 +40,10 @@ public class SessionDAO extends IdDaoSupport<SessionDTO> {
     }
 
     public CountedDTO createCountedVersion(SessionDTO owner) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        VersionDTO version = versionDAO.createVersion(owner, ModelType.COUNTED);
+        CountedDTO result = versionDAO.createCountedVersion();
+        result.setVersion(version);
+        return result;
     }
 
     public ToggledDTO createToggledVersion(SessionDTO owner, NodeDTO node, boolean include) {
@@ -43,7 +51,8 @@ public class SessionDAO extends IdDaoSupport<SessionDTO> {
     }
 
     public SessionDTO refresh(final SessionDTO session) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        logger.debug("Refresh of session skipped: {}", session);
+        return session; // TODO: implement?
     }
 
     public void flush(SessionDTO session) {

@@ -6,72 +6,98 @@ import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.HasId;
 import org.leialearns.logic.model.Toggled;
 import org.leialearns.graph.structure.NodeDTO;
+import org.neo4j.graphdb.Direction;
+import org.springframework.data.neo4j.annotation.GraphId;
+import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.springframework.data.neo4j.annotation.RelatedTo;
+
 import java.io.Serializable;
 
+import static org.leialearns.graph.IdDaoSupport.toID;
+import static org.leialearns.utilities.Display.displayParts;
+import static org.leialearns.utilities.Static.equal;
+
+@NodeEntity
 public class ToggledDTO extends BaseBridgeFacet implements HasId, Serializable, FarObject<Toggled> {
+    @GraphId
+    private Long id;
+
+    @RelatedTo(direction = Direction.OUTGOING, type = "EXTENDS")
+    private VersionDTO version;
+
+    @RelatedTo(direction = Direction.OUTGOING, type = "FOR_NODE")
+    private NodeDTO node;
+
+    @RelatedTo(direction = Direction.OUTGOING, type = "REFERENCE_EXPECTED")
+    private ExpectedDTO expected;
+
+    @RelatedTo(direction = Direction.OUTGOING, type = "REFERENCE_OBSERVED")
+    private ObservedDTO observed;
+
+    private Boolean include;
 
     public Long getId() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return id;
     }
 
     public void setId(Long id) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.id = id;
     }
 
     public VersionDTO getVersion() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return version;
     }
 
     public void setVersion(VersionDTO version) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.version = version;
     }
 
     public NodeDTO getNode() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return node;
     }
 
     public void setNode(NodeDTO node) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.node = node;
     }
 
     public ExpectedDTO getExpected() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return expected;
     }
 
     public void setExpected(ExpectedDTO expected) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.expected = expected;
     }
 
     public ObservedDTO getObserved() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return observed;
     }
 
     public void setObserved(ObservedDTO observed) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.observed = observed;
     }
 
     public Boolean getInclude() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return include;
     }
 
     public void setInclude(Boolean include) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.include = include;
     }
 
     public ModelType getModelType() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return ModelType.TOGGLED;
     }
 
     public String toString() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return displayParts("Toggled", version, node, include, toID("E", expected));
     }
 
     public boolean equals(Object other) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return other instanceof ToggledDTO && equal(id, ((ToggledDTO) other).getId());
     }
 
     public Toggled declareNearType() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        throw new UnsupportedOperationException("This method is for declaration only");
     }
 
 }

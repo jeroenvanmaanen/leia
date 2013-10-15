@@ -5,8 +5,11 @@ import org.leialearns.bridge.FarObject;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.HasId;
 import org.leialearns.logic.model.Expected;
+import org.springframework.data.neo4j.annotation.NodeEntity;
+
 import java.io.Serializable;
 
+@NodeEntity
 public class ExpectedDTO extends BaseBridgeFacet implements HasId, Serializable, FarObject<Expected> {
 
     public Long getId() {

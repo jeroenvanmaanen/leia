@@ -21,7 +21,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 
 @NodeEntity
 public class SessionDTO extends BaseBridgeFacet implements HasId, Serializable, FarObject<Session> {
-    private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
+    private final transient Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 
     @GraphId
     private Long id;

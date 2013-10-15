@@ -56,11 +56,11 @@ public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
     }
 
     protected Relationship linkTo(Node sourceNode, String linkType, Node targetNode) {
-        String cypher = "START source = node({sourceNodeId}),\n" +
-                " target = node({targetNodeId})\n" +
-                "CREATE UNIQUE source-[relation:" + linkType + "]->target\n" +
-                "RETURN relation\n" +
-                "";
+        String cypher =
+                "START source = node({sourceNodeId})," +
+                "      target = node({targetNodeId})" +
+                " CREATE UNIQUE source-[relation:" + linkType + "]->target" +
+                " RETURN relation";
         ExecutionEngine engine = new ExecutionEngine(graphDatabaseService);
         Map<String,Object> parameters = new HashMap<>();
         parameters.put("sourceNodeId", sourceNode.getId());
@@ -77,6 +77,32 @@ public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
 
     public DTO save(DTO dto) {
         return repository.save(dto);
+    }
+
+    /**
+     * Executes a Neo4J query with the given parameters and casts the result to a DTO.
+     * @param query The query to execute
+     * @param parameters The parameters
+     * @return The result of the query as a DTO
+     */
+    protected DTO findDTO(String query, Object... parameters) {
+        return repository.query(query, createParameterMap(parameters)).singleOrNull();
+    }
+
+    protected <T>  T findFirst(Class<T> type, String query, Object... parameters) {
+        ExecutionResult result = executionEngine.get().execute(query, createParameterMap(parameters));
+        String column = result.columns().iterator().next();
+        return type.cast(result.columnAs(column).next());
+    }
+
+    protected Map<String, Object> createParameterMap(Object[] parameters) {
+        Map<String,Object> parameterMap = new HashMap<>();
+        int n = 0;
+        for (Object parameter : parameters) {
+            n++;
+            parameterMap.put("p" + n, parameter);
+        }
+        return parameterMap;
     }
 
     protected <FT extends FarObject<NT>, NT> FT adapt(Object object, Class<FT> type) {

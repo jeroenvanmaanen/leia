@@ -26,7 +26,7 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
     }
 
     public TypedIterable<NodeDTO> findNodes(StructureDTO structure) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return new TypedIterable<NodeDTO>(nodeRepository.findNodesByStructure(structure), NodeDTO.class);
     }
 
     public TypedIterable<NodeDTO> findNodes(StructureDTO structure, int depth) {
@@ -34,7 +34,7 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
     }
 
     public TypedIterable<NodeDTO> findRootNodes(StructureDTO structure) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return new TypedIterable<NodeDTO>(structure.getRootNodes(), NodeDTO.class);
     }
 
     public TypedIterable<NodeDTO> findChildren(NodeDTO node) {
@@ -83,6 +83,9 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
             logger.trace("  Symbol: [" + result.getSymbol().toString(result.getDirection()) + "]");
             logger.trace("}");
             result = nodeRepository.save(result);
+            if (parent == null) {
+                structure.getRootNodes().add(result);
+            }
             logger.debug("Node structure after save: [{}]", result.getStructure());
             structureDAO.updateMaxDepth(structure, result);
         }

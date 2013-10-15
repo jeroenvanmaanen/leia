@@ -35,7 +35,7 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
     }
 
     public TypedIterable<CounterDTO> findCounters(VersionDTO version) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return new TypedIterable<CounterDTO>(repository.findCountersByVersion(version), CounterDTO.class);
     }
 
     public TypedIterable<CounterDTO> findCounters(VersionDTO version, NodeDTO node) {

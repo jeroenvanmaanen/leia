@@ -31,11 +31,13 @@ public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, 
     @RelatedTo(direction = Direction.OUTGOING, type = "IN_CONTEXT")
     private InteractionContextDTO interactionContext;
 
+    @RelatedTo(direction = Direction.OUTGOING, type = "OWNED_BY")
+    private SessionDTO owner;
+
     private Long ordinal;
     private Character modelTypeFlag;
     private Character accessModeFlag;
 
-    private transient SessionDTO owner;
     private transient Map<Long,SessionDTO> readers = new HashMap<Long,SessionDTO>();
     private transient Map<Long,SessionDTO> writers = new HashMap<Long,SessionDTO>();
 
@@ -139,7 +141,7 @@ public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, 
     public String toString() {
         AccessMode accessMode = getAccessMode();
         char accessModeChar = accessMode == null ? '?' : accessMode.toChar();
-        return displayParts("Version", id, getModelType(), toID("S", owner), accessModeChar, interactionContext);
+        return displayParts("Version", id, "#" + (ordinal == null ? "?" : String.valueOf(ordinal)), getModelType(), toID("S", owner), accessModeChar, toID("I", interactionContext));
     }
 
     @Override
