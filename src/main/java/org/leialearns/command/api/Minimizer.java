@@ -1,4 +1,6 @@
 package org.leialearns.command.api;
 
-public interface Minimizer {
+import org.leialearns.command.Command;
+
+public interface Minimizer extends Command {
 }

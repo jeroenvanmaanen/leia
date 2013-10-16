@@ -1,6 +1,5 @@
 package org.leialearns.command.encounter;
 
-import org.leialearns.command.Command;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.enumerations.ModelType;

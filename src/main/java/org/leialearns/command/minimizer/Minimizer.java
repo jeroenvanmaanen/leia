@@ -1,6 +1,5 @@
 package org.leialearns.command.minimizer;
 
-import org.leialearns.command.Command;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.interaction.Symbol;
@@ -38,7 +37,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 /**
  * Minimizes that total description length by optimizing the model of expected behavior.
  */
-public class Minimizer implements Command {
+public class Minimizer implements org.leialearns.command.api.Minimizer {
     public static final double LOG_2 = Math.log(2.0);
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Setting<String> interactionContextUri = new Setting<String>("Interaction context URI");

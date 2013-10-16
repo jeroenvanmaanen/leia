@@ -1,6 +1,5 @@
 package org.leialearns.command.observer;
 
-import org.leialearns.command.Command;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.model.Counted;

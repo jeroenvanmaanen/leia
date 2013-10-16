@@ -64,7 +64,7 @@ public class MinimizerTest {
     private Oracle oracle;
 
     @Autowired
-    private org.leialearns.command.minimizer.Minimizer minimizer;
+    private Minimizer minimizer;
 
     @Autowired
     public void setInteractionContextUri(String interactionContextUri) {
