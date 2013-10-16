@@ -1,8 +1,9 @@
-package org.leialearns.command.minimizer;
+package org.leialearns.command.api;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.leialearns.command.minimizer.*;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.interaction.Symbol;
@@ -63,7 +64,7 @@ public class MinimizerTest {
     private Oracle oracle;
 
     @Autowired
-    private Minimizer minimizer;
+    private org.leialearns.command.minimizer.Minimizer minimizer;
 
     @Autowired
     public void setInteractionContextUri(String interactionContextUri) {
