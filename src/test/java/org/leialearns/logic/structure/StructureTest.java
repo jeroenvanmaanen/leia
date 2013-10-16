@@ -50,7 +50,7 @@ public class StructureTest {
             transactionHelper.runInTransaction(new Runnable() {
                 @Override
                 public void run() {
-                    String uri = "http://leia.org/test/nodes";
+                    String uri = "http://leialearns.org/test/nodes";
                     InteractionContext interactionContext = TestUtilities.setupNodes(root, uri);
                     assertNotNull(interactionContext);
                     assertEquals(uri, interactionContext.getURI());

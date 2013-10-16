@@ -49,7 +49,7 @@ public class InteractionTest {
             public void run() {
                 logger.info("Start test");
 
-                InteractionContext interactionContext = root.createInteractionContext("http://leia.org/test-fixated");
+                InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test-fixated");
                 assertNotNull("Interaction context", interactionContext);
                 assertNotNull("Actions", interactionContext.getActions());
                 assertNotNull("Responses", interactionContext.getResponses());

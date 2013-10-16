@@ -1,4 +1,4 @@
-package org.leialearns.command.encounter;
+package org.leialearns.command.api;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

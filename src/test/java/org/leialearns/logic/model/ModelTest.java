@@ -52,7 +52,7 @@ public class ModelTest {
         transactionHelper.runInTransaction(new Runnable() {
             @Override
             public void run() {
-                InteractionContext interactionContext = TestUtilities.setupNodes(root, "http://leia.org/test/nodes");
+                InteractionContext interactionContext = TestUtilities.setupNodes(root, "http://leialearns.org/test/nodes");
                 Session session = root.createSession(interactionContext);
                 assertNotNull(session);
 
@@ -68,7 +68,7 @@ public class ModelTest {
         transactionHelper.runInTransaction(new Runnable() {
             @Override
             public void run() {
-                InteractionContext interactionContext = TestUtilities.setupNodes(root, "http://leia.org/test/nodes");
+                InteractionContext interactionContext = TestUtilities.setupNodes(root, "http://leialearns.org/test/nodes");
                 Session session = root.createSession(interactionContext);
                 assertNotNull(session);
                 Version version = session.findOrCreateLastVersion(ModelType.COUNTED, null);

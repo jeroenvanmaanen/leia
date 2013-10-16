@@ -215,12 +215,12 @@
     <bean id="root" factory-bean="rootDTO" factory-method="getNearObject" />
 
     <!-- bean id="interactionContext" factory-bean="root" factory-method="createInteractionContext">
-        <constructor-arg value="http://leia.org/test/encounter" />
+        <constructor-arg value="http://leialearns.org/test/encounter" />
     </bean -->
 
     <bean id="encounter" class="org.leialearns.command.encounter.Encounter">
         <property name="streamAdapter" ref="symbolsAdapter" />
-        <property name="interactionContextUri" value="http://leia.org/test/encounter" />
+        <property name="interactionContextUri" value="http://leialearns.org/test/encounter" />
         <property name="limitFlag" value="true" />
         <property name="autoExtendLimit" value="5" />
     </bean>
@@ -232,7 +232,7 @@
     <bean id="charactersAdapter" class="org.leialearns.command.encounter.TokensAdapter" />
 
     <bean id="observer" class="org.leialearns.command.observer.Observer">
-        <property name="interactionContextUri" value="http://leia.org/test/encounter" />
+        <property name="interactionContextUri" value="http://leialearns.org/test/encounter" />
     </bean>
 
     <bean id="oracle" class="org.leialearns.logic.utilities.Oracle">
@@ -240,11 +240,11 @@
     </bean>
 
     <bean id="minimizer" class="org.leialearns.command.minimizer.Minimizer">
-        <property name="interactionContextUri" value="http://leia.org/test/encounter" />
+        <property name="interactionContextUri" value="http://leialearns.org/test/encounter" />
     </bean>
 
     <bean id="consolidator" class="org.leialearns.command.consolidator.Consolidator">
-        <property name="interactionContextUri" value="http://leia.org/test/encounter" />
+        <property name="interactionContextUri" value="http://leialearns.org/test/encounter" />
     </bean>
 
 </beans>

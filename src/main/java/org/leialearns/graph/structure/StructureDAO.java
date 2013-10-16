@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import static org.leialearns.bridge.Static.getFarObject;
 import static org.leialearns.utilities.Display.asDisplay;
@@ -104,7 +106,17 @@ public class StructureDAO {
     }
 
     public void logNodes(StructureDTO structure) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        if (logger.isInfoEnabled()) {
+            SortedSet<String> nodes = new TreeSet<String>();
+            for (NodeDTO node : nodeDAO.findNodes(structure)) {
+                nodes.add(node.toString());
+            }
+            logger.info("Structure: [" + this + "]: {");
+            for (String node : nodes) {
+                logger.info("  " + node);
+            }
+            logger.info("}");
+        }
     }
 
     public boolean equals(StructureDTO structure, Object other) {

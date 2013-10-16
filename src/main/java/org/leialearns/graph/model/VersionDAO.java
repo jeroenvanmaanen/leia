@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 
+import java.util.Date;
+
 import static org.leialearns.utilities.Display.asDisplay;
 import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Static.equal;
@@ -59,21 +61,29 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
 
     public VersionDTO findLastVersion(SessionDTO owner, ModelType modelType, AccessMode accessMode) {
         VersionDTO version = versionRepository.findLastVersion(owner.getInteractionContext());
+        logger.debug("Session: {}: {}", owner, showOwner(version));
         return findLastBeforeOrEqual(version, modelType, accessMode);
     }
 
     public VersionDTO findLastBefore(VersionDTO version, ModelType modelType, AccessMode accessMode) {
         VersionDTO previousVersion = versionRepository.findPreviousVersion(version);
+        logger.debug("Session: {}: {}", showOwner(version), showOwner(previousVersion));
         return findLastBeforeOrEqual(previousVersion, modelType, accessMode);
     }
 
+    protected String showOwner(VersionDTO version) {
+        return version == null ? "?" : display(version.getOwner());
+    }
+
     protected VersionDTO findLastBeforeOrEqual(VersionDTO version, ModelType modelType, AccessMode accessMode) {
+        logger.debug("Session: {}", (version == null ? null : version.getOwner()));
         while (version != null && version.getId() != null) {
             AccessMode versionAccessMode = version.getAccessMode();
             if ((modelType == null || version.getModelType() == modelType) && (accessMode == null ? versionAccessMode != AccessMode.EXCLUDE : versionAccessMode == accessMode)) {
                 break;
             }
             version = versionRepository.findPreviousVersion(version);
+            logger.debug("Session: {}", showOwner(version));
         }
         if (version != null && version.getId() == null) {
             version = null;
@@ -175,7 +185,22 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
     }
 
     public void waitForLock(VersionDTO versionDTO, SessionDTO session) throws InterruptedException {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        setAccessMode(versionDTO, AccessMode.LOCKING, session);
+        long nextTime = new Date().getTime() + versionDTO.getLogInterval();
+        while (true) {
+            try {
+                setAccessMode(versionDTO, AccessMode.LOCKED, session);
+                break;
+            } catch (IllegalStateException exception) {
+                // Try again
+            }
+            Thread.sleep(5);
+            long now = new Date().getTime();
+            if (now > nextTime) {
+                logger.warn("Waiting for lock on version: [" + this + "]: [" + session + "]");
+                nextTime = now + versionDTO.getLogInterval();
+            }
+        }
     }
 
     public void setOrdinal(VersionDTO version) {

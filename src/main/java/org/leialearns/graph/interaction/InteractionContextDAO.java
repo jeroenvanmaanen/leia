@@ -37,10 +37,13 @@ public class InteractionContextDAO extends IdDaoSupport<InteractionContextDTO> {
     }
 
     public InteractionContextDTO find(String uri) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        InteractionContextDTO result = repository.getInteractionContextByUri(uri);
+        logger.debug("Result: {}: {}", uri, result);
+        return result;
     }
 
     public InteractionContextDTO findOrCreate(String uri) {
+        InteractionContextDTO result;
         URL base;
         String actionsURI;
         String responsesURI;
@@ -48,27 +51,30 @@ public class InteractionContextDAO extends IdDaoSupport<InteractionContextDTO> {
         try {
             base = new URL(uri + "/.");
             actionsURI = new URL(base, "actions").toString();
-            responsesURI = new URL(base, "responses").toString();
-            structureURI = new URL(base, "structure").toString();
-            logger.debug("Base URI: [{}]", base);
-            logger.debug("Actions URI: [{}]", actionsURI);
-            logger.debug("Responses URI: [{}]", responsesURI);
-            logger.debug("Structure URI: [{}]", structureURI);
+            result = find(uri);
+            if (result == null) {
+                responsesURI = new URL(base, "responses").toString();
+                structureURI = new URL(base, "structure").toString();
+                logger.debug("Base URI: [{}]", base);
+                logger.debug("Actions URI: [{}]", actionsURI);
+                logger.debug("Responses URI: [{}]", responsesURI);
+                logger.debug("Structure URI: [{}]", structureURI);
+                AlphabetDTO actions = alphabetDAO.findOrCreate(actionsURI);
+                AlphabetDTO responses = alphabetDAO.findOrCreate(responsesURI);
+                StructureDTO structure = structureDAO.findOrCreate(structureURI);
+                result = findOrCreate(uri, actions, responses, structure);
+            }
         } catch (Throwable e) {
             throw ExceptionWrapper.wrap(e);
         }
-
-        AlphabetDTO actions = alphabetDAO.findOrCreate(actionsURI);
-        AlphabetDTO responses = alphabetDAO.findOrCreate(responsesURI);
-        StructureDTO structure = structureDAO.findOrCreate(structureURI);
-        return findOrCreate(uri, actions, responses, structure);
+        return result;
     }
 
     public InteractionContextDTO findOrCreate(String uri, AlphabetDTO actions, AlphabetDTO responses, StructureDTO structure) {
         if (uri == null) {
             throw new IllegalArgumentException("Argument URI should not be null");
         }
-        InteractionContextDTO result = repository.getInteractionContextByUri(uri);
+        InteractionContextDTO result = find(uri);
         if (result == null) {
             result = new InteractionContextDTO();
             result.setURI(uri);
@@ -78,6 +84,7 @@ public class InteractionContextDAO extends IdDaoSupport<InteractionContextDTO> {
             result = repository.save(result);
             repository.setEmptyVersionChain(result);
         }
+        logger.debug("Result: {}", result);
         return result;
     }
 

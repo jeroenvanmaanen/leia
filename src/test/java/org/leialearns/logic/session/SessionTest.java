@@ -43,7 +43,7 @@ public class SessionTest {
     @Test
     public void testRoot() {
         logger.info("Start test");
-        InteractionContext interactionContext = root.createInteractionContext("http://leia.org/test");
+        InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test");
         assertNotNull("Interaction context", interactionContext);
         assertNotNull("Actions", interactionContext.getActions());
         assertNotNull("Responses", interactionContext.getResponses());
@@ -70,14 +70,14 @@ public class SessionTest {
         Symbol light = responses.internalize("light");
         logger.debug("Symbol 'light': [" + light + "] in: [" + light.getAlphabet() + "]");
 
-        assertEquals("http://leia.org/test/structure", interactionContext.getStructure().getURI());
+        assertEquals("http://leialearns.org/test/structure", interactionContext.getStructure().getURI());
     }
 
     @Test
     public void testSessions() {
         logger.info("Start test");
-        Session rootSession = root.createSession("http://leia.org/test/sessions");
-        InteractionContext interactionContext = root.createInteractionContext("http://leia.org/test/sessions");
+        Session rootSession = root.createSession("http://leialearns.org/test/sessions");
+        InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test/sessions");
         Session newSession = root.createSession(interactionContext);
         assertFalse("Sessions should be different: " + display(rootSession) + ": " + display(newSession), equal(rootSession, newSession));
         assertEquals(rootSession.getInteractionContext(), newSession.getInteractionContext());

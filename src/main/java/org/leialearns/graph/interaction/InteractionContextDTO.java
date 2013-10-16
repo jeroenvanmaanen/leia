@@ -21,7 +21,7 @@ public class InteractionContextDTO extends BaseBridgeFacet implements HasId, Ser
     @GraphId
     private Long id;
 
-    @Indexed(unique = true)
+    @Indexed(unique = true, indexName = "contextUri")
     private String uri;
 
     @Fetch

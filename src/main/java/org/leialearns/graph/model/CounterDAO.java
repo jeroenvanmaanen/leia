@@ -72,7 +72,8 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
     }
 
     public CounterDTO getCounter(CountedDTO counted, NodeDTO node, SymbolDTO symbol) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        VersionDTO version = counted.getVersion();
+        return findOrCreateCounter(version, node, symbol);
     }
 
     public void refresh(CounterDTO counter) {

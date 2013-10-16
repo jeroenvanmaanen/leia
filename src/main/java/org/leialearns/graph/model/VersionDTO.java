@@ -9,6 +9,8 @@ import org.leialearns.graph.session.SessionDTO;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.model.Version;
 import org.leialearns.bridge.FarObject;
+import org.leialearns.utilities.ExceptionWrapper;
+import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TypedIterable;
 import org.neo4j.graphdb.Direction;
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -25,6 +27,8 @@ import static org.leialearns.utilities.Static.equal;
 
 @NodeEntity
 public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, FarObject<Version> {
+    private final transient Setting<Long> logInterval = new Setting<Long>("Log interval", 5 * 60 * 1000L);
+
     @GraphId
     private Long id;
 
@@ -125,11 +129,18 @@ public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, 
     }
 
     public Long getLogInterval() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return logInterval.get();
     }
 
     public int compareTo(VersionDTO version) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        Long versionId = version.getId();
+        int result;
+        try {
+            result = id.compareTo(versionId);
+        } catch (RuntimeException e) {
+            throw ExceptionWrapper.wrap(e);
+        }
+        return result;
     }
 
     @Override

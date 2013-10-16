@@ -39,7 +39,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
  * uses a trivial implementation of the active part of <b>L</b>Ex<i>Au</i> with a single symbol: '.', that means
  * 'no action'.
  */
-public class Encounter implements Command {
+public class Encounter implements org.leialearns.command.api.Encounter {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Setting<Boolean> limitFlag = new Setting<Boolean>("Limit flag", false);
     private final Setting<StreamAdapter> streamAdapter = new Setting<StreamAdapter>("Stream adapter");
@@ -97,6 +97,7 @@ public class Encounter implements Command {
      * Returns the last {@link org.leialearns.enumerations.ModelType#COUNTED} version that was created by this encounter.
      * @return the last version that was created by this encounter
      */
+    @Override
     public Version getLastVersion() {
         return lastVersion;
     }

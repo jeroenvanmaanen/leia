@@ -82,7 +82,7 @@ public class Oracle {
             approximations.insert(approximation);
             largestIndex = Math.max(largestIndex, approximation.getIndex());
         }
-        Session session = root.createSession("http://leia.org/oracle");
+        Session session = root.createSession("http://leialearns.org/oracle");
         session.flush();
 
         try {
