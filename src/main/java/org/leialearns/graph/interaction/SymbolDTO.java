@@ -13,6 +13,7 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 import static org.leialearns.utilities.Display.displayParts;
 import static org.leialearns.utilities.Display.show;
 import static org.leialearns.utilities.L.literal;
+import static org.leialearns.utilities.Static.equal;
 import static org.neo4j.graphdb.Direction.*;
 
 @NodeEntity
@@ -101,7 +102,7 @@ public class SymbolDTO extends BaseBridgeFacet implements HasId, FarObject<Symbo
         boolean result;
         if (other instanceof SymbolDTO) {
             SymbolDTO otherSymbol = (SymbolDTO) other;
-            result = alphabet.equals(otherSymbol.getAlphabet()) && denotation.equals(otherSymbol.getDenotation());
+            result = equal(alphabet, otherSymbol.getAlphabet()) && equal(denotation, otherSymbol.getDenotation());
         } else {
             result = false;
         }

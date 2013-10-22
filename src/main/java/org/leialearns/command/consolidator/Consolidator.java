@@ -1,6 +1,5 @@
 package org.leialearns.command.consolidator;
 
-import org.leialearns.command.Command;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.model.Expected;
@@ -21,7 +20,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 /**
  * Consolidates toggled versions into a version of the model of expected behavior that can be queried efficiently.
  */
-public class Consolidator implements Command {
+public class Consolidator implements org.leialearns.command.api.Consolidator {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Setting<String> interactionContextUri = new Setting<String>("Interaction context URI");
     private final Expected lastExpected = null;

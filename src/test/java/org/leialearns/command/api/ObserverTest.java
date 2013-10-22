@@ -19,10 +19,12 @@ import org.leialearns.utilities.ExceptionWrapper;
 import org.leialearns.utilities.ExecutionListener;
 import org.leialearns.utilities.Expression;
 import org.leialearns.bridge.NearIterable;
+import org.leialearns.utilities.GraphDumper;
 import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TestUtilities;
 import org.leialearns.utilities.TransactionHelper;
 import org.leialearns.utilities.TypedIterable;
+import org.neo4j.graphdb.GraphDatabaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +67,9 @@ public class ObserverTest {
 
     @Autowired
     private Root root;
+
+    @Autowired
+    private GraphDumper graphDumper;
 
     @Autowired
     public void setInteractionContextUri(String interactionContextUri) {
@@ -156,6 +161,7 @@ public class ObserverTest {
                 }
             });
         }
+        graphDumper.dumpGraph();
     }
 
     protected void setupCounted(Counted[] counted, Collection<TypedVersionExtension> registry) {

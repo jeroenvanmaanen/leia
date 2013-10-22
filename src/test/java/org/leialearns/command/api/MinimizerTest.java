@@ -20,6 +20,7 @@ import org.leialearns.logic.structure.Structure;
 import org.leialearns.logic.utilities.Oracle;
 import org.leialearns.utilities.ExecutionListener;
 import org.leialearns.utilities.Expression;
+import org.leialearns.utilities.GraphDumper;
 import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TestUtilities;
 import org.leialearns.utilities.TransactionHelper;
@@ -65,6 +66,9 @@ public class MinimizerTest {
 
     @Autowired
     private Minimizer minimizer;
+
+    @Autowired
+    private GraphDumper graphDumper;
 
     @Autowired
     public void setInteractionContextUri(String interactionContextUri) {
@@ -132,6 +136,7 @@ public class MinimizerTest {
                             assertEquals(root.createTransientFraction(1, 1, 1), sum);
                         }
                         minimizer.command();
+                        graphDumper.dumpGraph();
                     }
                 } else {
                     logger.warn("No last observed version");

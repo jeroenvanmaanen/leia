@@ -10,6 +10,8 @@ import org.leialearns.logic.model.Version;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Structure;
+import org.leialearns.utilities.ExecutionListener;
+import org.leialearns.utilities.GraphDumper;
 import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TestUtilities;
 import org.leialearns.utilities.TransactionHelper;
@@ -29,7 +31,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/ApplicationContext.xml","/org/leialearns/AppTest-context.xml"})
-@TestExecutionListeners(value = {DependencyInjectionTestExecutionListener.class})
+@TestExecutionListeners(value = {DependencyInjectionTestExecutionListener.class, ExecutionListener.class})
 public class EncounterTest {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private static final Setting<String> PROJECT_DIR = new Setting<String>("Project directory");
@@ -43,6 +45,9 @@ public class EncounterTest {
 
     @Autowired
     private Root root;
+
+    @Autowired
+    private GraphDumper graphDumper;
 
     @Autowired
     public void setInteractionContextUri(String interactionContextUri) {
@@ -61,6 +66,7 @@ public class EncounterTest {
     @Test
     public void testEncounter() {
         logger.info("Start test");
+        graphDumper.dumpGraph();
         try {
             transactionHelper.runInTransaction(new Runnable() {
                 @Override
@@ -80,6 +86,7 @@ public class EncounterTest {
             logger.error("Exception in test", throwable);
             fail(throwable.toString());
         }
+        graphDumper.dumpGraph();
     }
 
 }

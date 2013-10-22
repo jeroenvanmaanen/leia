@@ -16,9 +16,17 @@
     <context:component-scan base-package="org.leialearns" />
     <tx:annotation-driven mode="proxy"/>
 
-    <bean id="graphDatabaseFactory" class="org.neo4j.test.TestGraphDatabaseFactory" />
+    <bean id="testGraphDatabaseFactory" class="org.neo4j.test.TestGraphDatabaseFactory" />
+    <!-- bean id="graphDatabaseFactory" class="org.neo4j.graphdb.factory.GraphDatabaseFactory" / -->
 
-    <bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="graphDatabaseFactory" factory-method="newImpermanentDatabase" />
+    <bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="testGraphDatabaseFactory" factory-method="newImpermanentDatabase" />
+    <!--bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="graphDatabaseFactory" factory-method="newEmbeddedDatabase">
+        <constructor-arg index="0" value="target/graphdb" />
+    </bean -->
+
+    <bean id="executionEngine" class="org.neo4j.cypher.javacompat.ExecutionEngine">
+        <constructor-arg ref="graphDatabaseService" />
+    </bean>
 
     <neo4j:config base-package="org.leialearns.graph" graphDatabaseService="graphDatabaseService" />
 
@@ -37,6 +45,8 @@
     </bean>
 
     <bean id="transactionHelper" class="org.leialearns.graph.GraphTransactionHelper" />
+
+    <bean id="graphDumper" class="org.leialearns.utilities.GraphDumper" />
 
     <bean id="interactionContextUri" class="java.lang.String">
         <constructor-arg value="http://leialearns.org/test/encounter"/>

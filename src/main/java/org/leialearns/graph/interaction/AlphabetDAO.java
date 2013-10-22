@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static org.leialearns.bridge.Static.getFarObject;
+import static org.leialearns.utilities.Display.asDisplay;
 import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
@@ -31,7 +33,9 @@ public class AlphabetDAO {
     }
 
     public AlphabetDTO find(String uri) {
-        return repository.getAlphabetByUri(uri);
+        AlphabetDTO result = repository.getAlphabetByUri(uri);
+        logger.debug("Find: {}: {}", uri, result);
+        return result;
     }
 
     public AlphabetDTO findOrCreate(String uri) {
@@ -39,9 +43,24 @@ public class AlphabetDAO {
         if (alphabet == null) {
             alphabet = new AlphabetDTO();
             alphabet.setURI(uri);
+            logger.debug("Alphabet: " + alphabet.toString());
             alphabet = repository.save(alphabet);
-            repository.setEmptySymbolChain(alphabet);
-            logger.debug("Chain count: " + repository.countWordChain(alphabet));
+            if (logger.isDebugEnabled()) {
+                logger.debug("Alphabet: " + alphabet.toString());
+                logger.debug("Chain count: {}", repository.countWordChain(alphabet));
+            }
+            boolean added = repository.setEmptySymbolChain(alphabet);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Added: {}: {}", added, repository.getDenotation(alphabet));
+                long chainCount = repository.countWordChain(alphabet);
+                logger.debug("Chain count: " + chainCount);
+                if (chainCount > 1) {
+                    Set<SymbolDTO> symbols = repository.findInternalizedSymbols(alphabet);
+                    for (SymbolDTO symbol : symbols) {
+                        logger.debug("Internalized symbol: {}", asDisplay(symbol));
+                    }
+                }
+            }
         }
         logger.debug("Alphabet: " + alphabet.toString());
         return alphabet;

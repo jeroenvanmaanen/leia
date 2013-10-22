@@ -2,8 +2,6 @@ package org.leialearns.graph;
 
 import org.leialearns.bridge.FarObject;
 import org.leialearns.utilities.ExceptionWrapper;
-import org.leialearns.utilities.Expression;
-import org.leialearns.utilities.Setting;
 import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.cypher.javacompat.ExecutionResult;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -39,12 +37,8 @@ public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
     @Autowired
     protected GraphDatabaseService graphDatabaseService;
 
-    private Setting<ExecutionEngine> executionEngine = new Setting<ExecutionEngine>("Execution engine", new Expression<ExecutionEngine>() {
-        @Override
-        public ExecutionEngine get() {
-            return new ExecutionEngine(graphDatabaseService);
-        }
-    });
+    @Autowired
+    private ExecutionEngine executionEngine;
 
     public static String toID(String label, HasId object) {
         String prefix = label == null || label.isEmpty() ? "" : label + ":";
@@ -52,7 +46,7 @@ public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
     }
 
     protected ExecutionEngine getExecutionEngine() {
-        return executionEngine.get();
+        return executionEngine;
     }
 
     protected Relationship linkTo(Node sourceNode, String linkType, Node targetNode) {
@@ -61,13 +55,12 @@ public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
                 "      target = node({targetNodeId})" +
                 " CREATE UNIQUE source-[relation:" + linkType + "]->target" +
                 " RETURN relation";
-        ExecutionEngine engine = new ExecutionEngine(graphDatabaseService);
         Map<String,Object> parameters = new HashMap<>();
         parameters.put("sourceNodeId", sourceNode.getId());
         parameters.put("targetNodeId", targetNode.getId());
         ExecutionResult result;
         try {
-            result = engine.execute(cypher, parameters);
+            result = getExecutionEngine().execute(cypher, parameters);
         } catch (Exception exception) {
             throw new RuntimeException("Cypher query: [" + cypher + "]", exception);
         }
@@ -90,7 +83,7 @@ public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
     }
 
     protected <T>  T findFirst(Class<T> type, String query, Object... parameters) {
-        ExecutionResult result = executionEngine.get().execute(query, createParameterMap(parameters));
+        ExecutionResult result = getExecutionEngine().execute(query, createParameterMap(parameters));
         String column = result.columns().iterator().next();
         return type.cast(result.columnAs(column).next());
     }

@@ -10,7 +10,6 @@ import org.neo4j.cypher.javacompat.ExecutionResult;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
-import org.neo4j.test.TestGraphDatabaseFactory;
 import org.neo4j.tooling.GlobalGraphOperations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/org/leialearns/AppTest-context.xml"})
+@ContextConfiguration(locations = {"/ApplicationContext.xml","/org/leialearns/AppTest-context.xml"})
 @TestExecutionListeners(value = {DependencyInjectionTestExecutionListener.class, ExecutionListener.class})
 public class GraphTest {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
@@ -36,12 +35,14 @@ public class GraphTest {
     @Autowired
     private GraphDatabaseService graphDatabaseService;
 
-    private Setting<ExecutionEngine> executionEngine = new Setting<ExecutionEngine>("Execution engine", new Expression<ExecutionEngine>() {
+    @Autowired
+    private ExecutionEngine executionEngine;
+
+    private Setting<Boolean> initialized = new Setting<>("Initialized", new Expression<Boolean>() {
         @Override
-        public ExecutionEngine get() {
-            logger.info("Graph database service: [" + String.valueOf(graphDatabaseService) + "]");
-            createDatabase(graphDatabaseService);
-            return new ExecutionEngine(graphDatabaseService);
+        public Boolean get() {
+            createDatabase();
+            return true;
         }
     });
 
@@ -56,6 +57,7 @@ public class GraphTest {
 
     public ExecutionResult distance( String firstUser, String secondUser )
     {
+        initialized.get();
         String query = "START first=node:user({firstUserQuery}),\n" +
                 " second=node:user({secondUserQuery})\n" +
                 "MATCH p=shortestPath(first-[*..4]-second)\n" +
@@ -63,10 +65,11 @@ public class GraphTest {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put( "firstUserQuery", "name:" + firstUser );
         params.put( "secondUserQuery", "name:" + secondUser );
-        return executionEngine.get().execute( query, params );
+        return executionEngine.execute(query, params);
     }
 
-    public static GraphDatabaseService createDatabase(GraphDatabaseService db) {
+    public void createDatabase() {
+        logger.info("Create database");
         // Create nodes
         String cypher = "CREATE\n" +
                 "(ben {name:'Ben', _label:'user'}),\n" +
@@ -87,18 +90,17 @@ public class GraphTest {
                 "gordon-[:FRIEND]->emily,\n" +
                 "emily-[:FRIEND]->kate,\n" +
                 "kate-[:FRIEND]->paula";
-        ExecutionEngine engine = new ExecutionEngine( db );
-        engine.execute( cypher );
+        executionEngine.execute( cypher );
 
         // Index all nodes in "user" index
-        Transaction tx = db.beginTx();
+        Transaction tx = graphDatabaseService.beginTx();
         try {
             Iterable<Node> allNodes =
-                    GlobalGraphOperations.at(db).getAllNodes();
+                    GlobalGraphOperations.at(graphDatabaseService).getAllNodes();
             for ( Node node : allNodes ) {
                 if ( node.hasProperty( "name" ) )
                 {
-                    db.index().forNodes( "user" )
+                    graphDatabaseService.index().forNodes( "user" )
                             .add( node, "name", node.getProperty( "name" ) );
                 }
             }
@@ -106,6 +108,5 @@ public class GraphTest {
         } finally {
             tx.finish();
         }
-        return db;
     }
 }
