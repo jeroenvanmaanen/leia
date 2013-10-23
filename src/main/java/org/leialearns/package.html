@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Package 'org.leialearns'</title>
+</head>
+<body>
+
+<p>The <b>L</b>Ex<i>Au</i> system is a learning system that learns from interacting with a completely unknown
+    environment over a bidirectional steam of symbols.</p>
+
+<p>The system consists of a few parts that update various models in parallel.</p>
+
+<ul>
+    <li>An {@link org.leialearns.command.encounter.Encounter} communicates directly with the environment and updates
+        counters.</li>
+    <li>An {@link org.leialearns.command.observer.Observer} consolidates counters into a model of observed behavior.
+        The model of observed behavior includes a structure of extra accounting information named <em>deltas</em>
+        that reduce the computation effort of other steps.</li>
+    <li>A {@link org.leialearns.command.minimizer.Minimizer} applies the
+        <a href="http://en.wikipedia.org/wiki/Minimum_description_length" target="_blank"
+            >Minimum Description Length Principle</a> (MDL) to the model of observed behavior, to produce updates
+        for the model of expected behavior.</li>
+    <li>A {@link org.leialearns.command.consolidator.Consolidator} combines incremental improvements found by the minimizer
+        into a consolidated model of expected behavior.</li>
+    <li>A <em>maximizer</em> searches for ways to improve the strategy.</li>
+    <li>The {@link org.leialearns.command.encounter.Encounter} uses the last strategy to interact with the environment.</li>
+</ul>
+
+<p>The simple, but profound, basis for <b>L</b>Ex<i>Au</i> is the balance between the designed function of
+    the minimizer and the designed function of the maximizer. The minimizer keeps the total
+    description length of the model of expected behavior as <em>short</em> as possible while still encoding all
+    statistically relevant information about the model of observed behavior. The maximizer, at the other hand,
+    searches for strategies that make the total description length of the model of expected behavior
+    <em>longer</em>. The maximizer can only increase the length of the model of expected behavior by
+    selecting strategies that maximize the expected
+    <a href="http://www.lexau.org/pub/ModelGrowth-final.pdf" target="_blank">model growth</a>
+    given the differences between the model of observed behavior and the model of expected behavior</p>
+
+</body>
+</html>

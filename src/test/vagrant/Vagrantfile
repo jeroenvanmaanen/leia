@@ -1,0 +1,16 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+Vagrant::Config.run do |config|
+  ip = "10.11.12.19"
+  begin
+    require './vagrant_local.rb'
+    puts 'Selected LOCAL configuration'
+    VagrantLocal::configure config, ip
+  rescue LoadError => e
+    require './vagrant_base.rb'
+    puts 'Selected DEFAULT configuration'
+    VagrantBase::configure config, ip
+  end
+end

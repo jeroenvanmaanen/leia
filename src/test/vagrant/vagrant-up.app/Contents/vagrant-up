@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+BIN="$(cd "$(dirname "$0")" ; pwd)"
+
+cd "${BIN}/../.."
+
+date > '/tmp/vagrant-up.log'
+pwd >> '/tmp/vagrant-up.log'
+ls -l "${BIN}/Resources" >> '/tmp/vagrant-up.log'
+open -a /Applications/Utilities/Terminal.app "${BIN}/Resources/run-vagrant-up.sh"
+
+## vagrant up
+

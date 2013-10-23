@@ -1,0 +1,55 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:neo4j="http://www.springframework.org/schema/data/neo4j"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+            http://www.springframework.org/schema/data/neo4j http://www.springframework.org/schema/data/neo4j/spring-neo4j-2.0.xsd
+            ">
+
+    <context:annotation-config />
+    <context:spring-configured />
+    <context:component-scan base-package="org.leialearns" />
+    <tx:annotation-driven mode="proxy"/>
+
+    <bean id="testGraphDatabaseFactory" class="org.neo4j.test.TestGraphDatabaseFactory" />
+    <!-- bean id="graphDatabaseFactory" class="org.neo4j.graphdb.factory.GraphDatabaseFactory" / -->
+
+    <bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="testGraphDatabaseFactory" factory-method="newImpermanentDatabase" />
+    <!--bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="graphDatabaseFactory" factory-method="newEmbeddedDatabase">
+        <constructor-arg index="0" value="target/graphdb" />
+    </bean -->
+
+    <bean id="executionEngine" class="org.neo4j.cypher.javacompat.ExecutionEngine">
+        <constructor-arg ref="graphDatabaseService" />
+    </bean>
+
+    <neo4j:config base-package="org.leialearns.graph" graphDatabaseService="graphDatabaseService" />
+
+    <bean id="neo4jTransactionManager"
+          class="org.springframework.transaction.jta.JtaTransactionManager">
+        <property name="transactionManager">
+            <bean class="org.neo4j.kernel.impl.transaction.SpringTransactionManager">
+                <constructor-arg ref="graphDatabaseService" />
+            </bean>
+        </property>
+        <property name="userTransaction">
+            <bean class="org.neo4j.kernel.impl.transaction.UserTransactionImpl">
+                <constructor-arg ref="graphDatabaseService" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="transactionHelper" class="org.leialearns.graph.GraphTransactionHelper" />
+
+    <bean id="graphDumper" class="org.leialearns.utilities.GraphDumper" />
+
+    <bean id="interactionContextUri" class="java.lang.String">
+        <constructor-arg value="http://leialearns.org/test/encounter"/>
+    </bean>
+
+</beans>

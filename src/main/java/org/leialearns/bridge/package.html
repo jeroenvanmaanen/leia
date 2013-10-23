@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Package 'bridge'</title>
+</head>
+<body>
+
+<p>Provides a factory with supporting classes that generates implementations of a logical interface whose methods are
+    delegated to various helper objects on both sides of an abstraction separation. This can be used to define the
+    following facets of a logical object in separate entities: interface, logical class level helper, logical state,
+    concrete class level helper, concrete delegation object. In the terminology of this package the logical classes
+    form the <em>near side</em> of the bridge and the concrete classes form the <em>far side</em> of the bridge.</p>
+
+<p>In combination with an ORM framework this can be used to create bridged objects, where the logical class level
+    helper and the logical state objects are defined exclusively in terms of the logical interface, and where the
+    concrete classes consist of the Data Access Object (DAO) and the Data Transfer Object (DTO). The DAO and the DTO
+    can be completely oblivious about the logical classes.</p>
+
+<p>The cluster of classes and objects that belong to a particular type can be assembled in Spring.</p>
+
+@see org.leialearns.bridge.BridgeFactory
+</body>
+</html>

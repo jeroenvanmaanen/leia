@@ -1,0 +1,15 @@
+# settings for Vagrant box of maanenj
+
+SILENT='false'
+TRACE='true'
+PROJECT='/vagrant_project'
+DUMP_FILE='/vagrant_data/dump.sql.gz'
+QUALIFIERS='vagrant'
+USE_LDAP='false'
+PROJECT_USER='vagrant'
+OWNER='vagrant'
+DB_ROOT='root'
+DB_ROOT_PASSWORD='rotor'
+DB_ROOT_HAS_PASSWORD='true'
+RECREATE_DB='setup'
+OPEN_TO_ANONYMOUS='true'
