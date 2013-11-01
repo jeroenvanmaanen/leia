@@ -7,6 +7,7 @@ then
 fi
 
 PROJECT='/vagrant_project'
+PROJECT_USER='vagrant'
 DUMP_FILE='/vagrant_data/dump.sql.gz'
 Q="${QUALIFIER}"
 QUALIFIERS='vagrant'

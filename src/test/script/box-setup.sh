@@ -63,25 +63,11 @@ su - "${PROJECT_USER}" -c ": > '${LOG_FILE}'"
 install-packages ca-certificates-java \
     >> "${LOG_FILE}" 2>&1
 install-packages \
-        default-jdk maven \
+        openjdk-7-jdk maven \
         subversion \
-        mysql-server mysql-client \
         apache2 \
         curl \
     >> "${LOG_FILE}" 2>&1
-
-if [ -z "$(echo 'show databases' | mysql -u root -protor 2>/dev/null)" ]
-then
-    mysqladmin -u root password rotor
-fi
-service mysql restart
-netstat -lntp | grep mysql | cat
-
-"${SILENT}" || echo "RECREATE_DB=[${RECREATE_DB}]" >&2
-if [ 'setup' = "${RECREATE_DB}" ]
-then
-    "${BIN}/recreate-db.sh"
-fi
 
 GROUP="$(id -gn vagrant 2>/dev/null || true)"
 if [ -n "${GROUP}" ]
@@ -120,4 +106,5 @@ PROJECT_USER_HOME="$(eval "echo ~${PROJECT_USER}")"
 PROJECT_USER_GROUP="$(id -gn "${PROJECT_USER}")"
 mkdir -p "${PROJECT_USER_HOME}/.m2"
 chown -R "${PROJECT_USER}:${PROJECT_USER_GROUP}" "${PROJECT_USER_HOME}/.m2"
-su - "${PROJECT_USER}" -c "id; cd '${PROJECT}'; ls -ld ~/.m2 pom.xml target ; mvn javadoc:javadoc"
+HOME="${PROJECT_USER_HOME}" USER="${PROJECT_USER}" sudo -u "${PROJECT_USER}" bash -l -c "id"
+HOME="${PROJECT_USER_HOME}" USER="${PROJECT_USER}" sudo -u "${PROJECT_USER}" bash -l -c "id; cd '${PROJECT}'; ls -ld ~${PROJECT_USER}/.m2 pom.xml target ; mvn javadoc:javadoc || true"

@@ -68,32 +68,6 @@ LOG_DIR="${PROJECT}/target/log"
 
 cd "${PROJECT}"
 
-DB_HOST=''
-DB_SCHEMA=''
-hibernate_connection_username=''
-hibernate_connection_password=''
-set-datasource "${SILENT}" src/test
-
-if "${KEEP_DB}"
-then
-    :
-else
-    "${SCRIPT}/recreate-db.sh"
-fi
-
-DB_DUMP="${PROJECT}/data/leiatest-dump-empty.sql"
-"${SILENT}" || echo "DB_DUMP=[${DB_DUMP}]" >&2
-
-CAT_DUMP="cat '${DB_DUMP}'"
-if [ -f "${DB_DUMP}.gz" ]
-then
-    CAT_DUMP="gzip -dc '${DB_DUMP}.gz'"
-fi
-"${SILENT}" || echo "CAT_DUMP=[${CAT_DUMP}]" >&2
-
-eval "${CAT_DUMP}" | \
-    mysql -h "${DB_HOST}" -u "${hibernate_connection_username}" -p"${hibernate_connection_password}" "${DB_SCHEMA}"
-
 ERROR_PATTERN='^[[](INFO|ERROR)[]] BUILD FAIL(URE|ED)'
 
 function run-maven () {
@@ -143,20 +117,7 @@ if egrep -s "${ERROR_PATTERN}" "${LOG_FILE}"
 then
     RC=1
 else
-    DB_DUMP_TARGET="${PROJECT}/target/leiatest-dump-empty.sql"
-    mysqldump -h "${DB_HOST}" -u "${hibernate_connection_username}" -p"${hibernate_connection_password}" "${DB_SCHEMA}" \
-        | sed \
-            -e '/INSERT/d' \
-            -e 's/ AUTO_INCREMENT=[0-9]* / /' \
-            -e '$s/^-- Dump completed on [-:0-9 ]*$/--/' \
-        > "${DB_DUMP_TARGET}"
-    wc -l "${DB_DUMP_TARGET}"
-    if eval "${CAT_DUMP}" | cmp -s - "${DB_DUMP_TARGET}"
-    then
-        echo ">>> No database changes" >&2
-    else
-        eval "${CAT_DUMP}" | diff -u - "${DB_DUMP_TARGET}" | cut -c -150
-    fi
+    : # Dump database
 fi
 
 echo "Maven log: [${LOG_FILE}]" >&2

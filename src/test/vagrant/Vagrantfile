@@ -1,9 +1,11 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
 
-Vagrant::Config.run do |config|
-  ip = "10.11.12.19"
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  ip = "10.11.12.21"
   begin
     require './vagrant_local.rb'
     puts 'Selected LOCAL configuration'

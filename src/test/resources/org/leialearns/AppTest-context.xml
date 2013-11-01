@@ -16,13 +16,13 @@
     <context:component-scan base-package="org.leialearns" />
     <tx:annotation-driven mode="proxy"/>
 
-    <bean id="testGraphDatabaseFactory" class="org.neo4j.test.TestGraphDatabaseFactory" />
-    <!-- bean id="graphDatabaseFactory" class="org.neo4j.graphdb.factory.GraphDatabaseFactory" / -->
+    <!-- bean id="testGraphDatabaseFactory" class="org.neo4j.test.TestGraphDatabaseFactory" / -->
+    <bean id="graphDatabaseFactory" class="org.neo4j.graphdb.factory.GraphDatabaseFactory" />
 
-    <bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="testGraphDatabaseFactory" factory-method="newImpermanentDatabase" />
-    <!--bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="graphDatabaseFactory" factory-method="newEmbeddedDatabase">
+    <!--bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="testGraphDatabaseFactory" factory-method="newImpermanentDatabase" / -->
+    <bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="graphDatabaseFactory" factory-method="newEmbeddedDatabase">
         <constructor-arg index="0" value="target/graphdb" />
-    </bean -->
+    </bean>
 
     <bean id="executionEngine" class="org.neo4j.cypher.javacompat.ExecutionEngine">
         <constructor-arg ref="graphDatabaseService" />

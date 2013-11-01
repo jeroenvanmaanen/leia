@@ -2,6 +2,12 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+    <bean id="graphDatabaseFactory" class="org.neo4j.graphdb.factory.GraphDatabaseFactory" />
+
+    <bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="graphDatabaseFactory" factory-method="newEmbeddedDatabase">
+        <constructor-arg index="0" value="data/graphdb" />
+    </bean>
+
     <bean id="interactionContextUri" class="java.lang.String">
         <constructor-arg value="http://leialearns.org/main/encounter"/>
     </bean>

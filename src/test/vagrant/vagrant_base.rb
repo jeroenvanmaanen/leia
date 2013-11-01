@@ -3,7 +3,10 @@
 
 module VagrantBase
 
-  def VagrantBase.configure(config, ip, options = {})
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+def VagrantBase.configure(config, ip, options = {})
     # how to log:
     #logger = Logger.new(STDOUT)
 
@@ -43,7 +46,7 @@ module VagrantBase
     # any other machines on the same network, but cannot be accessed (through this
     # network interface) by any external networks.
     # config.vm.network :hostonly, "192.168.33.10"
-    config.vm.network :hostonly, ip
+    config.vm.network :private_network, ip: ip
 
     # Assign this VM to a bridged network, allowing you to connect directly to a
     # network using the host's network device. This makes the VM appear as another
@@ -58,10 +61,10 @@ module VagrantBase
     # an identifier, the second is the path on the guest to mount the
     # folder, and the third is the path on the host to the actual folder.
     # config.vm.share_folder "v-data", "/vagrant_data", "../data"
-    config.vm.share_folder "v-project", "/vagrant_project", "../../.."
+    config.vm.synced_folder "../../..", "/vagrant_project"
     if File.directory?(data_dir)
     then
-      config.vm.share_folder "v-data", "/vagrant_data", data_dir
+      config.vm.synced_folder data_dir, "/vagrant_data"
     end
     if etc_dir == :default
     then
@@ -74,7 +77,7 @@ module VagrantBase
     end
     if etc_dir
     then
-      config.vm.share_folder "v-host-etc", "/vagrant_host_etc", etc_dir
+      config.vm.synced_folder etc_dir, "/vagrant_host_etc"
     end
 
     config.vm.provision :shell, :path => "../script/vagrant-provision.sh"

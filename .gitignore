@@ -1,3 +1,5 @@
 .*
 target
 leia-executable.iml
+src/test/script/settings.sh
+src/test/vagrant/vagrant_local.rb
