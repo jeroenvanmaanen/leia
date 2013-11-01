@@ -54,7 +54,7 @@ public class Observer implements org.leialearns.command.api.Observer {
 
     /**
      * Creates a new version of the model of observed behavior.
-     * See <a href="https://github.com/jeroenvanmaanen/leia/blob/master/doc/create-observed.html" target="_blank">create observed</a>
+     * See <a href="http://htmlpreview.github.io/?https://github.com/jeroenvanmaanen/leia/blob/master/doc/create-observed.html" target="_blank">create observed</a>
      * for a description of the steps.
      *
      * @param args Command line arguments
