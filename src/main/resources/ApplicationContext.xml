@@ -208,7 +208,7 @@
         </constructor-arg>
     </bean>
 
-    <!-- Configuration of LExAu interaction context -->
+    <!-- Configuration of LEIA interaction context -->
 
     <bean id="rootDTO" class="org.leialearns.graph.session.RootDTO"/>
 

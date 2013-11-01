@@ -1,0 +1,43 @@
+body {
+    counter-reset: step;
+}
+div.page {
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+tr.header {
+    vertical-align: bottom;
+}
+h1 {
+    margin-bottom: 0px;
+}
+div.logo {
+    background: url("http://www.lexau.org/common/Lexau-logo3.png");
+    margin-bottom: .5em;
+}
+a.invisible-link {
+    text-decoration: none;
+}
+.logo-placeholder {
+    display: block;
+    width: 150px;
+    height: 50px;
+}
+h1 {
+    font-size: x-large;
+}
+div.image {
+    clear: both;
+}
+div.step {
+    float: left;
+    clear: both;
+}
+div.step:before {
+    content: counter(step) ". ";
+    counter-increment: step;
+}
+p {
+    margin-left: 40px;
+}

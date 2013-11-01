@@ -34,8 +34,8 @@ import static org.leialearns.utilities.Display.show;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 /**
- * Connects the <b>L</b>Ex<i>Au</i> system to its environment by feeding it tokens from a file. This encounter
- * uses a trivial implementation of the active part of <b>L</b>Ex<i>Au</i> with a single symbol: '.', that means
+ * Connects the <b>LEIA</b> system to its environment by feeding it tokens from a file. This encounter
+ * uses a trivial implementation of the active part of <b>LEIA</b> with a single symbol: '.', that means
  * 'no action'.
  */
 public class Encounter implements org.leialearns.command.api.Encounter {
@@ -102,7 +102,7 @@ public class Encounter implements org.leialearns.command.api.Encounter {
     }
 
     /**
-     * Feeds the given files to the <b>L</b>Ex<i>Au</i> system.
+     * Feeds the given files to the <b>LEIA</b> system.
      * @param args The paths of the files to feed
      */
     @Override

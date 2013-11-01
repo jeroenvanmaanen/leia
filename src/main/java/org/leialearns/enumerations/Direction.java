@@ -9,12 +9,12 @@ import java.util.Map;
 public enum Direction {
 
     /**
-     * Indicates that the symbol was sent from <b>L</b>Ex<i>Au</i> to its environment.
+     * Indicates that the symbol was sent from <b>LEIA</b> to its environment.
      */
     ACTION('>'),
 
     /**
-     * Indicates that the symbol was received by <b>L</b>Ex<i>Au</i> from its environment.
+     * Indicates that the symbol was received by <b>LEIA</b> from its environment.
      */
     RESPONSE('<');
 

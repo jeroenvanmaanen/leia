@@ -1,7 +1,7 @@
 package org.leialearns.command;
 
 /**
- * Provides the uniform {@link Command#command(String[])} method for all sub-commands of the LExAu application.
+ * Provides the uniform {@link Command#command(String[])} method for all sub-commands of the LEIA application.
  */
 public interface Command {
 

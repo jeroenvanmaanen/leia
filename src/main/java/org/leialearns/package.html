@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<p>The <b>L</b>Ex<i>Au</i> system is a learning system that learns from interacting with a completely unknown
+<p>The <b>LEIA</b> system is a learning system that learns from interacting with a completely unknown
     environment over a bidirectional steam of symbols.</p>
 
 <p>The system consists of a few parts that update various models in parallel.</p>
@@ -27,14 +27,14 @@
     <li>The {@link org.leialearns.command.encounter.Encounter} uses the last strategy to interact with the environment.</li>
 </ul>
 
-<p>The simple, but profound, basis for <b>L</b>Ex<i>Au</i> is the balance between the designed function of
+<p>The simple, but profound, basis for <b>LEIA</b> is the balance between the designed function of
     the minimizer and the designed function of the maximizer. The minimizer keeps the total
     description length of the model of expected behavior as <em>short</em> as possible while still encoding all
     statistically relevant information about the model of observed behavior. The maximizer, at the other hand,
     searches for strategies that make the total description length of the model of expected behavior
     <em>longer</em>. The maximizer can only increase the length of the model of expected behavior by
     selecting strategies that maximize the expected
-    <a href="http://www.lexau.org/pub/ModelGrowth-final.pdf" target="_blank">model growth</a>
+    <a href="http://leialearns.org/pub/ModelGrowth-final.pdf" target="_blank">model growth</a>
     given the differences between the model of observed behavior and the model of expected behavior</p>
 
 </body>

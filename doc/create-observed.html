@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Create a new version of the model of observed behavior</title>
+    <link rel="shortcut icon" href="http://lexau.org/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div class="page">
+
+    <table>
+        <colgroup>
+            <col width="100%">
+            <col>
+        </colgroup>
+        <tbody>
+        <tr class="header">
+            <td><h1>Create a new version of the model of observed behavior</h1></td>
+            <td><div class="logo">
+                <a href="http://lexau.org/" class="invisible-link"><span class="logo-placeholder">&#xA0</span></a>
+            </div></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="image">
+        <object data="create-observed.svg" type="image/svg+xml" width="800" height="550"></object>
+    </div>
+
+    <p><!-- Move the first step counter next to the first step --></p>
+    <div class="step"></div><p>Create a new version object with ModelType OBSERVED
+        (O2) and an associated ObservedVersionExtension object.</p>
+    <div class="step"></div><p>Find the last OBSERVED version (O1) before O2
+        and make sure that it has AccessMode READABLE.</p>
+    <p>Copy all counters that are associated with O1 to O2.</p>
+    <div class="step"></div><p>Find the COUNTED versions ([C1..CN]) between O1 and O2.</p>
+    <p>Add counters to O2 that are present in [C1..CN] but that were not part of O1.</p>
+    <p>Apply the counters in [C1..CN] to O2.
+        Note that in COUNTED versions each occurrence is only counted in
+        the counter for the deepest node on the path from the root node,
+        but that in OBSERVED versions each occurrence has to be counted in
+        every node on the path from the root to the deepest node.</p>
+    <div class="step"></div><p>Create a new version object with ModelType
+        DELTA (D2) and link it to O2.</p>
+    <div class="step"></div><p>Get the DELTA version object (D1) that is
+        associated with O1.</p>
+    <p>Copy all counters that are associated with D1 to D2.</p>
+    <div class="step"></div><p>Find the TOGGLED versions ([TO..TN]) between
+        O1 and O2.
+    <p>Adjust the affected existing counters in D2 for the changes in [TO..TN].</p>
+    <div class="step"></div><p>Find the last EXPECTED version (E) before O1.</p>
+    <div class="step"></div><p>Find the TOGGLED versions ([TE..TN]) between
+        E and O2.</p>
+    <p>Apply the counters in [C1..CN] to D2 according to the model of
+        expected behavior as specified by E + [TE..TN].</p>
+    <p>Set the AccessMode of both O2 and D2 to READABLE.</p>
+
+</div>
+</body>
+</html>

@@ -3,7 +3,7 @@ package org.leialearns.logic.interaction;
 import org.leialearns.logic.structure.Structure;
 
 /**
- * Defines the context of the exchange of information between <b>L</b>Ex<i>Au</i> and its environment.
+ * Defines the context of the exchange of information between <b>LEIA</b> and its environment.
  */
 public interface InteractionContext extends Comparable<InteractionContext> {
 

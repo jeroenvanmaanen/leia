@@ -19,7 +19,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 /**
- * Provides the <code>main</code> method for the LExAu executable.
+ * Provides the <code>main</code> method for the LEIA executable.
  */
 public class App {
     private Logger logger = null;
@@ -123,7 +123,7 @@ public class App {
 
             logger = LoggerFactory.getLogger(App.class);
             logger.info(".\n.\n.\n.");
-            logger.info("Start LExAu");
+            logger.info("Start LEIA");
 
             logger.debug("Verbose: " + (cmd.hasOption('v') ? "true" : "false"));
 

@@ -6,8 +6,8 @@ package org.leialearns.logic.utilities;
  * context of an alphabet, or an encoding of numbers in the context of the set of integers) that assigns a bit
  * sequence to this particular object that is as long as the number returned by this method.</p>
  *
- * <p>The description length of objects is crucial in <b>L</b>Ex<i>Au</i>, because the whole point of
- * <b>L</b>Ex<i>Au</i> is to prove that the age old saw that "a computer only produces what you put into it" can
+ * <p>The description length of objects is crucial in <b>LEIA</b>, because the whole point of
+ * <b>LEIA</b> is to prove that the age old saw that "a computer only produces what you put into it" can
  * be transcended by a clever two-way pincer application of the
  * <a href="http://en.wikipedia.org/wiki/Minimum_description_length" target="_blank">Minimum Description
  * Length Principle</a>.</p>
@@ -22,7 +22,7 @@ public interface HasDescriptionLength {
     /**
      * Returns the description length of this object. See
      * {@link HasDescriptionLength} for more information on the importance of description lengths in the context of
-     * <b>L</b>Ex<i>Au</i>.
+     * <b>LEIA</b>.
      * @return The description length of this object
      */
     long descriptionLength();

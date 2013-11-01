@@ -11,7 +11,7 @@ import java.math.BigInteger;
 /**
  * Provides static functions to calculate the description length of a {@link java.math.BigInteger}. See
  * {@link HasDescriptionLength} for more information on the importance of description lengths in the context of
- * <b>L</b>Ex<i>Au</i>.
+ * <b>LEIA</b>.
  */
 public class DescriptionLength {
     private static final Logger LOGGER = LoggerFactory.getLogger(DescriptionLength.class);

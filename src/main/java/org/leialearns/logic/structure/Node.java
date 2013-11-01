@@ -17,7 +17,7 @@ public interface Node extends Comparable<Node> {
 
     /**
      * Returns the parent node of this node. In an interaction history tree, the root of the tree represents the
-     * present. The nodes of the first level represent the last action of the <b>L</b>Ex<i>Au</i> system and the
+     * present. The nodes of the first level represent the last action of the <b>LEIA</b> system and the
      * farther the nodes are from the root of the tree, the farther in the past the corresponding symbols are to be
      * found in the current state of the encounter.
      * @return The parent node of this node
