@@ -44,6 +44,14 @@ then
     . "${BIN}/functions.sh"
 fi
 
+if [ -d '/vagrant_host_etc' ]
+then
+    (
+        cd /etc
+        ln -snf '/vagrant_host_etc/hosts' .
+    )
+fi
+
 if [ -d '/etc/apt/sources.list.d' ]
 then
     (
