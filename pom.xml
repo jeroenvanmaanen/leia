@@ -155,7 +155,7 @@
                     <show>public</show>
                     <detectLinks>true</detectLinks>
                     <links>
-                        <link>http://static.springsource.org/spring/docs/3.1.x/javadoc-api</link>
+                        <link>http://docs.spring.io/spring/docs/${spring.version}/javadoc-api</link>
                         <link>http://docs.spring.io/spring-data/neo4j/docs/${spring-data.version}/api</link>
                     </links>
                 </configuration>
