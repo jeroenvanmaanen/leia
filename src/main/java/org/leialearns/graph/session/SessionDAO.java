@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.leialearns.utilities.Display.display;
+import static org.leialearns.utilities.Display.displayWithTypes;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class SessionDAO extends IdDaoSupport<SessionDTO> {
@@ -36,7 +38,15 @@ public class SessionDAO extends IdDaoSupport<SessionDTO> {
     }
 
     public void logVersions(SessionDTO owner, String label, TypedIterable<VersionDTO> versions) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        if (logger.isDebugEnabled()) {
+            String prefix = (label == null || label.isEmpty() ? "" : label + ": ");
+            logger.debug("Versions: " + prefix + "Iterable class: " + displayWithTypes(versions.getClass()));
+            logger.debug("Versions: " + prefix + "{");
+            for (VersionDTO version : versions) {
+                logger.debug("  " + display(version));
+            }
+            logger.debug("}");
+        }
     }
 
     public CountedDTO createCountedVersion(SessionDTO owner) {

@@ -44,6 +44,8 @@ SRC="$(dirname "${ASSEMBLE}")"
 PROJECT="$(dirname "${SRC}")"
 SITE="${PROJECT}/target/site"
 
+echo "Injecting favicon icon in all HTML files under ${SITE}" >&2
+
 find "${SITE}" -type f -name '*.html' -print0 \
     | xargs -0 \
         sed "${SED_EXT}" "${SED_IN_PLACE[@]}" \

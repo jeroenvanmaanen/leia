@@ -6,6 +6,8 @@ import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.interaction.InteractionContextRepository;
 import org.leialearns.graph.session.SessionDTO;
+import org.leialearns.utilities.Function;
+import org.leialearns.utilities.TransformingIterable;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 
 import java.util.Date;
+import java.util.Set;
 
 import static org.leialearns.utilities.Display.asDisplay;
 import static org.leialearns.utilities.Display.display;
@@ -26,6 +29,9 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
 
     @Autowired
     private ObservedDAO observedDAO;
+
+    @Autowired
+    private ToggledDAO toggledDAO;
 
     @Autowired
     private InteractionContextRepository interactionContextRepository;
@@ -78,6 +84,7 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
     protected VersionDTO findLastBeforeOrEqual(VersionDTO version, ModelType modelType, AccessMode accessMode) {
         logger.debug("Session: {}", (version == null ? null : version.getOwner()));
         while (version != null && version.getId() != null) {
+            logger.debug("Version: {}", asDisplay(version));
             AccessMode versionAccessMode = version.getAccessMode();
             if ((modelType == null || version.getModelType() == modelType) && (accessMode == null ? versionAccessMode != AccessMode.EXCLUDE : versionAccessMode == accessMode)) {
                 break;
@@ -106,42 +113,73 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
             previousVersionOrdinal = previousVersion.getOrdinal();
         }
 
-        VersionDTO result;
+        VersionDTO candidate;
         if (previousVersion == null) {
             InteractionContextDTO context = owner.getInteractionContext();
             logger.trace("Interaction context: [{}]", context);
-            result = versionRepository.findFirstVersion(context);
+            candidate = versionRepository.findFirstVersion(context);
         } else {
-            result = versionRepository.findNextVersion(previousVersion);
+            candidate = versionRepository.findNextVersion(previousVersion);
         }
-        if (result != null) {
+        logger.trace("Start at: {}", candidate);
+        if (candidate != null) {
             long lastVersionOrdinal = lastVersion.getOrdinal();
-            while (result.getOrdinal() < lastVersionOrdinal &&
-                    (result.getModelType() != modelType || result.getAccessMode() == accessMode || result.getAccessMode() == AccessMode.EXCLUDE)) {
-                VersionDTO newResult = versionRepository.findNextVersion(result);
-                if (newResult == null) {
+            while (candidate.getOrdinal() < lastVersionOrdinal &&
+                    (candidate.getModelType() != modelType || candidate.getAccessMode() == accessMode || candidate.getAccessMode() == AccessMode.EXCLUDE)) {
+                VersionDTO newCandidate = versionRepository.findNextVersion(candidate);
+                logger.trace("New candidate: {}", newCandidate);
+                if (newCandidate == null) {
                     break;
                 }
-                result = newResult;
+                candidate = newCandidate;
             }
 
-            while (result.getOrdinal() > previousVersionOrdinal && result.getModelType() != modelType && result.getAccessMode() != accessMode) {
-                result = versionRepository.findPreviousVersion(result);
+            logger.trace("Last candidate: {}", candidate);
+            while (candidate != null && candidate.getOrdinal() > previousVersionOrdinal && (candidate.getModelType() != modelType || candidate.getAccessMode() != accessMode)) {
+                candidate = versionRepository.findPreviousVersion(candidate);
+                logger.trace("Previous candidate: {}", candidate);
             }
-            if (result != null && result.getOrdinal() <= previousVersionOrdinal) {
-                result = null;
+            if (candidate != null && candidate.getOrdinal() <= previousVersionOrdinal) {
+                candidate = null;
             }
 
-            if (result != null) {
-                result.setOwner(owner);
+            if (candidate != null) {
+                candidate.setOwner(owner);
             }
         }
-        logger.trace("Result: [" + result + "]");
-        return result;
+        logger.trace("Result: [" + candidate + "]");
+        return candidate;
     }
 
-    public TypedIterable<VersionDTO> findVersionsInRange(SessionDTO owner, long minOrdinal, long maxOrdinal, ModelType modelType, AccessMode accessMode) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+    public TypedIterable<VersionDTO> findVersionsInRange(final SessionDTO owner, long minOrdinal, long maxOrdinal, ModelType modelType, AccessMode accessMode) {
+        InteractionContextDTO interactionContext = owner.getInteractionContext();
+        logRange(interactionContext, minOrdinal, maxOrdinal);
+
+        Set<VersionDTO> result;
+        if (accessMode == null) {
+            result = versionRepository.findRange(interactionContext, minOrdinal, maxOrdinal, modelType.toChar());
+        } else {
+            result = versionRepository.findRange(interactionContext, minOrdinal, maxOrdinal, modelType.toChar(), accessMode.toChar());
+        }
+        return new TransformingIterable<>(result, VersionDTO.class, new Function<Object, VersionDTO>() {
+            @Override
+            public VersionDTO get(Object x) {
+                VersionDTO result = (VersionDTO) x;
+                result.setOwner(owner);
+                return result;
+            }
+        });
+    }
+
+    protected void logRange(InteractionContextDTO context, long minOrdinal, long maxOrdinal) {
+        if (logger.isTraceEnabled()) {
+            logger.trace("Range: " + minOrdinal + " -> " + maxOrdinal + " {");
+            Set<VersionDTO> versions = versionRepository.findRange(context, minOrdinal, maxOrdinal);
+            for (VersionDTO version : versions) {
+                logger.trace("  " + version);
+            }
+            logger.trace("}");
+        }
     }
 
     public VersionDTO findOrCreateLastVersion(SessionDTO owner, ModelType modelType, AccessMode accessMode) {
@@ -181,7 +219,7 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
     }
 
     public ToggledDTO findToggledVersion(VersionDTO version) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return toggledDAO.find(version);
     }
 
     public void waitForLock(VersionDTO versionDTO, SessionDTO session) throws InterruptedException {

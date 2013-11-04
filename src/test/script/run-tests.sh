@@ -91,6 +91,8 @@ LOG_FILE="${LOG_DIR}/mvn.log"
 echo -n '' > "${LOG_FILE}"
 run-maven "${LOG_FILE}" clean javadoc:javadoc 2>&1 | grep -v '^Generating '
 
+"${SRC}/assemble/script/inject-favicon.sh"
+
 [ -d "${LOG_DIR}" ] || mkdir -p "${LOG_DIR}"
 echo -n '' > "${LOG_FILE}"
 run-maven "${LOG_FILE}" -Dtest="${SINGLE_TEST}" test

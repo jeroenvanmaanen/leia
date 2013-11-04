@@ -1,6 +1,8 @@
 package org.leialearns.graph.model;
 
+import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
+import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.interaction.SymbolDTO;
 import org.leialearns.graph.structure.NodeDAO;
 import org.leialearns.graph.structure.NodeDTO;
@@ -13,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
+import static org.leialearns.utilities.Display.asDisplay;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class CounterDAO extends IdDaoSupport<CounterDTO> {
@@ -23,6 +27,12 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
 
     @Autowired
     private NodeDAO nodeDAO;
+
+    @Autowired
+    private VersionRepository versionRepository;
+
+    @Autowired
+    private CounterRepository counterRepository;
 
     @Autowired
     public CounterDAO(CounterRepository repository) {
@@ -104,15 +114,61 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
     }
 
     public void createCountersFromRecentCounted(ObservedDTO newObserved, ObservedDTO oldObserved) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        logger.debug("Create counters from recent counted: [" + oldObserved + "] -> [" + newObserved + "]");
+        if (oldObserved != null) {
+            createCountersFromRecentCounted(oldObserved.getCountedVersion(), newObserved.getCountedVersion(), newObserved.getVersion());
+        }
     }
 
     public void createCountersFromRecentCounted(VersionDTO previousVersion, VersionDTO lastVersion, VersionDTO toVersion) {
+        if (lastVersion == null) {
+            throw new IllegalArgumentException("Last version should not be null");
+        }
+        if (toVersion == null) {
+            throw new IllegalArgumentException("To version should not be null");
+        }
+        Long minOrdinal = previousVersion == null ? 0 : previousVersion.getOrdinal() + 1;
+        Long maxOrdinal = lastVersion.getId();
+        logger.debug("Destination and bounds: {}, [{}, {}]", new Object[]{asDisplay(toVersion), minOrdinal, maxOrdinal});
+        // logger.trace("Stack trace", new Throwable());
+
+        InteractionContextDTO interactionContext = toVersion.getInteractionContext();
+
+        Set<VersionDTO> illegal = versionRepository.findUnreadable(interactionContext, ModelType.COUNTED.toChar(), minOrdinal, maxOrdinal);
+        if (!illegal.isEmpty()) {
+            for (VersionDTO versionDTO : illegal) {
+                logger.warn("Not READABLE: [" + versionDTO + "]");
+            }
+            throw new IllegalStateException("Not all selected versions are READABLE: [" + previousVersion + "]: [" + lastVersion + "]");
+        }
+
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public TypedIterable<CounterUpdateDTO> findCounterUpdates(VersionDTO toVersion, VersionDTO previousVersion, VersionDTO lastVersion) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        if (toVersion == null) {
+            throw new IllegalArgumentException("To version should not be null");
+        }
+        long minOrdinal = previousVersion == null ? 0 : previousVersion.getOrdinal() + 1;
+        Long maxOrdinal = lastVersion.getOrdinal();
+        logger.debug("Destination and bounds: {}, [{}, {}]", new Object[]{asDisplay(toVersion), minOrdinal, maxOrdinal});
+
+        Set<CounterDTO> updates = counterRepository.findUpdates(toVersion, minOrdinal, maxOrdinal);
+        Map<String,CounterUpdateDTO> updateMap = new HashMap<>();
+        for (CounterDTO update : updates) {
+            String key = "" + update.getNode().getId() + "|" + update.getSymbol().getId();
+            CounterUpdateDTO counterUpdate;
+            if (updateMap.containsKey(key)) {
+                counterUpdate = updateMap.get(key);
+            } else {
+                CounterDTO counter = counterRepository.findCounterByVersionAndNodeAndSymbol(toVersion, update.getNode(), update.getSymbol());
+                counterUpdate = new CounterUpdateDTO(counter);
+                updateMap.put(key, counterUpdate);
+            }
+            counterUpdate.increment(update.getValue());
+        }
+
+        return new TypedIterable<CounterUpdateDTO>(updateMap.values(), CounterUpdateDTO.class);
     }
 
 }
