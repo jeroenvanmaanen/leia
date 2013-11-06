@@ -36,8 +36,8 @@ public interface VersionRepository extends GraphRepository<VersionDTO> {
 
     @Query("START context=node({0})" +
             " MATCH version-[:IN_CONTEXT]->context" +
-            " WHERE version.modelTypeFlag = {1}, version.ordinal >= {2}, version.ordinal <= {3}, version.accessModeFlag <> 'X', version.accessModeFlag <> 'R'" +
-            " RETURN version")
+            " WHERE version.modelTypeFlag = {1} AND version.ordinal >= {2} AND version.ordinal <= {3} AND version.accessModeFlag <> 88 AND version.accessModeFlag <> 82" +
+            " RETURN version") // &#88; == 'X', &#82; == 'R'
     Set<VersionDTO> findUnreadable(InteractionContextDTO context, char modelTypeChar, Long minOrdinal, Long maxOrdinal);
 
     @Query("START context=node({0})" +

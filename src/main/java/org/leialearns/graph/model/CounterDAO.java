@@ -110,7 +110,16 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
     }
 
     public void copyCounters(VersionDTO fromVersion, VersionDTO toVersion) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        logger.debug("Copy counters: " + fromVersion + ": " + toVersion);
+        Set<CounterDTO> counters = counterRepository.findCountersByVersion(fromVersion);
+        logger.trace("Copying counters: {");
+        for (CounterDTO counter : counters) {
+            SymbolDTO symbolDTO = counter.getSymbol();
+            CounterDTO copy = create(toVersion, counter.getNode(), symbolDTO);
+            copy.setValue(counter.getValue());
+            logger.trace("  Copy: [" + copy + "]");
+        }
+        logger.trace("}");
     }
 
     public void createCountersFromRecentCounted(ObservedDTO newObserved, ObservedDTO oldObserved) {
@@ -128,9 +137,8 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
             throw new IllegalArgumentException("To version should not be null");
         }
         Long minOrdinal = previousVersion == null ? 0 : previousVersion.getOrdinal() + 1;
-        Long maxOrdinal = lastVersion.getId();
+        Long maxOrdinal = lastVersion.getOrdinal();
         logger.debug("Destination and bounds: {}, [{}, {}]", new Object[]{asDisplay(toVersion), minOrdinal, maxOrdinal});
-        // logger.trace("Stack trace", new Throwable());
 
         InteractionContextDTO interactionContext = toVersion.getInteractionContext();
 

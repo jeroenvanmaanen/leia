@@ -102,11 +102,13 @@ public class ObservedDAO extends IdDaoSupport<ObservedDTO> {
     }
 
     public void copyCountersFromLastObserved(ObservedDTO toObserved, VersionDTO lastObserved) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        VersionDTO toVersion = toObserved.getVersion();
+        copyCountersFromLastObserved(lastObserved, toVersion);
     }
 
     public void copyCountersFromLastObserved(VersionDTO lastObserved, VersionDTO toVersion) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        logger.debug("Copy counters from last observed: [" + lastObserved + "] -> [" + toVersion + "]");
+        counterDAO.copyCounters(lastObserved, toVersion);
     }
 
     public TypedIterable<CounterUpdateDTO> findCounterUpdates(ObservedDTO newObserved, ObservedDTO oldObserved) {
