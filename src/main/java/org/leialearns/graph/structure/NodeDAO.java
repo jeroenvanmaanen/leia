@@ -4,11 +4,15 @@ import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.interaction.SymbolDTO;
 import org.leialearns.graph.IdDaoSupport;
+import org.leialearns.utilities.BaseExpression;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Set;
+
+import static org.leialearns.utilities.Display.asDisplay;
 import static org.leialearns.utilities.Static.equal;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
@@ -16,10 +20,12 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 
     @Autowired
-    private StructureDAO structureDAO;
+    private NodeRepository nodeRepository;
 
     @Autowired
-    private NodeRepository nodeRepository;
+    private StructureDAO structureDAO;
+
+    private StructureRepository structureRepository;
 
     public TypedIterable<NodeDTO> findAll() {
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
@@ -34,11 +40,11 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
     }
 
     public TypedIterable<NodeDTO> findRootNodes(StructureDTO structure) {
-        return new TypedIterable<NodeDTO>(structure.getRootNodes(), NodeDTO.class);
+        return new TypedIterable<NodeDTO>(nodeRepository.findRootNodes(structure), NodeDTO.class);
     }
 
     public TypedIterable<NodeDTO> findChildren(NodeDTO node) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return new TypedIterable<NodeDTO>(nodeRepository.findChildren(node), NodeDTO.class);
     }
 
     public NodeDTO find(StructureDTO structure, TypedIterable<DirectedSymbolDTO> path) {
@@ -61,7 +67,7 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
         return findOrCreate(parent.getStructure(), parent, builder.toString(), parent.getDepth() + 1, symbol, direction);
     }
 
-    protected NodeDTO findOrCreate(StructureDTO structure, NodeDTO parent, String path, int depth, SymbolDTO symbol, Direction direction) {
+    protected NodeDTO findOrCreate(final StructureDTO structure, NodeDTO parent, String path, int depth, SymbolDTO symbol, Direction direction) {
         NodeDTO result = find(structure, path);
         if (result == null) {
             if (parent != null && !parent.getExtensible()) {
@@ -84,7 +90,12 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
             logger.trace("}");
             result = nodeRepository.save(result);
             if (parent == null) {
-                structure.getRootNodes().add(result);
+                linkTo(structure, "HAS_ROOT", result);
+                logger.debug("Root nodes: {}: {}", asDisplay(structure), new BaseExpression<Set<NodeDTO>>() {
+                    public Set<NodeDTO> get() {
+                        return nodeRepository.findRootNodes(structure);
+                    }
+                });
             }
             logger.debug("Node structure after save: [{}]", result.getStructure());
             structureDAO.updateMaxDepth(structure, result);

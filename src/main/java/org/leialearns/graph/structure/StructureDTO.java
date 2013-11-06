@@ -4,15 +4,11 @@ import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.graph.HasId;
 import org.leialearns.logic.structure.Structure;
-import org.neo4j.graphdb.Direction;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
-import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.leialearns.utilities.Display.displayParts;
 import static org.leialearns.utilities.Static.equal;
@@ -21,9 +17,6 @@ import static org.leialearns.utilities.Static.equal;
 public class StructureDTO extends BaseBridgeFacet implements HasId, Serializable, FarObject<Structure> {
     @GraphId
     private Long id;
-
-    @RelatedTo(direction = Direction.OUTGOING, type = "HAS_ROOT")
-    private Set<NodeDTO> rootNodes = new HashSet<>();
 
     @Indexed(unique = true)
     private String uri;
@@ -38,10 +31,6 @@ public class StructureDTO extends BaseBridgeFacet implements HasId, Serializable
     @Override
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Set<NodeDTO> getRootNodes() {
-        return rootNodes;
     }
 
     public String getURI() {

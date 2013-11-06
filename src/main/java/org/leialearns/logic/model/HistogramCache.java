@@ -9,7 +9,7 @@ import java.util.Map;
 import static org.leialearns.utilities.Static.equal;
 
 public class HistogramCache extends BaseBridgeFacet {
-    private final Map<HistogramKey,Histogram> cache = new HashMap<HistogramKey, Histogram>();
+    private final Map<HistogramKey,Histogram> cache = new HashMap<>();
 
     public void putHistogram(Histogram histogram) {
         Version version = histogram.getVersion();
@@ -33,6 +33,12 @@ public class HistogramCache extends BaseBridgeFacet {
         private final Node node;
 
         protected HistogramKey(Version version, Node node) {
+            if (version == null) {
+                throw new IllegalArgumentException("The version should not be null");
+            }
+            if (node == null) {
+                throw new IllegalArgumentException("The node should not be null");
+            }
             this.version = version;
             this.node = node;
         }

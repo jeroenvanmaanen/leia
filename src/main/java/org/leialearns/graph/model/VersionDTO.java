@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.leialearns.graph.IdDaoSupport.toID;
+import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Display.displayParts;
 import static org.leialearns.utilities.Static.equal;
 
@@ -145,14 +146,26 @@ public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, 
 
     @Override
     public boolean equals(Object other) {
-        return other instanceof VersionDTO && equal(id, ((VersionDTO) other).getId());
+        return other instanceof VersionDTO && equal(getId(), ((VersionDTO) other).getId());
+    }
+
+    public int hashCode() {
+        Long id = getId();
+        if (id == null) {
+            throw new IllegalStateException("Version has no id yet: " + display(this));
+        }
+        return id.intValue();
     }
 
     @Override
     public String toString() {
         AccessMode accessMode = getAccessMode();
         char accessModeChar = accessMode == null ? '?' : accessMode.toChar();
-        return displayParts("Version", id, "#" + (ordinal == null ? "?" : String.valueOf(ordinal)), getModelType(), toID("S", owner), accessModeChar, toID("I", interactionContext));
+        Long id = getId();
+        Long ordinal = getOrdinal();
+        SessionDTO owner = getOwner();
+        InteractionContextDTO context = getInteractionContext();
+        return displayParts("Version", id, "#" + (ordinal == null ? "?" : String.valueOf(ordinal)), getModelType(), toID("S", owner), accessModeChar, toID("I", context));
     }
 
     @Override

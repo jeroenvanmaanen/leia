@@ -49,15 +49,23 @@ public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
         return executionEngine;
     }
 
+    protected Relationship linkTo(HasId sourceNode, String linkType, HasId targetNode) {
+        return linkTo(sourceNode.getId(), linkType, targetNode.getId());
+    }
+
     protected Relationship linkTo(Node sourceNode, String linkType, Node targetNode) {
+        return linkTo(sourceNode.getId(), linkType, targetNode.getId());
+    }
+
+    protected Relationship linkTo(Long sourceNodeId, String linkType, Long targetNodeId) {
         String cypher =
                 "START source = node({sourceNodeId})," +
                 "      target = node({targetNodeId})" +
                 " CREATE UNIQUE source-[relation:" + linkType + "]->target" +
                 " RETURN relation";
         Map<String,Object> parameters = new HashMap<>();
-        parameters.put("sourceNodeId", sourceNode.getId());
-        parameters.put("targetNodeId", targetNode.getId());
+        parameters.put("sourceNodeId", sourceNodeId);
+        parameters.put("targetNodeId", targetNodeId);
         ExecutionResult result;
         try {
             result = getExecutionEngine().execute(cypher, parameters);

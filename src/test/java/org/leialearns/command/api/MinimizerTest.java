@@ -39,6 +39,7 @@ import java.util.Collection;
 import java.util.TreeSet;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.leialearns.logic.utilities.TestUtilities.assertAtEnd;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
@@ -101,6 +102,7 @@ public class MinimizerTest {
                     logger.info("Observed: " + observed);
                     Structure structure = session.getInteractionContext().getStructure();
                     Node rootNode = structure.findRootNodes().first();
+                    assertNotNull("Root node", rootNode);
                     Histogram histogram = observed.createHistogram(rootNode);
                     logger.info("Minimizer: histogram: " + rootNode + ": {");
                     Collection<Symbol> symbols = new TreeSet<Symbol>();
