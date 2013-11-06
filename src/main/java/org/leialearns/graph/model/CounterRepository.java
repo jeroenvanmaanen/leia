@@ -9,6 +9,7 @@ import java.util.Set;
 
 public interface CounterRepository extends GraphRepository<CounterDTO> {
     Set<CounterDTO> findCountersByVersion(VersionDTO version);
+    Set<CounterDTO> findCountersByVersionAndNode(VersionDTO version, NodeDTO node);
     CounterDTO findCounterByVersionAndNodeAndSymbol(VersionDTO version, NodeDTO node, SymbolDTO symbol);
 
     @Query("START target=node({0})" +
