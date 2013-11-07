@@ -48,6 +48,7 @@ public class SimpleFormatter extends Formatter {
             "org[.]hibernate[.]",
             "org[.]junit[.]",
             "org[.]leialearns[.]bridge[.]BridgeFactory[.$]",
+            "org[.]neo4j[.]",
             "org[.]springframework[.]",
             "sun[.]proxy[.]",
             "[^(]*CGLIB[$][$]",

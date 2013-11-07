@@ -5,6 +5,7 @@ import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 
+import java.util.Map;
 import java.util.Set;
 
 public interface VersionRepository extends GraphRepository<VersionDTO> {
@@ -39,6 +40,12 @@ public interface VersionRepository extends GraphRepository<VersionDTO> {
             " WHERE version.modelTypeFlag = {1} AND version.ordinal >= {2} AND version.ordinal <= {3} AND version.accessModeFlag <> 88 AND version.accessModeFlag <> 82" +
             " RETURN version") // &#88; == 'X', &#82; == 'R'
     Set<VersionDTO> findUnreadable(InteractionContextDTO context, char modelTypeChar, Long minOrdinal, Long maxOrdinal);
+
+    @Query("START context=node({0})" +
+            " MATCH ancestor-[:HAS_CHILD*0..]->node<-[:FOR_NODE]-counter-[:IN_VERSION]->version-[:IN_CONTEXT]->context, counter-[:FOR_SYMBOL]->symbol" +
+            " WHERE version.modelTypeFlag = {1} AND version.ordinal >= {2} AND version.ordinal <= {3} AND version.accessModeFlag <> 88" +
+            " RETURN DISTINCT id(ancestor) AS node_id, id(symbol) AS symbol_id")
+    Set<Map<String,Object>> findMissing(InteractionContextDTO context, char modelTypeChar, Long minOrdinal, Long maxOrdinal);
 
     @Query("START context=node({0})" +
             " MATCH version-[:IN_CONTEXT]->context" +

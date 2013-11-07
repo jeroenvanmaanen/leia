@@ -4,10 +4,13 @@ import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.interaction.SymbolDTO;
+import org.leialearns.graph.interaction.SymbolRepository;
 import org.leialearns.graph.structure.NodeDAO;
 import org.leialearns.graph.structure.NodeDTO;
 import org.leialearns.graph.IdDaoSupport;
+import org.leialearns.graph.structure.NodeRepository;
 import org.leialearns.graph.structure.StructureDTO;
+import org.leialearns.utilities.Function;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +21,8 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.leialearns.utilities.Display.asDisplay;
+import static org.leialearns.utilities.Display.display;
+import static org.leialearns.utilities.Display.show;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class CounterDAO extends IdDaoSupport<CounterDTO> {
@@ -33,6 +38,12 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
 
     @Autowired
     private CounterRepository counterRepository;
+
+    @Autowired
+    private NodeRepository nodeRepository;
+
+    @Autowired
+    private SymbolRepository symbolRepository;
 
     @Autowired
     public CounterDAO(CounterRepository repository) {
@@ -150,7 +161,32 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
             throw new IllegalStateException("Not all selected versions are READABLE: [" + previousVersion + "]: [" + lastVersion + "]");
         }
 
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        Set<Map<String,Object>> missing = versionRepository.findMissing(interactionContext, ModelType.COUNTED.toChar(), minOrdinal, maxOrdinal);
+        ObjectCache<NodeDTO> nodeCache = new ObjectCache<NodeDTO>("Nodes", new Function<Long, NodeDTO>() {
+            @Override
+            public NodeDTO get(Long id) {
+                return nodeRepository.findById(id);
+            }
+        });
+        ObjectCache<SymbolDTO> symbolCache = new ObjectCache<SymbolDTO>("Symbols", new Function<Long, SymbolDTO>() {
+            @Override
+            public SymbolDTO get(Long id) {
+                return symbolRepository.findById(id);
+            }
+        });
+        logger.debug("Missing: {");
+        for (Map<String,Object> pair : missing) {
+            logger.trace("  Pair: {}", asDisplay(pair));
+            NodeDTO node = nodeCache.get(pair.get("node_id"));
+            SymbolDTO symbol = symbolCache.get(pair.get("symbol_id"));
+            if (counterRepository.findCounterByVersionAndNodeAndSymbol(toVersion, node, symbol) != null) {
+                logger.debug("  " + node + " [" + show(symbol.getDenotation()) + "]");
+                create(toVersion, node, symbol);
+            } else if (logger.isTraceEnabled()) {
+                logger.trace("  Skipped " + node + " [" + show(symbol.getDenotation()) + "]");
+            }
+        }
+        logger.debug("}");
     }
 
     public TypedIterable<CounterUpdateDTO> findCounterUpdates(VersionDTO toVersion, VersionDTO previousVersion, VersionDTO lastVersion) {
