@@ -4,7 +4,6 @@ import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.graph.HasId;
 import org.leialearns.logic.model.Fraction;
-import org.springframework.data.neo4j.annotation.GraphId;
 
 import java.io.Serializable;
 
@@ -12,46 +11,19 @@ import static org.leialearns.utilities.Static.gcd;
 
 public abstract class FractionBaseDTO extends BaseBridgeFacet implements HasId, Serializable, Comparable<FractionBaseDTO>, FarObject<Fraction> {
 
-    @GraphId
-    private Long id;
+    abstract public Long getId();
 
-    private long numerator;
-    private long denominator;
+    abstract public void setId(Long id);
 
-    private transient long gcd = 0;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public abstract long getIndex();
-
+    public abstract long getNumerator();
+    public abstract long getDenominator();
+    public abstract long getGCD();
+    public abstract void setGCD(long gcd);
+    public abstract Long getIndex();
     public abstract boolean getInOracle();
 
-    public long getNumerator() {
-        return numerator;
-    }
-
-    public void setNumerator(Long numerator) {
-        this.numerator = numerator;
-        gcd = 0L;
-    }
-
-    public long getDenominator() {
-        return denominator;
-    }
-
-    public void setDenominator(Long denominator) {
-        this.denominator = denominator;
-        gcd = 0L;
-    }
-
     public int compareTo(FractionBaseDTO other) {
-        return Long.signum((numerator * other.denominator) - (other.numerator * denominator));
+        return Long.signum((getNumerator() * other.getDenominator()) - (other.getNumerator() * getDenominator()));
     }
 
     public boolean equals(Object other) {
@@ -61,17 +33,17 @@ public abstract class FractionBaseDTO extends BaseBridgeFacet implements HasId, 
     public int hashCode() {
         long n = getNumerator();
         long d = getDenominator();
-        long g = gcd;
+        long g = getGCD();
         long product = n * d;
         if (g == 0 && product != 0) {
             g = gcd(n, d);
-            gcd = g;
+            setGCD(g);
         }
         return (int) (product / g);
     }
 
     public String toString() {
-        return "[Fraction:(" + id + ":" + getInOracle() + ")" + getIndex() + "->" + getNumerator() + "/" + getDenominator() + "]";
+        return "[Fraction:(" + getId() + ":" + getInOracle() + ")" + getIndex() + "->" + getNumerator() + "/" + getDenominator() + "]";
     }
 
     public Fraction declareNearType() {

@@ -1,6 +1,5 @@
 package org.leialearns.graph.model;
 
-import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.session.RootDTO;
 import org.leialearns.logic.model.Fraction;
 import org.leialearns.utilities.TypedIterable;
@@ -21,7 +20,7 @@ public class FractionDAO {
     private FractionEstimateRepository fractionEstimateRepository;
 
     public TypedIterable<FractionBaseDTO> findFractions(RootDTO root) {
-        return new TypedIterable<FractionBaseDTO>(FractionBaseDTO.class, fractionOracleRepository.findAll());
+        return new TypedIterable<>(FractionBaseDTO.class, fractionOracleRepository.findAll());
     }
 
     public FractionBaseDTO findFraction(RootDTO root, long index) {
@@ -64,6 +63,7 @@ public class FractionDAO {
         } else {
             result = createFraction(root, index, numerator, denominator);
         }
+        logger.debug("Created fraction: {}", result);
         return result;
     }
 

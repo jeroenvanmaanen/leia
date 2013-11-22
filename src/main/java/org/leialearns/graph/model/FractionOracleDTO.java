@@ -1,20 +1,70 @@
 package org.leialearns.graph.model;
 
+import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.springframework.data.neo4j.support.index.IndexType;
 
 @NodeEntity
 public class FractionOracleDTO extends FractionBaseDTO {
 
-    @Indexed(unique = true, indexName = "oracleFractionIndex")
-    private long index;
+    @GraphId
+    private Long id;
 
-    public void setIndex(long index) {
+    private long numerator;
+    private long denominator;
+
+    private transient long gcd = 0;
+
+    @Indexed(unique = true, indexName = "oracleFractionIndex", indexType = IndexType.SIMPLE, numeric = false)
+    private Long index;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public long getNumerator() {
+        return numerator;
+    }
+
+    public void setNumerator(Long numerator) {
+        this.numerator = numerator;
+        setGCD(0L);
+    }
+
+    @Override
+    public long getDenominator() {
+        return denominator;
+    }
+
+    public void setDenominator(Long denominator) {
+        this.denominator = denominator;
+        setGCD(0L);
+    }
+
+    @Override
+    public long getGCD() {
+        return gcd;
+    }
+
+    @Override
+    public void setGCD(long gcd) {
+        this.gcd = gcd;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setIndex(Long index) {
         this.index = index;
     }
 
     @Override
-    public long getIndex() {
+    public Long getIndex() {
         return index;
     }
 

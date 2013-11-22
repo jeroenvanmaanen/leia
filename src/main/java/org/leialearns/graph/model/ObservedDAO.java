@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.leialearns.utilities.Display.asDisplay;
+import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class ObservedDAO extends IdDaoSupport<ObservedDTO> {
@@ -27,9 +28,10 @@ public class ObservedDAO extends IdDaoSupport<ObservedDTO> {
     }
 
     public ObservedDTO find(VersionDTO version) {
-        logger.debug("Find extension for version: [" + version + "]: #" + version.getId());
-        ObservedDTO result = findDTO("START version = node({p1}) MATCH version<-[:EXTENDS]-observed RETURN observed LIMIT 1", version.getId());
-        logger.debug("Observed: {}: extends: {}", new Object[]{result,version});
+        ObservedDTO result = findMaybe(version);
+        if (result == null) {
+            throw new IllegalStateException("Observed details missing: " + display(version));
+        }
         return result;
     }
 
@@ -43,10 +45,17 @@ public class ObservedDAO extends IdDaoSupport<ObservedDTO> {
     }
 
     public ObservedDTO findOrCreate(VersionDTO version) {
-        ObservedDTO result = find(version);
+        ObservedDTO result = findMaybe(version);
         if (result == null) {
             result = create(version);
         }
+        return result;
+    }
+
+    protected ObservedDTO findMaybe(VersionDTO version) {
+        logger.debug("Find extension for version: [" + version + "]: #" + version.getId());
+        ObservedDTO result = findDTO("START version = node({p1}) MATCH version<-[:EXTENDS]-observed RETURN observed LIMIT 1", version.getId());
+        logger.debug("Observed: {}: extends: {}", new Object[]{result,version});
         return result;
     }
 

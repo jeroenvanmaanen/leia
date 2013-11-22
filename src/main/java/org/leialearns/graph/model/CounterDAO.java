@@ -1,5 +1,6 @@
 package org.leialearns.graph.model;
 
+import org.leialearns.bridge.FactoryAccessor;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.graph.interaction.InteractionContextDTO;
@@ -10,18 +11,21 @@ import org.leialearns.graph.structure.NodeDTO;
 import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.structure.NodeRepository;
 import org.leialearns.graph.structure.StructureDTO;
+import org.leialearns.logic.model.CounterLogger;
+import org.leialearns.logic.model.Version;
 import org.leialearns.utilities.Function;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static org.leialearns.utilities.Display.asDisplay;
-import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Display.show;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
@@ -36,8 +40,13 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
     @Autowired
     private VersionRepository versionRepository;
 
+    public FactoryAccessor<Version> versionFactoryAccessor = new FactoryAccessor<>(Version.class);
+
     @Autowired
     private CounterRepository counterRepository;
+
+    @Autowired
+    private CounterLogger counterLogger;
 
     @Autowired
     private NodeRepository nodeRepository;
@@ -64,7 +73,14 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
     }
 
     public CounterDTO findCounter(VersionDTO version, NodeDTO node, SymbolDTO symbol) {
-        return repository.findCounterByVersionAndNodeAndSymbol(version, node, symbol);
+        CounterDTO result;
+        logger.debug("Find counter: {}: {}: {}", new Object[] { version, node, symbol });
+        if (version == null || node == null || symbol == null) {
+            result = null;
+        } else {
+            result = repository.findCounterByVersionAndNodeAndSymbol(version, node, symbol);
+        }
+        return result;
     }
 
     public CounterDTO create(VersionDTO version, NodeDTO node, SymbolDTO symbol) {
@@ -98,7 +114,7 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
     }
 
     public void refresh(CounterDTO counter) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        logger.warn("Refresh ignored for: {}", counter);
     }
 
     public void increment(final CounterDTO counter) {
@@ -135,9 +151,13 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
 
     public void createCountersFromRecentCounted(ObservedDTO newObserved, ObservedDTO oldObserved) {
         logger.debug("Create counters from recent counted: [" + oldObserved + "] -> [" + newObserved + "]");
-        if (oldObserved != null) {
-            createCountersFromRecentCounted(oldObserved.getCountedVersion(), newObserved.getCountedVersion(), newObserved.getVersion());
+        VersionDTO previousVersion;
+        if (oldObserved == null) {
+            previousVersion = null;
+        } else {
+            previousVersion = oldObserved.getCountedVersion();
         }
+        createCountersFromRecentCounted(previousVersion, newObserved.getCountedVersion(), newObserved.getVersion());
     }
 
     public void createCountersFromRecentCounted(VersionDTO previousVersion, VersionDTO lastVersion, VersionDTO toVersion) {
@@ -162,13 +182,13 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
         }
 
         Set<Map<String,Object>> missing = versionRepository.findMissing(interactionContext, ModelType.COUNTED.toChar(), minOrdinal, maxOrdinal);
-        ObjectCache<NodeDTO> nodeCache = new ObjectCache<NodeDTO>("Nodes", new Function<Long, NodeDTO>() {
+        ObjectCache<NodeDTO> nodeCache = new ObjectCache<>("Nodes", new Function<Long, NodeDTO>() {
             @Override
             public NodeDTO get(Long id) {
                 return nodeRepository.findById(id);
             }
         });
-        ObjectCache<SymbolDTO> symbolCache = new ObjectCache<SymbolDTO>("Symbols", new Function<Long, SymbolDTO>() {
+        ObjectCache<SymbolDTO> symbolCache = new ObjectCache<>("Symbols", new Function<Long, SymbolDTO>() {
             @Override
             public SymbolDTO get(Long id) {
                 return symbolRepository.findById(id);
@@ -179,11 +199,12 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
             logger.trace("  Pair: {}", asDisplay(pair));
             NodeDTO node = nodeCache.get(pair.get("node_id"));
             SymbolDTO symbol = symbolCache.get(pair.get("symbol_id"));
-            if (counterRepository.findCounterByVersionAndNodeAndSymbol(toVersion, node, symbol) != null) {
+            CounterDTO exists = counterRepository.findCounterByVersionAndNodeAndSymbol(toVersion, node, symbol);
+            if (exists == null) {
                 logger.debug("  " + node + " [" + show(symbol.getDenotation()) + "]");
                 create(toVersion, node, symbol);
             } else if (logger.isTraceEnabled()) {
-                logger.trace("  Skipped " + node + " [" + show(symbol.getDenotation()) + "]");
+                logger.trace("  Skipped: exists: {}", exists);
             }
         }
         logger.debug("}");
@@ -196,8 +217,24 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
         long minOrdinal = previousVersion == null ? 0 : previousVersion.getOrdinal() + 1;
         Long maxOrdinal = lastVersion.getOrdinal();
         logger.debug("Destination and bounds: {}, [{}, {}]", new Object[]{asDisplay(toVersion), minOrdinal, maxOrdinal});
+        if (logger.isTraceEnabled()) {
+            Set<VersionDTO> range = versionRepository.findRange(toVersion.getInteractionContext(), minOrdinal, maxOrdinal);
+            List<Version> countedVersions = new ArrayList<>();
+            countedVersions.add(versionFactoryAccessor.getNearObject(toVersion));
+            logger.trace("Range: {");
+            for (VersionDTO version : range) {
+                logger.trace("  {}", version);
+                if (version.getModelType() == ModelType.COUNTED) {
+                    countedVersions.add(versionFactoryAccessor.getNearObject(version));
+                }
+            }
+            logger.trace("}");
+            counterLogger.logCounters(countedVersions.toArray(new Version[countedVersions.size()]));
+        }
 
-        Set<CounterDTO> updates = counterRepository.findUpdates(toVersion, minOrdinal, maxOrdinal);
+        InteractionContextDTO context = toVersion.getInteractionContext();
+        logger.debug("Find updates: {}: {}: {}: {}", new Object[]{context, toVersion, minOrdinal, maxOrdinal});
+        Set<CounterDTO> updates = counterRepository.findUpdates(toVersion.getInteractionContext(), toVersion, minOrdinal, maxOrdinal);
         Map<String,CounterUpdateDTO> updateMap = new HashMap<>();
         for (CounterDTO update : updates) {
             String key = "" + update.getNode().getId() + "|" + update.getSymbol().getId();
@@ -205,10 +242,12 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
             if (updateMap.containsKey(key)) {
                 counterUpdate = updateMap.get(key);
             } else {
+                logger.debug("Create new update for: #{} <- (#{}, {}, {})", new Object[]{toVersion.getOrdinal(), update.getVersion().getOrdinal(), update.getNode(), update.getSymbol()});
                 CounterDTO counter = counterRepository.findCounterByVersionAndNodeAndSymbol(toVersion, update.getNode(), update.getSymbol());
                 counterUpdate = new CounterUpdateDTO(counter);
                 updateMap.put(key, counterUpdate);
             }
+            logger.trace("Register update: {}: {}", key, update);
             counterUpdate.increment(update.getValue());
         }
 

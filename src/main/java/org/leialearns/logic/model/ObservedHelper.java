@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import static org.leialearns.logic.utilities.Static.getVersionOrdinal;
+import static org.leialearns.utilities.Display.asDisplay;
 import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Display.displayParts;
 import static org.leialearns.utilities.Static.getLoggingClass;
@@ -102,6 +103,7 @@ public class ObservedHelper {
             Node node = counterDTO.getNode();
             Symbol symbolDTO = counterDTO.getSymbol();
             long amount = update.getAmount();
+            logger.debug("  Update: {} += {}", asDisplay(node), amount);
             boolean isCovered = false;
             do {
                 if (counterDTO == null) {

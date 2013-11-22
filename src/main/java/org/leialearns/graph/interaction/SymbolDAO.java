@@ -1,10 +1,12 @@
 package org.leialearns.graph.interaction;
 
 import org.leialearns.graph.IdDaoSupport;
+import org.leialearns.logic.interaction.Symbol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.leialearns.bridge.Static.getFarObject;
 import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
@@ -39,7 +41,12 @@ public class SymbolDAO extends IdDaoSupport<SymbolDTO> {
     }
 
     public int compareTo(SymbolDTO thisSymbol, Object that) {
-        return thisSymbol.compareTo((SymbolDTO) adapt(that, SymbolDTO.class));
+        return thisSymbol.compareTo(adapt(that, SymbolDTO.class));
+    }
+
+    public boolean equals(SymbolDTO symbol, Object other) {
+        Object otherObject = (other instanceof Symbol ? getFarObject((Symbol) other, SymbolDTO.class) : other);
+        return symbol.equals(otherObject);
     }
 
 }

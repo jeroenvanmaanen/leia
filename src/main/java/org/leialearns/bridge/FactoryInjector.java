@@ -21,8 +21,8 @@ import static org.leialearns.utilities.Static.getLoggingClass;
  */
 public class FactoryInjector implements BeanPostProcessor {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private final Collection<FactoryAccessor<?>> accessors = new ArrayList<FactoryAccessor<?>>();
-    private final Setting<BridgeHeadTypeRegistry> registry = new Setting<BridgeHeadTypeRegistry>("Bridge Head Type Registry");
+    private final Collection<FactoryAccessor<?>> accessors = new ArrayList<>();
+    private final Setting<BridgeHeadTypeRegistry> registry = new Setting<>("Bridge Head Type Registry");
 
     public FactoryInjector() {
         logger.info("Create FactoryInjector: " + this);
@@ -48,6 +48,7 @@ public class FactoryInjector implements BeanPostProcessor {
         Class<?> type = bean.getClass();
         for (Field field : type.getFields()) {
             Class<?> fieldType = field.getType();
+            logger.trace("Field: {}", field.getName());
             if (FactoryAccessor.class.isAssignableFrom(fieldType)) {
                 try {
                     FactoryAccessor<?> accessor = (FactoryAccessor<?>) field.get(bean);

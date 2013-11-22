@@ -32,19 +32,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 // import static org.leialearns.utilities.Display.display;
+import static org.leialearns.utilities.Display.asDisplay;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class Oracle {
     private static final Pattern WHITE_SPACE_RE = Pattern.compile("\\s+");
     private static final Pattern ENTRY_RE = Pattern.compile("^[(]([0-9]*),([0-9]*)%([0-9]*)[)]$");
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private final Setting<Approximation> half = new Setting<Approximation>("Fraction half", new Expression<Approximation>() {
+    private final Setting<Approximation> half = new Setting<>("Fraction half", new Expression<Approximation>() {
         @Override
         public Approximation get() {
             return createApproximation(-1, 1, 2);
         }
     });
-    private Setting<Approximation> approximations = new Setting<Approximation>("Approximations", new Expression<Approximation>() {
+    private Setting<Approximation> approximations = new Setting<>("Approximations", new Expression<Approximation>() {
         @Override
         public Approximation get() {
             return self.getApproximations(null);
@@ -171,7 +172,7 @@ public class Oracle {
         TypedIterable<Counter> counters = histogram.getCounters();
         long maxIndex = 0L;
         for (Counter counter : counters) {
-            maxIndex += counter.getValue();
+            maxIndex += Math.max(2, counter.getValue());
         }
 
         Expectation result;
@@ -192,22 +193,24 @@ public class Oracle {
 
         // Associate the probability values with the symbols, and sort the resulting set of pairs on ascending
         // probability values.
-        Set<Pair<Fraction,Symbol>> pairs = new TreeSet<Pair<Fraction, Symbol>>();
+        Set<Pair<Fraction,Symbol>> pairs = new TreeSet<>();
         for (Counter counter : counters) {
-            pairs.add(new Pair<Fraction, Symbol>(root.createTransientFraction(-1, counter.getValue(), weight), counter.getSymbol()));
+            pairs.add(new Pair<>(root.createTransientFraction(-1, counter.getValue(), weight), counter.getSymbol()));
         }
 
         // Match, for each pair, the sum of the probability values up to that pair with the set of admissible
         // probability values for this weight.
         // Assign the difference between this admissible value and the previous admissible value as the probability
         // value for this symbol.
-        Map<Symbol,Fraction> fractions = new HashMap<Symbol, Fraction>();
+        Map<Symbol,Fraction> fractions = new HashMap<>();
         try {
             Fraction last = root.createTransientFraction(-1, 0, 1);
             Fraction lastEstimate = last;
             for (Pair<Fraction,Symbol> pair : pairs) {
                 last = add(last, pair.getLeft());
+                logger.trace("Last: {}", last);
                 Fraction estimate = find(maxIndex, last.getNumerator(), last.getDenominator());
+                logger.trace("Tentative estimate: {}", estimate);
                 if (lastEstimate != null && estimate.compareTo(lastEstimate) <= 0) {
                     estimate = getSuccessor(maxIndex, lastEstimate);
                     if (estimate == null) {
@@ -216,7 +219,9 @@ public class Oracle {
                         break;
                     }
                 }
+                logger.trace("Final estimate: {}", estimate);
                 Fraction probability = subtract(estimate, lastEstimate);
+                logger.trace("Probability: {}", probability);
                 fractions.put(pair.getRight(), root.createTransientFraction(estimate.getIndex(), probability.getNumerator(), probability.getDenominator()));
                 lastEstimate = estimate;
             }
@@ -231,7 +236,8 @@ public class Oracle {
 
         Expectation expectation;
         if (fractions == null) {
-            expectation = getUniformEstimate(counters, weight);
+            logger.warn("Get uniform estimate");
+            expectation = getUniformEstimate(counters);
         } else {
             expectation = root.createExpectation();
             expectation.setFractions(fractions);
@@ -239,10 +245,16 @@ public class Oracle {
         return expectation;
     }
 
-    protected Expectation getUniformEstimate(TypedIterable<Counter> counters, long weight) {
-        Map<Symbol,Fraction> fractions = new HashMap<Symbol, Fraction>();
+    protected Expectation getUniformEstimate(TypedIterable<Counter> counters) {
+        long denominator = 0L;
+        Map<Symbol,Fraction> fractions = new HashMap<>();
         for (Counter counter : counters) {
-            fractions.put(counter.getSymbol(), root.createTransientFraction(-1L, 1L, weight));
+            fractions.put(counter.getSymbol(), null);
+            denominator++;
+        }
+        Fraction fraction = root.createTransientFraction(-1L, 1L, denominator);
+        for (Symbol symbol : fractions.keySet()) {
+            fractions.put(symbol, fraction);
         }
         Expectation expectation = root.createExpectation();
         expectation.setFractions(fractions);
@@ -260,10 +272,21 @@ public class Oracle {
 
         // Decode the index values, lookup the associated fractions, pair them up with the symbols
         // and sort the resulting set of pairs on ascending factional value.
-        Set<Pair<Fraction,Symbol>> pairs = new TreeSet<Pair<Fraction, Symbol>>();
+        Map<Symbol,Fraction> fractions = new HashMap<>();
+        Set<Pair<Fraction,Symbol>> pairs = new TreeSet<>();
         Iterator<Symbol> symbolIterator = symbols.iterator();
+        boolean isUniform = true;
+        long denominator = 0L;
         for (int i = 0; i < domainSize; i++) {
+            Symbol symbol = symbolIterator.next();
             long index = DescriptionLength.prefixDecode(code).longValue();
+            logger.trace("Decode: {}: {}", symbol, index);
+            if (index == 1) {
+                denominator++;
+                fractions.put(symbol, null);
+            } else {
+                isUniform = false;
+            }
             if (index <= 1) {
                 continue;
             }
@@ -271,21 +294,31 @@ public class Oracle {
             if (cumulative == null) {
                 throw new IllegalStateException("No fraction found for: " + index);
             }
-            pairs.add(new Pair<Fraction, Symbol>(cumulative, symbolIterator.next()));
+            pairs.add(new Pair<>(cumulative, symbol));
         }
+        logger.debug("Is uniform: {}: Denominator: {}", isUniform, denominator);
 
-        // Assign the difference between successive fractions to the probabilities of the associated symbols.
-        Map<Symbol,Fraction> fractions = new HashMap<Symbol, Fraction>();
-        Fraction last = root.createTransientFraction(-1, 0, 1);
-        for (Pair<Fraction,Symbol> pair : pairs) {
-            Fraction cumulative = pair.getLeft();
-            Fraction probability = subtract(cumulative, last);
-            probability = root.createTransientFraction(cumulative.getIndex(), probability.getNumerator(), probability.getDenominator());
-            fractions.put(pair.getRight(), probability);
-            last = cumulative;
-        }
-        if (last.getNumerator() != last.getDenominator()) {
-            logger.warn("Probabilities do not add up to unity: " + last);
+        if (isUniform) {
+            Fraction fraction = root.createTransientFraction(-1, 1, denominator);
+            for (Symbol symbol : fractions.keySet()) {
+                fractions.put(symbol, fraction);
+            }
+        } else {
+            if (!fractions.isEmpty()) {
+                throw new IllegalStateException("Non-uniform expectation should not contain fractions with index 1");
+            }
+            // Assign the difference between successive fractions to the probabilities of the associated symbols.
+            Fraction last = root.createTransientFraction(-1, 0, 1);
+            for (Pair<Fraction,Symbol> pair : pairs) {
+                Fraction cumulative = pair.getLeft();
+                Fraction probability = subtract(cumulative, last);
+                probability = root.createTransientFraction(cumulative.getIndex(), probability.getNumerator(), probability.getDenominator());
+                fractions.put(pair.getRight(), probability);
+                last = cumulative;
+            }
+            if (last.getNumerator() != last.getDenominator()) {
+                logger.warn("Probabilities do not add up to unity: " + last);
+            }
         }
 
         Expectation expectation = root.createExpectation();

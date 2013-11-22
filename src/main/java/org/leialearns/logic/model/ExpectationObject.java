@@ -8,7 +8,6 @@ import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigInteger;
 import java.util.Collection;
@@ -21,13 +20,13 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class ExpectationObject extends BaseDistribution implements Expectation {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private Setting<Fraction> zero = new Setting<Fraction>("Zero", new Expression<Fraction>() {
+    private Setting<Fraction> zero = new Setting<>("Zero", new Expression<Fraction>() {
         @Override
         public Fraction get() {
             return root.createTransientFraction(-1, 0, 1);
         }
     });
-    Map<Symbol,Fraction> fractions = new HashMap<Symbol,Fraction>();
+    Map<Symbol,Fraction> fractions = new HashMap<>();
 
     private Root root;
 
@@ -40,7 +39,7 @@ public class ExpectationObject extends BaseDistribution implements Expectation {
     }
 
     public TypedIterable<Symbol> getSymbols() {
-        return new TypedIterable<Symbol>(fractions.keySet(), Symbol.class);
+        return new TypedIterable<>(fractions.keySet(), Symbol.class);
     }
 
     @Override
@@ -64,6 +63,7 @@ public class ExpectationObject extends BaseDistribution implements Expectation {
     }
 
     public String prefixEncode(Collection<Symbol> symbols) {
+        int missing = 0;
         StringBuilder builder = new StringBuilder("{E|");
         builder.append("#sym:");
         builder.append(DescriptionLength.prefixEncode(BigInteger.valueOf(symbols.size())));
@@ -78,9 +78,13 @@ public class ExpectationObject extends BaseDistribution implements Expectation {
                 builder.append(DescriptionLength.prefixEncode(BigInteger.valueOf(index)));
             } else {
                 builder.append("I(0)");
+                missing++;
             }
         }
         builder.append("}");
+        if (symbols.size() + missing != fractions.size()) {
+            logger.warn("#symbols + #missing = {} + {} != {} = #fractions", new Object[]{symbols.size(), missing, fractions.size()});
+        }
         return builder.toString();
     }
 
@@ -106,7 +110,7 @@ public class ExpectationObject extends BaseDistribution implements Expectation {
 
     public void log(String label) {
         if (logger.isDebugEnabled()) {
-            Collection<Symbol> symbols = new TreeSet<Symbol>();
+            Collection<Symbol> symbols = new TreeSet<>();
             for (Symbol symbol : getSymbols()) {
                 symbols.add(symbol);
             }
