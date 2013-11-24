@@ -78,36 +78,38 @@ public class StructureDAO {
     }
 
     public NodeDTO findOrCreateNode(StructureDTO structure, SymbolDTO symbol, Direction direction) {
-        List<DirectedSymbolDTO> empty = new ArrayList<DirectedSymbolDTO>(0);
-        TypedIterable<DirectedSymbolDTO> iterable = new TypedIterable<DirectedSymbolDTO>(empty, DirectedSymbolDTO.class);
+        List<DirectedSymbolDTO> empty = new ArrayList<>(0);
+        TypedIterable<DirectedSymbolDTO> iterable = new TypedIterable<>(empty, DirectedSymbolDTO.class);
         return findOrCreateNode(structure, symbol.createDirectedSymbol(direction), iterable);
     }
 
-    public NodeDTO findOrCreateNode(StructureDTO structureDTO, SymbolDTO action, TypedIterable<DirectedSymbolDTO> path) {
-        return findOrCreateNode(structureDTO, action.createDirectedSymbol(Direction.ACTION), path);
+    public NodeDTO findOrCreateNode(StructureDTO structure, SymbolDTO action, TypedIterable<DirectedSymbolDTO> path) {
+        return findOrCreateNode(structure, action.createDirectedSymbol(Direction.ACTION), path);
     }
 
-    public NodeDTO findOrCreateNode(StructureDTO structureDTO, DirectedSymbolDTO firstSymbol, TypedIterable<DirectedSymbolDTO> path) {
+    public NodeDTO findOrCreateNode(StructureDTO structure, DirectedSymbolDTO firstSymbol, TypedIterable<DirectedSymbolDTO> path) {
         logger.trace("Before find or create node with first symbol");
         logger.trace("Base type of path: [{}]", asDisplay(path.getType()));
         logger.trace("First symbol: [{}]", asDisplay(firstSymbol));
         Iterator<DirectedSymbolDTO> it = path.iterator();
-        NodeDTO nodeDTO = nodeDAO.findOrCreate(structureDTO, firstSymbol.getSymbol(), firstSymbol.getDirection());
-        while (nodeDTO.getExtensible() && it.hasNext()) {
+        NodeDTO node = nodeDAO.findOrCreate(structure, firstSymbol.getSymbol(), firstSymbol.getDirection());
+        logger.trace("First node: [{}]", asDisplay(node));
+        while (node.getExtensible() && it.hasNext()) {
             DirectedSymbolDTO directedSymbol = it.next();
             logger.trace("Directed symbol: " + directedSymbol);
-            nodeDTO = nodeDAO.findOrCreate(nodeDTO, directedSymbol.getSymbol(), directedSymbol.getDirection());
+            node = nodeDAO.findOrCreate(node, directedSymbol.getSymbol(), directedSymbol.getDirection());
+            logger.trace("Next node: [{}]", asDisplay(node));
         }
-        int newMaxDepth = nodeDTO.getStructure().getMaxDepth();
-        if (newMaxDepth > structureDTO.getMaxDepth()) {
-            structureDTO.setMaxDepth(newMaxDepth);
+        int newMaxDepth = node.getStructure().getMaxDepth();
+        if (newMaxDepth > structure.getMaxDepth()) {
+            structure.setMaxDepth(newMaxDepth);
         }
-        return nodeDTO;
+        return node;
     }
 
     public void logNodes(StructureDTO structure) {
         if (logger.isInfoEnabled()) {
-            SortedSet<String> nodes = new TreeSet<String>();
+            SortedSet<String> nodes = new TreeSet<>();
             for (NodeDTO node : nodeDAO.findNodes(structure)) {
                 nodes.add(node.toString());
             }

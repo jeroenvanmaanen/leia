@@ -108,6 +108,7 @@ public class ObserverTest {
                     // as the second can still change.
                     setupCounted(counted, registry);
                     Node toggleNode = getToggleNode();
+                    logger.info("Toggle node: {}", toggleNode);
                     setupToggled(toggled, registry, toggleNode);
 
                     // Run the observer
@@ -288,7 +289,7 @@ public class ObserverTest {
         NearIterable<Node> nodeIterable = structure.findNodes();
         logger.debug("Node iterable is empty?: " + nodeIterable.isEmpty());
 
-        Map<Integer, int[]> stats = new TreeMap<Integer, int[]>();
+        Map<Integer, int[]> stats = new TreeMap<>();
         Node toggleNode = null;
         for (Node node : nodeIterable) {
             if (toggleNode == null && node.getDepth() > 2) {

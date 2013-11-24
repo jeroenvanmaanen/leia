@@ -25,26 +25,16 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
     @Autowired
     private StructureDAO structureDAO;
 
-    private StructureRepository structureRepository;
-
-    public TypedIterable<NodeDTO> findAll() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
-    }
-
     public TypedIterable<NodeDTO> findNodes(StructureDTO structure) {
-        return new TypedIterable<NodeDTO>(nodeRepository.findNodesByStructure(structure), NodeDTO.class);
-    }
-
-    public TypedIterable<NodeDTO> findNodes(StructureDTO structure, int depth) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return new TypedIterable<>(nodeRepository.findNodesByStructure(structure), NodeDTO.class);
     }
 
     public TypedIterable<NodeDTO> findRootNodes(StructureDTO structure) {
-        return new TypedIterable<NodeDTO>(nodeRepository.findRootNodes(structure), NodeDTO.class);
+        return new TypedIterable<>(nodeRepository.findRootNodes(structure), NodeDTO.class);
     }
 
     public TypedIterable<NodeDTO> findChildren(NodeDTO node) {
-        return new TypedIterable<NodeDTO>(nodeRepository.findChildren(node), NodeDTO.class);
+        return new TypedIterable<>(nodeRepository.findChildren(node), NodeDTO.class);
     }
 
     public NodeDTO find(StructureDTO structure, TypedIterable<DirectedSymbolDTO> path) {
@@ -105,6 +95,15 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
 
     protected NodeDTO find(StructureDTO structure, String path) {
         return nodeRepository.getNodeByStructureAndPath(structure, path);
+    }
+
+    public void markExtensible(StructureDTO structure, NodeDTO node) {
+        if (!structure.equals(node.getStructure())) {
+            throw new IllegalArgumentException("Node does not belong to this structure: [" + node + "]: [" + structure + "]");
+        }
+        node.setExtensible(true);
+        logger.trace("Marked extensible: {}", node);
+        nodeRepository.save(node);
     }
 
     public boolean equals(NodeDTO node, Object other) {

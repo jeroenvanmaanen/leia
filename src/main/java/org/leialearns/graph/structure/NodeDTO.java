@@ -37,7 +37,7 @@ public class NodeDTO extends BaseBridgeFacet implements HasId, Serializable, Far
 
     private Integer depth;
     private Character directionFlag;
-    private boolean extensible = false;
+    private Boolean extensible;
 
     public Long getId() {
         return id;
@@ -104,7 +104,7 @@ public class NodeDTO extends BaseBridgeFacet implements HasId, Serializable, Far
     }
 
     public boolean getExtensible() {
-        return extensible;
+        return Boolean.TRUE.equals(extensible);
     }
 
     public void setExtensible(boolean extensible) {
@@ -112,7 +112,7 @@ public class NodeDTO extends BaseBridgeFacet implements HasId, Serializable, Far
     }
 
     public String toString() {
-        StringBuilder builder = new StringBuilder("[Node|" + toID(null, this) + "|(");
+        StringBuilder builder = new StringBuilder("[Node|" + toID(null, this) + "|" + (getExtensible() ? "E" : "T") + "|(");
         showPathReverse(builder);
         builder.append(")]");
         return builder.toString();

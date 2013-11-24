@@ -47,13 +47,6 @@ public interface Structure {
     Node.Iterable findNodes();
 
     /**
-     * Returns an iterable that contains all nodes in the tree with the given depth.
-     * @param depth The depth of the requested nodes
-     * @return An iterable that contains the requested nodes
-     */
-    Node.Iterable findNodes(int depth);
-
-    /**
      * Returns an iterable that contains the root nodes of this structure.
      * @return An iterable that contains the root nodes of this structure
      */

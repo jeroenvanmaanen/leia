@@ -54,13 +54,6 @@ public class StructureDTO extends BaseBridgeFacet implements HasId, Serializable
         return displayParts("Structure", id, uri, maxDepth);
     }
 
-    public void markExtensible(NodeDTO node) {
-        if (!this.equals(node.getStructure())) {
-            throw new IllegalArgumentException("Node does not belong to this structure: [" + node + "]: [" + this + "]");
-        }
-        node.setExtensible(true);
-    }
-
     @Override
     public boolean equals(Object other) {
         return other instanceof StructureDTO && equal(uri, ((StructureDTO) other).getURI());

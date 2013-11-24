@@ -40,10 +40,10 @@ import static org.leialearns.utilities.Static.getLoggingClass;
  */
 public class Encounter implements org.leialearns.command.api.Encounter {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private final Setting<Boolean> limitFlag = new Setting<Boolean>("Limit flag", false);
-    private final Setting<StreamAdapter> streamAdapter = new Setting<StreamAdapter>("Stream adapter");
-    private final Setting<String> interactionContextUri = new Setting<String>("Interaction context URI");
-    private final Setting<Integer> autoExtendLimit = new Setting<Integer>("Auto extend limit", -1);
+    private final Setting<Boolean> limitFlag = new Setting<>("Limit flag", false);
+    private final Setting<StreamAdapter> streamAdapter = new Setting<>("Stream adapter");
+    private final Setting<String> interactionContextUri = new Setting<>("Interaction context URI");
+    private final Setting<Integer> autoExtendLimit = new Setting<>("Auto extend limit", -1);
     private Version lastVersion = null;
 
     @Autowired
@@ -144,7 +144,7 @@ public class Encounter implements org.leialearns.command.api.Encounter {
             Version version = session.createVersion(ModelType.COUNTED);
             version.setAccessMode(AccessMode.WRITABLE, session);
             Counted countedVersion = version.createCountedVersion();
-            Deque<DirectedSymbol> state = new ArrayDeque<DirectedSymbol>();
+            Deque<DirectedSymbol> state = new ArrayDeque<>();
 
             try {
                 adapter.setInputStream(new URL(sourceLocation).openStream());
@@ -162,10 +162,11 @@ public class Encounter implements org.leialearns.command.api.Encounter {
                 logger.debug("Directed symbol: [" + directedSymbol + "]");
 
                 logger.trace("State: " + display(state));
-                Node node = structure.findOrCreateNode(nonAction, new TypedIterable<DirectedSymbol>(state, DirectedSymbol.class));
+                Node node = structure.findOrCreateNode(nonAction, new TypedIterable<>(state, DirectedSymbol.class));
                 if (node.getDepth() < autoExtendLimit.get()) {
                     logger.debug("Node structure: [" + node.getStructure() + "]");
                     structure.markExtensible(node);
+                    logger.debug("Marked extensible: {}", node);
                 }
                 logger.debug("Node: [" + node + "]");
                 Counter counter = countedVersion.getCounter(node, symbol);

@@ -4,6 +4,7 @@ import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.model.CountedDTO;
+import org.leialearns.graph.model.ToggledDAO;
 import org.leialearns.graph.model.ToggledDTO;
 import org.leialearns.graph.model.VersionDAO;
 import org.leialearns.graph.model.VersionDTO;
@@ -22,6 +23,9 @@ public class SessionDAO extends IdDaoSupport<SessionDTO> {
 
     @Autowired
     private VersionDAO versionDAO;
+
+    @Autowired
+    private ToggledDAO toggledDAO;
 
     @Autowired
     public SessionDAO(SessionRepository repository) {
@@ -57,7 +61,7 @@ public class SessionDAO extends IdDaoSupport<SessionDTO> {
     }
 
     public ToggledDTO createToggledVersion(SessionDTO owner, NodeDTO node, boolean include) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return toggledDAO.create(owner, node, include);
     }
 
     public SessionDTO refresh(final SessionDTO session) {

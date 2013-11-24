@@ -4,15 +4,37 @@ import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.session.SessionDTO;
 import org.leialearns.graph.structure.NodeDTO;
 import org.leialearns.graph.IdDaoSupport;
+import org.leialearns.logic.model.Toggled;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class ToggledDAO extends IdDaoSupport<ToggledDTO> {
+import static org.leialearns.bridge.Static.getFarObject;
+import static org.leialearns.utilities.Static.getLoggingClass;
 
-    @Autowired
+public class ToggledDAO extends IdDaoSupport<ToggledDTO> {
+    private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
+
     private ToggledRepository repository;
 
+    @Autowired
+    private VersionDAO versionDAO;
+
+    @Autowired
+    public ToggledDAO(ToggledRepository repository) {
+        super(repository);
+        this.repository = repository;
+    }
+
     public ToggledDTO create(SessionDTO owner, NodeDTO node, boolean include) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        VersionDTO versionDTO = versionDAO.createVersion(owner, ModelType.TOGGLED);
+        ToggledDTO dto = new ToggledDTO();
+        dto.setVersion(versionDTO);
+        dto.setNode(node);
+        dto.setInclude(include);
+        dto = save(dto);
+        logger.debug("Created toggled version for: " + versionDTO.getId() + ": [" + (include ? '+' : '-') + "] " + node);
+        return dto;
     }
 
     public ToggledDTO find(VersionDTO version) {
@@ -22,11 +44,12 @@ public class ToggledDAO extends IdDaoSupport<ToggledDTO> {
         } else {
             result = null;
         }
-        return null;
+        return result;
     }
 
-    public boolean equals(ToggledDTO toggledDTO, Object other) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+    public boolean equals(ToggledDTO toggled, Object other) {
+        Object otherObject = (other instanceof Toggled ? getFarObject((Toggled) other, ToggledDTO.class) : other);
+        return toggled.equals(otherObject);
     }
 
 }
