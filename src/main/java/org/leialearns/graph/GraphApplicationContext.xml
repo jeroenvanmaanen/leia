@@ -43,6 +43,10 @@
         <constructor-arg value="org.leialearns.graph.model.ToggledRepository" />
     </bean>
 
+    <bean class="org.leialearns.graph.model.ExpectedRepository" factory-bean="repositoryFactory" factory-method="createRepository">
+        <constructor-arg value="org.leialearns.graph.model.ExpectedRepository" />
+    </bean>
+
     <bean class="org.leialearns.graph.model.VersionRepository" factory-bean="repositoryFactory" factory-method="createRepository">
         <constructor-arg value="org.leialearns.graph.model.VersionRepository" />
     </bean>
