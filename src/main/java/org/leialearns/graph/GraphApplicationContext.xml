@@ -23,6 +23,10 @@
         <constructor-arg value="org.leialearns.graph.model.CounterRepository" />
     </bean>
 
+    <bean class="org.leialearns.graph.model.EstimateRepository" factory-bean="repositoryFactory" factory-method="createRepository">
+        <constructor-arg value="org.leialearns.graph.model.EstimateRepository" />
+    </bean>
+
     <bean class="org.leialearns.graph.model.FractionEstimateRepository" factory-bean="repositoryFactory" factory-method="createRepository">
         <constructor-arg value="org.leialearns.graph.model.FractionEstimateRepository" />
     </bean>

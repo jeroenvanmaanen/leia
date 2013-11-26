@@ -4,15 +4,22 @@ import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.interaction.SymbolDTO;
 import org.leialearns.graph.structure.NodeDTO;
 import org.leialearns.utilities.TypedIterable;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Set;
 
 public class EstimateDAO extends IdDaoSupport<EstimateDTO> {
+
+    @Autowired
+    EstimateRepository repository;
 
     public EstimateDTO findEstimate(VersionDTO version, NodeDTO node, SymbolDTO symbol) {
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
     public TypedIterable<EstimateDTO> findEstimates(VersionDTO version, NodeDTO node) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        Set<EstimateDTO> result = repository.findEstimatesByVersionAndNode(version, node);
+        return new TypedIterable<EstimateDTO>(result, EstimateDTO.class);
     }
 
     public TypedIterable<EstimateDTO> findEstimates(VersionDTO version) {

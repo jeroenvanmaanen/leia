@@ -8,6 +8,7 @@ import org.leialearns.graph.interaction.InteractionContextDAO;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.structure.StructureDAO;
 import org.leialearns.graph.structure.StructureDTO;
+import org.leialearns.logic.session.NeedsRoot;
 import org.leialearns.logic.session.Root;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class RootDTO implements FarObject<Root> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
+    private final NeedsRoot[] needsRootItems;
 
     @Autowired
     private InteractionContextDAO interactionContextDAO;
@@ -37,6 +39,13 @@ public class RootDTO implements FarObject<Root> {
     @Qualifier(value = "rootFactory")
     private BridgeFactory rootFactory;
 
+    public RootDTO() {
+        this(null);
+    }
+
+    public RootDTO(NeedsRoot[] needsRootItems) {
+        this.needsRootItems = needsRootItems;
+    }
 
     public InteractionContextDTO createInteractionContext(String interactionContextURI) {
         return interactionContextDAO.findOrCreate(interactionContextURI);
@@ -67,7 +76,13 @@ public class RootDTO implements FarObject<Root> {
     }
 
     public Root getNearObject() {
-        return (Root) rootFactory.getNearObject(this);
+        Root result = (Root) rootFactory.getNearObject(this);
+        if (needsRootItems != null) {
+            for (NeedsRoot needsRoot : needsRootItems) {
+                needsRoot.setRoot(result);
+            }
+        }
+        return result;
     }
 
 }

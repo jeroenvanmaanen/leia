@@ -7,56 +7,80 @@ import org.leialearns.graph.HasId;
 import org.leialearns.graph.interaction.SymbolDTO;
 import org.leialearns.graph.structure.NodeDTO;
 import org.leialearns.logic.model.Estimate;
+import org.neo4j.graphdb.Direction;
+import org.springframework.data.neo4j.annotation.GraphId;
+import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.springframework.data.neo4j.annotation.RelatedTo;
+
 import java.io.Serializable;
 
+import static org.leialearns.graph.IdDaoSupport.toID;
+import static org.leialearns.utilities.Display.displayParts;
+
+@NodeEntity
 public class EstimateDTO extends BaseBridgeFacet implements HasId, Serializable, FarObject<Estimate>, DeclaresNearType<Estimate> {
+    @GraphId
+    private Long id;
+
+    @RelatedTo(direction = Direction.OUTGOING, type = "FOR_VERSION")
+    private VersionDTO version;
+
+    @RelatedTo(direction = Direction.OUTGOING, type = "FOR_NODE")
+    private NodeDTO node;
+
+    @RelatedTo(direction = Direction.OUTGOING, type = "FOR_SYMBOL")
+    private SymbolDTO symbol;
+
+    @RelatedTo(direction = Direction.OUTGOING, type = "HAS_FRACTION")
+    private FractionEstimateDTO fraction;
 
     public Long getId() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return id;
     }
 
     public void setId(Long id) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.id = id;
     }
 
     public VersionDTO getVersion() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return version;
     }
 
     public void setVersion(VersionDTO version) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.version = version;
     }
 
     public NodeDTO getNode() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return node;
     }
 
     public void setNode(NodeDTO node) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.node = node;
     }
 
     public SymbolDTO getSymbol() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return symbol;
     }
 
     public void setSymbol(SymbolDTO symbol) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        this.symbol = symbol;
     }
 
-    public FractionBaseDTO getFraction() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+    public FractionEstimateDTO getFraction() {
+        return fraction;
     }
 
-    public void setFraction(FractionBaseDTO fraction) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+    public void setFraction(FractionEstimateDTO fraction) {
+        this.fraction = fraction;
     }
 
     public String toString() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        Object showSymbol = symbol == null ? null : symbol.getDenotation();
+        return displayParts("Estimate", toID("F", version), node, showSymbol, fraction);
     }
 
     public Estimate declareNearType() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        throw new UnsupportedOperationException("This method is for declaration only");
     }
 
 }

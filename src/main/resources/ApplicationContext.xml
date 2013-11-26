@@ -37,13 +37,13 @@
 
     <bean id="counterLogger" class="org.leialearns.logic.model.CounterLogger" />
     <bean id="fractionHelper" class="org.leialearns.logic.model.FractionHelper" />
-    <bean id="expectationHelper" class="org.leialearns.logic.model.ExpectationHelper" />
+    <bean id="expectationHelper" class="org.leialearns.logic.model.ExpectationHelperImpl" />
 
     <bean id="rootFactory" class="org.leialearns.bridge.BridgeFactory">
         <constructor-arg value="org.leialearns.graph.session.RootDTO"/>
         <constructor-arg>
             <array>
-                <bean class="org.leialearns.logic.model.ExpectationHelper" />
+                <ref bean="expectationHelper" />
                 <ref bean="fractionHelper" />
                 <ref bean="fractionDAO" />
             </array>
@@ -210,7 +210,13 @@
 
     <!-- Configuration of LEIA interaction context -->
 
-    <bean id="rootDTO" class="org.leialearns.graph.session.RootDTO"/>
+    <bean id="rootDTO" class="org.leialearns.graph.session.RootDTO">
+        <constructor-arg>
+            <array>
+                <ref bean="expectationHelper"/>
+            </array>
+        </constructor-arg>
+    </bean>
 
     <bean id="root" factory-bean="rootDTO" factory-method="getNearObject" />
 
