@@ -2,6 +2,7 @@ package org.leialearns.logic.model;
 
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
+import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.interaction.Symbol;
 import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
@@ -114,7 +115,7 @@ public class ObservedHelper {
                     if (isCovered) {
                         Counter deltaCounter = deltaVersion.findOrCreateCounter(node, symbolDTO);
                         deltaCounter.increment(amount);
-                    } else if (expectedModel.isIncluded(node, newObserved.getVersion().getOwner())) {
+                    } else if (expectedModel.isIncluded(node)) {
                         isCovered = true;
                     }
                 }
@@ -154,10 +155,10 @@ public class ObservedHelper {
                 expectedModel = ExpectedModel.EMPTY;
             }
 
-            Session owner = newObservedVersion.getOwner();
+            InteractionContext context = newObservedVersion.getInteractionContext();
             long maxToggledVersionId = getVersionOrdinal(newToggled);
             logger.debug("Max toggled version ID: " + maxToggledVersionId);
-            Version.Iterable toggledVersions = owner.findVersionsInRange(
+            Version.Iterable toggledVersions = context.findVersionsInRange(
                     minToggledVersionId,
                     maxToggledVersionId,
                     ModelType.TOGGLED,
@@ -180,11 +181,10 @@ public class ObservedHelper {
                     }
                     logger.trace("}");
                 }
-                Session session = newObserved.getVersion().getOwner();
                 for (Map.Entry<Node, Boolean> entry : newToggledNodes.entrySet()) {
                     Node node = entry.getKey();
                     boolean willBeIncluded = entry.getValue();
-                    boolean wasIncluded = expectedModel.isIncluded(node, session);
+                    boolean wasIncluded = expectedModel.isIncluded(node);
                     logger.trace("New toggled node: " + node + ": " + wasIncluded + " -> " + willBeIncluded);
                     if (willBeIncluded != wasIncluded) {
                         adjustPathToRoot(newObserved, newToggled, node, wasIncluded, willBeIncluded);
@@ -218,9 +218,8 @@ public class ObservedHelper {
         Histogram adjustment = observed.createTransientHistogram("adjustment");
         adjustment.add(observed.createHistogram(node));
         adjustment.subtract(observed.createDeltaHistogram(node));
-        Session session = observed.getVersion().getOwner();
         for (Node ancestor = node.getParent(); ancestor != null; ancestor = ancestor.getParent()) {
-            boolean ancestorWillBeIncluded = expected.isIncluded(ancestor, session);
+            boolean ancestorWillBeIncluded = expected.isIncluded(ancestor);
             Histogram ancestorDelta = observed.createDeltaHistogram(ancestor);
             logger.debug("  Modify: " + ancestor + " (" + ancestorWillBeIncluded + ")");
             if (willBeIncluded) {
@@ -277,7 +276,7 @@ public class ObservedHelper {
     }
 
     protected void check(CheckMode mode, Node node, Observed observed, DeltaDiff.Map deltaDiffMap, ExpectedModel expectedModel, Histogram parentObserved, Histogram parentDelta) {
-        boolean isIncluded = expectedModel.isIncluded(node, observed.getVersion().getOwner());
+        boolean isIncluded = expectedModel.isIncluded(node);
         String context = displayParts(node,observed);
 
         // The sum of all observed histograms of all direct child nodes.
@@ -349,7 +348,7 @@ public class ObservedHelper {
     }
 
     protected Map<Node, Boolean> getToggledNodes(String label, Iterable<Version> versions) {
-        Map<Node, Boolean> toggledNodes = new TreeMap<Node, Boolean>(createShallowFirst());
+        Map<Node, Boolean> toggledNodes = new TreeMap<>(createShallowFirst());
         logger.debug((label == null || label.isEmpty() ? "Toggled" : label) + " versions: {");
         for (Version version : versions) {
             Toggled toggled = version.findToggledVersion();

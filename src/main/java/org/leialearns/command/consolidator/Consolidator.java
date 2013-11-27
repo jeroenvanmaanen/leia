@@ -2,6 +2,7 @@ package org.leialearns.command.consolidator;
 
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
+import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.model.Expected;
 import org.leialearns.logic.model.Observed;
 import org.leialearns.logic.model.Toggled;
@@ -22,7 +23,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
  */
 public class Consolidator implements org.leialearns.command.api.Consolidator {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private final Setting<String> interactionContextUri = new Setting<String>("Interaction context URI");
+    private final Setting<String> interactionContextUri = new Setting<>("Interaction context URI");
     private final Expected lastExpected = null;
 
     @Autowired
@@ -75,7 +76,8 @@ public class Consolidator implements org.leialearns.command.api.Consolidator {
             if (maxToggledVersion != null) {
                 long maxToggledOrdinal = maxToggledVersion.getOrdinal();
                 logger.debug("Max toggled ordinal: " + maxToggledOrdinal);
-                Version.Iterable toggledVersions = session.findVersionsInRange(previousToggledOrdinal, maxToggledOrdinal, ModelType.TOGGLED, AccessMode.READABLE);
+                InteractionContext context = session.getInteractionContext();
+                Version.Iterable toggledVersions = context.findVersionsInRange(previousToggledOrdinal, maxToggledOrdinal, ModelType.TOGGLED, AccessMode.READABLE);
                 if (!toggledVersions.isEmpty()) {
                     Version newExpectedVersion = session.createVersion(ModelType.EXPECTED);
                     logger.debug("New expected version: " + newExpectedVersion);

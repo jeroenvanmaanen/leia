@@ -2,6 +2,7 @@ package org.leialearns.command.observer;
 
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
+import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.model.Counted;
 import org.leialearns.logic.model.Observed;
 import org.leialearns.logic.model.Version;
@@ -23,7 +24,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 public class Observer implements org.leialearns.command.api.Observer {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private Observed lastCreated = null;
-    private final Setting<String> interactionContextUri = new Setting<String>("Interaction context URI");
+    private final Setting<String> interactionContextUri = new Setting<>("Interaction context URI");
 
     @Autowired
     private Root root;
@@ -113,7 +114,8 @@ public class Observer implements org.leialearns.command.api.Observer {
                     logger.debug("Set OBSERVED version to READABLE: [" + newObservedVersion + "]");
                     newObservedVersion.setAccessMode(AccessMode.READABLE, session);
                     long minOrdinal = oldObservedVersion == null ? 0 : oldObservedVersion.getOrdinal();
-                    Version.Iterable versions = session.findVersionsInRange(minOrdinal, newObservedVersion.getOrdinal(), ModelType.COUNTED, null);
+                    InteractionContext context = session.getInteractionContext();
+                    Version.Iterable versions = context.findVersionsInRange(minOrdinal, newObservedVersion.getOrdinal(), ModelType.COUNTED, null);
                     session.logVersions("" + minOrdinal + ": " + newObservedVersion.getOrdinal(), versions);
                 }
                 // newObservedVersion.setAccessMode(AccessMode.EXCLUDE, session);

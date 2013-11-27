@@ -3,6 +3,7 @@ package org.leialearns.logic.model;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
+import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.utilities.Expression;
@@ -13,15 +14,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ToggledAugmenter extends BaseBridgeFacet {
-    private Setting<Session> session = new Setting<Session>("Session");
-    private Setting<Toggled> toggled = new Setting<Toggled>("Toggled", new Expression<Toggled>() {
+    private Setting<Toggled> toggled = new Setting<>("Toggled", new Expression<Toggled>() {
         @Override
         public Toggled get() {
             Toggled toggled = (Toggled) getBridgeFacets().getNearObject();
             return toggled;
         }
     });
-    private Setting<Map<Node, Boolean>> includedFlags = new Setting<Map<Node, Boolean>>("Included flags", new Expression<Map<Node, Boolean>>() {
+    private Setting<Map<Node, Boolean>> includedFlags = new Setting<>("Included flags", new Expression<Map<Node, Boolean>>() {
         @Override
         public Map<Node, Boolean> get() {
             Toggled thisToggled = toggled.get();
@@ -34,12 +34,9 @@ public class ToggledAugmenter extends BaseBridgeFacet {
                 Toggled previousToggled = expected.getToggled();
                 minToggled = previousToggled.getVersion().getOrdinal();
             }
-            Session theSession = session.get();
-            if (theSession == null) {
-                throw new IllegalStateException("Toggled has no owner: " + thisToggled);
-            }
-            Version.Iterable versions = theSession.findVersionsInRange(minToggled, thisToggledVersion.getOrdinal(), ModelType.TOGGLED, AccessMode.READABLE);
-            Map<Node,Boolean> result = new HashMap<Node, Boolean>();
+            InteractionContext context = thisToggledVersion.getInteractionContext();
+            Version.Iterable versions = context.findVersionsInRange(minToggled, thisToggledVersion.getOrdinal(), ModelType.TOGGLED, AccessMode.READABLE);
+            Map<Node,Boolean> result = new HashMap<>();
             for (Version toggledVersion : versions) {
                 Toggled toggledItem = toggledVersion.findToggledVersion();
                 result.put(toggledItem.getNode(), toggledItem.getInclude());
@@ -48,13 +45,12 @@ public class ToggledAugmenter extends BaseBridgeFacet {
         }
     });
 
-    public boolean isIncluded(Node node, Session session) {
-        this.session.set(session);
+    public boolean isIncluded(Node node) {
         Boolean result = includedFlags.get().get(node);
         if (result == null) {
             Expected expected = toggled.get().getExpected();
             if (expected != null) {
-                result = expected.isIncluded(node, session);
+                result = expected.isIncluded(node);
             }
         }
         return result == null ? false : result;

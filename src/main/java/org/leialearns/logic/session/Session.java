@@ -63,17 +63,6 @@ public interface Session {
     Version findOrCreateLastVersion(ModelType modelType, AccessMode accessMode);
 
     /**
-     * Returns all versions of the given model type and with the given access mode. The versions are returned
-     * in order of ascending ordinals.
-     * @param minOrdinal The minimum for the ordinals of the returned versions
-     * @param maxOrdinal The maximum for the ordinals of the returned versions
-     * @param modelType The model type of the requested versions
-     * @param accessMode The access model of the requested versions
-     * @return All versions that match the parameters
-     */
-    Version.Iterable findVersionsInRange(long minOrdinal, long maxOrdinal, ModelType modelType, AccessMode accessMode);
-
-    /**
      * Logs the given versions. This produces a log record for each combination of a node (either an internal node
      * or a leaf) in the structure that underlies the versions and a symbol that was recorded for that node.
      * Each log record logs the path in the structure tree, the symbol and the values for that combination

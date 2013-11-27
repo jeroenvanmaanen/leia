@@ -1,5 +1,8 @@
 package org.leialearns.logic.interaction;
 
+import org.leialearns.enumerations.AccessMode;
+import org.leialearns.enumerations.ModelType;
+import org.leialearns.logic.model.Version;
 import org.leialearns.logic.structure.Structure;
 
 /**
@@ -44,5 +47,16 @@ public interface InteractionContext extends Comparable<InteractionContext> {
      * @return An iterable of directed symbols that corresponds to the given strings
      */
     DirectedSymbol.Iterable createPath(String... path);
+
+    /**
+     * Returns all versions of the given model type and with the given access mode. The versions are returned
+     * in order of ascending ordinals.
+     * @param minOrdinal The minimum for the ordinals of the returned versions
+     * @param maxOrdinal The maximum for the ordinals of the returned versions
+     * @param modelType The model type of the requested versions
+     * @param accessMode The access model of the requested versions
+     * @return All versions that match the parameters
+     */
+    Version.Iterable findVersionsInRange(long minOrdinal, long maxOrdinal, ModelType modelType, AccessMode accessMode);
 
 }

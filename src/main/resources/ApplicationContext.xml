@@ -83,6 +83,7 @@
         <constructor-arg>
             <array>
                 <ref bean="interactionContextDAO"/>
+                <ref bean="versionDAO"/>
             </array>
         </constructor-arg>
     </bean>

@@ -2,6 +2,7 @@ package org.leialearns.command.minimizer;
 
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
+import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.interaction.Symbol;
 import org.leialearns.logic.model.Counter;
 import org.leialearns.logic.model.DeltaDiff;
@@ -40,7 +41,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 public class Minimizer implements org.leialearns.command.api.Minimizer {
     public static final double LOG_2 = Math.log(2.0);
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private final Setting<String> interactionContextUri = new Setting<String>("Interaction context URI");
+    private final Setting<String> interactionContextUri = new Setting<>("Interaction context URI");
 
     @Autowired
     private Root root;
@@ -88,7 +89,7 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
         Structure structure = session.getInteractionContext().getStructure();
         Node.Iterable rootNodes = structure.findRootNodes();
         DeltaDiff.Map deltaDiffMap = createHashDeltaDiffMap();
-        getDeltaDiff(deltaDiffMap, session, observed, expectedModel);
+        getDeltaDiff(deltaDiffMap, observed, expectedModel);
         if (logger.isDebugEnabled()) {
             observed.check(deltaDiffMap, expectedModel);
         }
@@ -111,7 +112,7 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
         DeltaDiff deltaDiff = deltaDiffMap.get(node);
         int depth = node.getDepth();
 
-        boolean nowIncluded = depth == 1 || expectedModel.isIncluded(node, context.session);
+        boolean nowIncluded = depth == 1 || expectedModel.isIncluded(node);
         Node subIncludedAncestor;
         Histogram observedHistogram = null;
         Histogram deltaBase = null;
@@ -174,7 +175,7 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
                     logger.debug("Apply delta change: " + a + ": " + aDeltaDiff);
                     deltaChange.modify(operator, aDeltaDiff);
                     logger.debug("Applied delta change: " + a + ": " + aDeltaDiff);
-                } while (!expectedModel.isIncluded(a, context.session));
+                } while (!expectedModel.isIncluded(a));
 
                 if (logger.isTraceEnabled()) {
                     observed.check(deltaDiffMap, toggled);
@@ -294,14 +295,14 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
     }
 
     protected Collection<Symbol> getSymbols(Histogram histogram) {
-        Collection<Symbol> result = new HashSet<Symbol>();
+        Collection<Symbol> result = new HashSet<>();
         for (Counter counter : histogram.getCounters()) {
             result.add(counter.getSymbol());
         }
         return result;
     }
 
-    protected void getDeltaDiff(DeltaDiff.Map deltaDiffMap, Session session, Observed observed, ExpectedModel expectedModel) {
+    protected void getDeltaDiff(DeltaDiff.Map deltaDiffMap, Observed observed, ExpectedModel expectedModel) {
         Toggled oldToggled = observed.getToggled();
         Toggled newToggled;
         if (expectedModel instanceof Expected) {
@@ -317,8 +318,9 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
             long oldToggledOrdinal = getVersionOrdinal("Old toggled", oldToggled);
             long newToggledOrdinal = getVersionOrdinal("New toggled", newToggled);
             logger.debug("Range: " + oldToggledOrdinal + "..." + newToggledOrdinal + "{");
-            Version.Iterable versions = session.findVersionsInRange(oldToggledOrdinal, newToggledOrdinal, ModelType.TOGGLED, AccessMode.READABLE);
-            Map<Node,Toggled> toggledNodes = new LinkedHashMap<Node,Toggled>(16, 0.75f, true);
+            InteractionContext context = observed.getVersion().getInteractionContext();
+            Version.Iterable versions = context.findVersionsInRange(oldToggledOrdinal, newToggledOrdinal, ModelType.TOGGLED, AccessMode.READABLE);
+            Map<Node,Toggled> toggledNodes = new LinkedHashMap<>(16, 0.75f, true);
             for (Version version : versions) {
                 Toggled toggled = version.findToggledVersion();
                 if (toggled == null) {
@@ -332,8 +334,8 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
             for (Toggled toggled : toggledNodes.values()) {
                 logger.debug("  Toggled: " + toggled);
                 Node node = toggled.getNode();
-                boolean wasIncluded = oldExpectedModel.isIncluded(node, session);
-                boolean isIncluded = expectedModel.isIncluded(node, session);
+                boolean wasIncluded = oldExpectedModel.isIncluded(node);
+                boolean isIncluded = expectedModel.isIncluded(node);
                 if (isIncluded != wasIncluded) {
                     logger.debug("  " + wasIncluded + " -> " + isIncluded);
                     DeltaDiff mutation = createDeltaDiff(node, observed, "mutation");
@@ -341,7 +343,7 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
                     mutation.add(observed.createHistogram(node));
                     mutation.subtract(observed.createDeltaHistogram(node));
                     operator = DeltaDiff.getOperatorAdd(isIncluded);
-                    add(deltaDiffMap, observed, node.getParent(), expectedModel, mutation, operator, session);
+                    add(deltaDiffMap, observed, node.getParent(), expectedModel, mutation, operator);
                 }
             }
             logger.debug("}");
@@ -355,12 +357,12 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
         }
     }
 
-    protected void add(DeltaDiff.Map deltaDiffMap, Observed observed, Node node, ExpectedModel expectedModel, DeltaDiff mutation, DeltaDiff.Operator operator, Session session) {
+    protected void add(DeltaDiff.Map deltaDiffMap, Observed observed, Node node, ExpectedModel expectedModel, DeltaDiff mutation, DeltaDiff.Operator operator) {
         if (node != null) {
-            if (expectedModel.isIncluded(node, session)) {
+            if (expectedModel.isIncluded(node)) {
                 add(deltaDiffMap, observed, node.getParent());
             } else {
-                add(deltaDiffMap, observed, node.getParent(), expectedModel, mutation, operator, session);
+                add(deltaDiffMap, observed, node.getParent(), expectedModel, mutation, operator);
             }
             DeltaDiff deltaDiff = createDeltaDiff(deltaDiffMap, node, observed);
             logger.debug("  Mutation: " + mutation);

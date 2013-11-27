@@ -151,8 +151,7 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
         return candidate;
     }
 
-    public TypedIterable<VersionDTO> findVersionsInRange(final SessionDTO owner, long minOrdinal, long maxOrdinal, ModelType modelType, AccessMode accessMode) {
-        InteractionContextDTO interactionContext = owner.getInteractionContext();
+    public TypedIterable<VersionDTO> findVersionsInRange(InteractionContextDTO interactionContext, long minOrdinal, long maxOrdinal, ModelType modelType, AccessMode accessMode) {
         logRange(interactionContext, minOrdinal, maxOrdinal);
 
         Set<VersionDTO> result;
@@ -161,14 +160,7 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
         } else {
             result = versionRepository.findRange(interactionContext, minOrdinal, maxOrdinal, modelType.toChar(), accessMode.toChar());
         }
-        return new TransformingIterable<>(result, VersionDTO.class, new Function<Object, VersionDTO>() {
-            @Override
-            public VersionDTO get(Object x) {
-                VersionDTO result = (VersionDTO) x;
-                result.setOwner(owner);
-                return result;
-            }
-        });
+        return new TypedIterable<>(result, VersionDTO.class);
     }
 
     protected void logRange(InteractionContextDTO context, long minOrdinal, long maxOrdinal) {

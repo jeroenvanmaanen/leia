@@ -17,7 +17,7 @@ public interface ExpectedModel extends TypedVersionExtension {
         }
 
         @Override
-        public boolean isIncluded(Node node, Session session) {
+        public boolean isIncluded(Node node) {
             return false;
         }
 
@@ -41,7 +41,7 @@ public interface ExpectedModel extends TypedVersionExtension {
             return "[ExpectedModel.EMPTY]";
         }
     };
-    boolean isIncluded(Node node, Session session);
+    boolean isIncluded(Node node);
     Expectation getExpectation(Node node);
     Observed getObserved();
     void setObserved(Observed observed);

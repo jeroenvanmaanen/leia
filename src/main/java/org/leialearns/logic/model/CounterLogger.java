@@ -101,7 +101,7 @@ public class CounterLogger {
             if (data.containsKey(path)) {
                 pathValues = data.get(path);
             } else {
-                pathValues = new TreeMap<String, Counter[]>();
+                pathValues = new TreeMap<>();
                 data.put(path, pathValues);
             }
             String symbol = show(counter.getSymbol().getDenotation());
@@ -189,7 +189,7 @@ public class CounterLogger {
                     messageBuilder.append(value);
                 }
                 if (note != null) {
-                    messageBuilder.append(note.get(new Pair<Node, Symbol>(node, symbolObject)));
+                    messageBuilder.append(note.get(new Pair<>(node, symbolObject)));
                 }
                 logger.info(messageBuilder.toString());
             }
@@ -236,8 +236,8 @@ public class CounterLogger {
         public String get(Pair<Node,Symbol> pair) {
             Node node = pair.getLeft();
             Symbol symbol = pair.getRight();
-            boolean isIncluded = expectedModel.isIncluded(node, session);
-            String result = " (i:" + expectedModel.isIncluded(node, session) + ")";
+            boolean isIncluded = expectedModel.isIncluded(node);
+            String result = " (i:" + expectedModel.isIncluded(node) + ")";
             if (isIncluded) {
                 Expectation expectation = expectedModel.getExpectation(node);
                 if (expectation == null) {

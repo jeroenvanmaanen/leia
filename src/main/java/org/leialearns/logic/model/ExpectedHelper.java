@@ -5,10 +5,10 @@ import org.leialearns.logic.structure.Node;
 
 public class ExpectedHelper {
 
-    public boolean isIncluded(Expected expected, Node node, Session session) {
+    public boolean isIncluded(Expected expected, Node node) {
         // todo: define self-contained implementation
         Toggled toggled = expected.getToggled();
-        return toggled != null && toggled.isIncluded(node, session);
+        return toggled != null && toggled.isIncluded(node);
     }
 
 }

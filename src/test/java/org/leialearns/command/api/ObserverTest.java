@@ -24,7 +24,6 @@ import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TestUtilities;
 import org.leialearns.utilities.TransactionHelper;
 import org.leialearns.utilities.TypedIterable;
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +50,8 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 public class ObserverTest {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Fan MISSING_FAN = new Fan(false, new ArrayList<Node>());
-    private final Setting<String> interactionContextUri = new Setting<String>("Interaction context URI");
-    private final Setting<Session> session = new Setting<Session>("Session", new Expression<Session>() {
+    private final Setting<String> interactionContextUri = new Setting<>("Interaction context URI");
+    private final Setting<Session> session = new Setting<>("Session", new Expression<Session>() {
         @Override
         public Session get() {
             return createSession();
@@ -92,10 +91,10 @@ public class ObserverTest {
     @Test
     public void testObserver() {
         logger.info("Start test");
-        final Setting<Session> session = new Setting<Session>("Session");
+        final Setting<Session> session = new Setting<>("Session");
         final Counted[] counted = new Counted[3];
         final Toggled[] toggled = new Toggled[3];
-        final Collection<TypedVersionExtension> registry = new ArrayList<TypedVersionExtension>();
+        final Collection<TypedVersionExtension> registry = new ArrayList<>();
         try {
             transactionHelper.runInTransaction(new Runnable() {
                 @Override
@@ -184,7 +183,7 @@ public class ObserverTest {
     protected int getCovered(ExpectedModel expectedModel, Node node) {
         int result = 0;
         for (Node child : node.findChildren()) {
-            boolean childIncluded = expectedModel.isIncluded(child, getSession());
+            boolean childIncluded = expectedModel.isIncluded(child);
             logger.trace("Is included: " + child + ": " + childIncluded);
             if (childIncluded) {
                 result |= 0x06;
@@ -238,14 +237,14 @@ public class ObserverTest {
         Node excludedCovered = null;
         Node includedBare = null;
         Node includedCovered = null;
-        List<Node> padding = new ArrayList<Node>();
+        List<Node> padding = new ArrayList<>();
         boolean resultComplete = false;
         for (Node child : parent.findChildren()) {
             int covered = getCovered(expectedModel, child);
             if ((covered & 0x03) != 0x03) {
                 continue;
             }
-            if (expectedModel.isIncluded(child, getSession())) {
+            if (expectedModel.isIncluded(child)) {
                 if ((covered & 0x04) == 0x04) {
                     includedCovered = addToStump(includedCovered, child, padding);
                 } else {
@@ -263,7 +262,7 @@ public class ObserverTest {
                 break;
             }
         }
-        List<Node> result = new ArrayList<Node>();
+        List<Node> result = new ArrayList<>();
         logger.trace("Padding size: " + padding.size());
         Iterator<Node> paddingIterator = padding.iterator();
         do {
@@ -318,7 +317,7 @@ public class ObserverTest {
     protected void countChildren(ExpectedModel expectedModel, Node node, int[] counters) {
         for (Node child : node.findChildren()) {
             counters[0] += 1;
-            if (expectedModel.isIncluded(child, getSession())) {
+            if (expectedModel.isIncluded(child)) {
                 counters[1] += 1;
             }
             countChildren(expectedModel, child, counters);
@@ -394,7 +393,7 @@ public class ObserverTest {
         if (common != null) {
             common = common.getParent();
         }
-        if (common != null && !expectedModel.isIncluded(common, session)) {
+        if (common != null && !expectedModel.isIncluded(common)) {
             expectedModel = registerReadable(registry, session.createToggledVersion(common, true));
         }
 
@@ -424,7 +423,7 @@ public class ObserverTest {
             Node n = node;
             while (n != null) {
                 builder.append(' ');
-                builder.append(expectedModel.isIncluded(n, getSession()) ? '+' : '-');
+                builder.append(expectedModel.isIncluded(n) ? '+' : '-');
                 n = n.getParent();
             }
             int[] counters = new int[] { 0, 0 };
