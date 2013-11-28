@@ -8,7 +8,7 @@ import org.leialearns.utilities.Setting;
  */
 public class BaseBridgeFacet implements GenericBridgeFacet {
 
-    private final Setting<BridgeFacets> facets = new Setting<BridgeFacets>("Facets");
+    private final Setting<BridgeFacets> facets = new Setting<>("Facets");
 
     @Override
     public void setBridgeFacets(BridgeFacets facets) {

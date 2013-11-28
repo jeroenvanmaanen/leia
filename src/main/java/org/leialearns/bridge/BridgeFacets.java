@@ -11,7 +11,7 @@ import java.util.Map;
  * Composes the near object, the far object, and intermediate stateful helpers that together comprise a bridge instance.
  */
 public class BridgeFacets {
-    private Setting<Object> nearObject = new Setting<Object>("Near Object", new Expression<Object>() {
+    private Setting<Object> nearObject = new Setting<>("Near Object", new Expression<Object>() {
         @Override
         public Object get() {
             return bridgeFactory.getNearObject(farObject);
@@ -75,6 +75,7 @@ public class BridgeFacets {
         return helpers.get(i);
     }
 
+    /*
     public <T> T getHelper(Class<T> type) {
         T result = null;
         for (Object helper : helpers.values()) {
@@ -89,9 +90,10 @@ public class BridgeFacets {
     /**
      * Returns the <code>BridgeFactory</code> associated with this bridge instance.
      * @return The <code>BridgeFactory</code> associated with this bridge instance
-     */
+     *!/
     public BridgeFactory getBridgeFactory() {
         return bridgeFactory;
     }
+    */
 
 }

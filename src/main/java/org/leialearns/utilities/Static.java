@@ -99,7 +99,7 @@ public class Static {
     }
 
     public static <T> List<T> toList(TypedIterable<T> iterable) {
-        List<T> result = new ArrayList<T>();
+        List<T> result = new ArrayList<>();
         for (T item : iterable) {
             result.add(item);
         }

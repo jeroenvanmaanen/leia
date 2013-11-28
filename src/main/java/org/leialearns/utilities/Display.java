@@ -112,7 +112,7 @@ public class Display {
      */
     public static String displayWithTypes(Object object) {
         StringBuilder builder = new StringBuilder();
-        displayRecursive(object, builder, new Stack<Object>(), true);
+        displayRecursive(object, builder, new Stack<>(), true);
         return builder.toString();
     }
 
@@ -131,7 +131,7 @@ public class Display {
      */
     public static String display(Object object) {
         StringBuilder builder = new StringBuilder();
-        displayRecursive(object, builder, new Stack<Object>(), false);
+        displayRecursive(object, builder, new Stack<>(), false);
         return builder.toString();
     }
 
@@ -214,7 +214,7 @@ public class Display {
             builder.append(iterable.getClass().getSimpleName());
             if (iterable instanceof TypedIterable) {
                 builder.append('[');
-                displayRecursive(((TypedIterable<?>) iterable).getType(), builder, new Stack<Object>(), showTypes);
+                displayRecursive(((TypedIterable<?>) iterable).getType(), builder, new Stack<>(), showTypes);
                 builder.append(']');
             }
             builder.append('>');

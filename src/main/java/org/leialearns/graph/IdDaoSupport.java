@@ -4,8 +4,7 @@ import org.leialearns.bridge.FarObject;
 import org.leialearns.utilities.ExceptionWrapper;
 import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.cypher.javacompat.ExecutionResult;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
+// import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,9 +34,6 @@ public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
     }
 
     @Autowired
-    protected GraphDatabaseService graphDatabaseService;
-
-    @Autowired
     private ExecutionEngine executionEngine;
 
     public static String toID(String label, HasId object) {
@@ -53,9 +49,11 @@ public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
         return linkTo(sourceNode.getId(), linkType, targetNode.getId());
     }
 
+    /*
     protected Relationship linkTo(Node sourceNode, String linkType, Node targetNode) {
         return linkTo(sourceNode.getId(), linkType, targetNode.getId());
     }
+    */
 
     protected Relationship linkTo(Long sourceNodeId, String linkType, Long targetNodeId) {
         String cypher =
@@ -90,11 +88,13 @@ public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
         return repository.query(query, createParameterMap(parameters)).singleOrNull();
     }
 
+    /*
     protected <T>  T findFirst(Class<T> type, String query, Object... parameters) {
         ExecutionResult result = getExecutionEngine().execute(query, createParameterMap(parameters));
         String column = result.columns().iterator().next();
         return type.cast(result.columnAs(column).next());
     }
+    */
 
     protected Map<String, Object> createParameterMap(Object[] parameters) {
         Map<String,Object> parameterMap = new HashMap<>();

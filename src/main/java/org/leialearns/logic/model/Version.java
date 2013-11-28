@@ -1,7 +1,7 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.enumerations.AccessMode;
-import org.leialearns.enumerations.AgentMode;
+// import org.leialearns.enumerations.AgentMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.interaction.Symbol;
@@ -9,7 +9,7 @@ import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.bridge.NearIterable;
 
-import java.util.Collection;
+// import java.util.Collection;
 
 public interface Version extends Comparable<Version> {
     Long getOrdinal();
@@ -21,10 +21,14 @@ public interface Version extends Comparable<Version> {
     void waitForLock(Session session) throws InterruptedException;
     InteractionContext getInteractionContext();
     Session getOwner();
+
+    /*
     Collection<Session> getWriters();
     Collection<Session> getReaders();
     void registerWriter(Session writer, AgentMode agentMode);
     void registerReader(Session reader, AgentMode agentMode);
+    */
+
     Counted createCountedVersion();
     Observed createObservedVersion();
     Expected createExpectedVersion();

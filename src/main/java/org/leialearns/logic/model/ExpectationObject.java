@@ -2,6 +2,7 @@ package org.leialearns.logic.model;
 
 import org.leialearns.logic.interaction.Symbol;
 import org.leialearns.logic.session.Root;
+import org.leialearns.logic.structure.Node;
 import org.leialearns.logic.utilities.DescriptionLength;
 import org.leialearns.utilities.Expression;
 import org.leialearns.utilities.Setting;
@@ -44,7 +45,9 @@ public class ExpectationObject extends BaseDistribution implements Expectation {
 
     @Override
     public void retrieve() {
-        Estimate.Iterable estimates = getVersion().findEstimates(getNode());
+        Node node = getNode();
+        logger.debug("Retrieve estimates for: {}", node);
+        Estimate.Iterable estimates = getVersion().findEstimates(node);
         fractions.clear();
         for (Estimate estimate : estimates) {
             fractions.put(estimate.getSymbol(), estimate.getFraction());

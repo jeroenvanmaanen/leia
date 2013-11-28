@@ -3,7 +3,6 @@ package org.leialearns.bridge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,11 +18,11 @@ import static org.leialearns.utilities.Static.getLoggingClass;
  */
 public class BridgeHeadTypeRegistry {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private final Map<Class<?>,Class<?>> nearToFarType = new HashMap<Class<?>, Class<?>>();
-    private final Map<Class<?>,Class<?>> farToNearType = new HashMap<Class<?>, Class<?>>();
-    private final Map<Class<?>,BridgeFactory> nearTypeToFactory = new HashMap<Class<?>, BridgeFactory>();
-    private final Map<Class<?>,BridgeFactory> farTypeToFactory = new HashMap<Class<?>, BridgeFactory>();
-    private final Map<Class<?>,Collection<FactoryAccessor<?>>> accessors = new HashMap<Class<?>, Collection<FactoryAccessor<?>>>();
+    private final Map<Class<?>,Class<?>> nearToFarType = new HashMap<>();
+    private final Map<Class<?>,Class<?>> farToNearType = new HashMap<>();
+    private final Map<Class<?>,BridgeFactory> nearTypeToFactory = new HashMap<>();
+    private final Map<Class<?>,BridgeFactory> farTypeToFactory = new HashMap<>();
+    private final Map<Class<?>,Collection<FactoryAccessor<?>>> accessors = new HashMap<>();
 
     /**
      * Creates a new <code>BridgeHeadTypeRegistry</code> instance. The new instance makes itself known to
@@ -122,7 +121,7 @@ public class BridgeHeadTypeRegistry {
             if (accessors.containsKey(nearType)) {
                 typedAccessors = accessors.get(nearType);
             } else {
-                typedAccessors = new ArrayList<FactoryAccessor<?>>();
+                typedAccessors = new ArrayList<>();
                 accessors.put(nearType, typedAccessors);
             }
             typedAccessors.add(accessor);

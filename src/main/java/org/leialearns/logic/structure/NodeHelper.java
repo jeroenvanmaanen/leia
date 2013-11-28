@@ -1,5 +1,7 @@
 package org.leialearns.logic.structure;
 
+import org.leialearns.bridge.BridgeOverride;
+
 import static org.leialearns.utilities.Static.equal;
 
 /**
@@ -10,6 +12,7 @@ public class NodeHelper {
     /**
      * <em>See {@link Node#isPrefixOf(Node)}.</em>
      */
+    @BridgeOverride
     public boolean isPrefixOf(Node node, Node other) {
         boolean result;
         if (other.getDepth() < node.getDepth()) {

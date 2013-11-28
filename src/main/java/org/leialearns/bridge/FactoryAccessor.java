@@ -15,7 +15,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 public class FactoryAccessor<NT> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Class<NT> nearType;
-    private Setting<BridgeFactory> factorySetting = new Setting<BridgeFactory>("Bridge Factory");
+    private Setting<BridgeFactory> factorySetting = new Setting<>("Bridge Factory");
 
     /**
      * Creates a new <code>FactoryAccessor</code> instance for the given near type.

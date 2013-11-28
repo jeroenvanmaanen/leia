@@ -38,7 +38,4 @@ public interface AlphabetRepository extends GraphRepository<AlphabetDTO> {
     @Query("START alphabet=node({0}) MATCH last-[:NEXT_WORD]->alphabet RETURN coalesce(last.ordinal?, -1)")
     Long findLargestSymbolOrdinal(AlphabetDTO alphabet);
 
-    @Query("START alphabet=node RETURN alphabet")
-    Set<AlphabetDTO> findAllAlphabets();
-
 }

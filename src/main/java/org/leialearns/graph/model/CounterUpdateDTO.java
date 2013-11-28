@@ -1,5 +1,6 @@
 package org.leialearns.graph.model;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.logic.model.CounterUpdate;
 
@@ -18,6 +19,7 @@ public class CounterUpdateDTO implements FarObject<CounterUpdate> {
         return counter;
     }
 
+    @BridgeOverride
     public long getAmount() {
         return amount;
     }

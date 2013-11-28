@@ -26,8 +26,8 @@ public interface EstimateRepository extends GraphRepository<EstimateDTO> {
     Set<NodeDTO> findEstimateNodes(VersionDTO version);
 
     @Query("START version = node({0}), node = node({1})" +
-            " MATCH version<-[:FOR_VERSION]-estimate-[:FOR_NODE]->node" +
-            " DELETE estimate" +
+            " MATCH version<-[v:FOR_VERSION]-estimate-[n:FOR_NODE]->node, symbol<-[s:FOR_SYMBOL]-estimate-[f:HAS_FRACTION]->fraction" +
+            " DELETE v, n, s, f, estimate" +
             " RETURN count(estimate)")
     Integer deleteEstimates(VersionDTO version, NodeDTO node);
 

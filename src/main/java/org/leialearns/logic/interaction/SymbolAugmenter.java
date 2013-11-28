@@ -1,6 +1,7 @@
 package org.leialearns.logic.interaction;
 
 import org.leialearns.bridge.BaseBridgeFacet;
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.logic.utilities.DescriptionLength;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ public class SymbolAugmenter extends BaseBridgeFacet {
     /**
      * @see org.leialearns.logic.interaction.Symbol#descriptionLength()
      */
+    @BridgeOverride
     public long descriptionLength() {
         Symbol symbol = (Symbol) getBridgeFacets().getNearObject();
         Alphabet alphabet = symbol.getAlphabet();

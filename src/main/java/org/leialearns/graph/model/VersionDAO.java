@@ -1,13 +1,12 @@
 package org.leialearns.graph.model;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.interaction.InteractionContextRepository;
 import org.leialearns.graph.session.SessionDTO;
-import org.leialearns.utilities.Function;
-import org.leialearns.utilities.TransformingIterable;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,12 +54,14 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
         return result;
     }
 
+    @BridgeOverride
     public VersionDTO findVersion(SessionDTO owner, long ordinal) {
         InteractionContextDTO context = owner.getInteractionContext();
         logger.debug("Find version: {}.#{}", owner, ordinal);
         return versionRepository.findByContextAndOrdinal(context, ordinal);
     }
 
+    @BridgeOverride
     public VersionDTO findExpected(CountedDTO counted) {
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
@@ -151,6 +152,7 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
         return candidate;
     }
 
+    @BridgeOverride
     public TypedIterable<VersionDTO> findVersionsInRange(InteractionContextDTO interactionContext, long minOrdinal, long maxOrdinal, ModelType modelType, AccessMode accessMode) {
         logRange(interactionContext, minOrdinal, maxOrdinal);
 
@@ -174,6 +176,7 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
         }
     }
 
+    @BridgeOverride
     public VersionDTO findOrCreateLastVersion(SessionDTO owner, ModelType modelType, AccessMode accessMode) {
         VersionDTO result = findLastVersion(owner, modelType, accessMode);
         if (result == null) {
@@ -214,6 +217,7 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
         return toggledDAO.find(version);
     }
 
+    @BridgeOverride
     public void waitForLock(VersionDTO versionDTO, SessionDTO session) throws InterruptedException {
         setAccessMode(versionDTO, AccessMode.LOCKING, session);
         long nextTime = new Date().getTime() + versionDTO.getLogInterval();

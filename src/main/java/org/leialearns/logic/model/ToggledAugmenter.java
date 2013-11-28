@@ -1,10 +1,10 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.bridge.BaseBridgeFacet;
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.interaction.InteractionContext;
-import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.utilities.Expression;
 import org.leialearns.utilities.Setting;
@@ -17,8 +17,7 @@ public class ToggledAugmenter extends BaseBridgeFacet {
     private Setting<Toggled> toggled = new Setting<>("Toggled", new Expression<Toggled>() {
         @Override
         public Toggled get() {
-            Toggled toggled = (Toggled) getBridgeFacets().getNearObject();
-            return toggled;
+            return (Toggled) getBridgeFacets().getNearObject();
         }
     });
     private Setting<Map<Node, Boolean>> includedFlags = new Setting<>("Included flags", new Expression<Map<Node, Boolean>>() {
@@ -45,6 +44,7 @@ public class ToggledAugmenter extends BaseBridgeFacet {
         }
     });
 
+    @BridgeOverride
     public boolean isIncluded(Node node) {
         Boolean result = includedFlags.get().get(node);
         if (result == null) {

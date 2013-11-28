@@ -1,5 +1,6 @@
 package org.leialearns.graph.model;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.graph.IdDaoSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ public class ExpectedDAO extends IdDaoSupport<ExpectedDTO> {
         return saved;
     }
 
+    @BridgeOverride
     public ExpectedDTO createExpectedVersion(VersionDTO version) {
         ExpectedDTO result = find(version);
         if (result == null) {

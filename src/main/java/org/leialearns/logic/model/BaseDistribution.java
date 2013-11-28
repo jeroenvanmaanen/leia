@@ -8,15 +8,15 @@ import static org.leialearns.utilities.Display.displayParts;
 import static org.leialearns.utilities.L.literal;
 
 public abstract class BaseDistribution implements Distribution {
-    private final Setting<Version> version = new Setting<Version>("Version");
-    private final Setting<Node> node = new Setting<Node>("Node");
-    private final Setting<Boolean> persistent = new Setting<Boolean>("Persistent", new Expression<Boolean>() {
+    private final Setting<Version> version = new Setting<>("Version");
+    private final Setting<Node> node = new Setting<>("Node");
+    private final Setting<Boolean> persistent = new Setting<>("Persistent", new Expression<Boolean>() {
         @Override
         public Boolean get() {
             return version.isFixated();
         }
     });
-    private final Setting<String> label = new Setting<String>("Label", "?");
+    private final Setting<String> label = new Setting<>("Label", "?");
 
     @Override
     public void setNode(Node node) {

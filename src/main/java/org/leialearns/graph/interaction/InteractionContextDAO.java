@@ -1,5 +1,6 @@
 package org.leialearns.graph.interaction;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.structure.StructureDAO;
@@ -31,10 +32,6 @@ public class InteractionContextDAO extends IdDaoSupport<InteractionContextDTO> {
 
     @Autowired
     private StructureDAO structureDAO;
-
-    public TypedIterable<InteractionContextDTO> findAll() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
-    }
 
     public InteractionContextDTO find(String uri) {
         InteractionContextDTO result = repository.getInteractionContextByUri(uri);
@@ -88,29 +85,18 @@ public class InteractionContextDAO extends IdDaoSupport<InteractionContextDTO> {
         return result;
     }
 
-    public void setActions(InteractionContextDTO interactionContextDTO, AlphabetDTO actions) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
-    }
-
-    public void setResponses(InteractionContextDTO interactionContextDTO, AlphabetDTO responses) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
-    }
-
+    @BridgeOverride
     public TypedIterable<DirectedSymbolDTO> createPath(InteractionContextDTO interactionContext, String... path) {
-        Map<Direction,AlphabetDTO> map = new HashMap<Direction,AlphabetDTO>();
+        Map<Direction,AlphabetDTO> map = new HashMap<>();
         map.put(Direction.ACTION, interactionContext.getActions());
         map.put(Direction.RESPONSE, interactionContext.getResponses());
-        List<DirectedSymbolDTO> result = new ArrayList<DirectedSymbolDTO>();
+        List<DirectedSymbolDTO> result = new ArrayList<>();
         for (String denotation : path) {
             Direction direction = Direction.valueOf(denotation.charAt(0));
             SymbolDTO symbol = alphabetDAO.internalize(map.get(direction), denotation.substring(1));
             result.add(symbol.createDirectedSymbol(direction));
         }
-        return new TypedIterable<DirectedSymbolDTO>(result, DirectedSymbolDTO.class);
-    }
-
-    public void save(AlphabetDTO alphabet) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+        return new TypedIterable<>(result, DirectedSymbolDTO.class);
     }
 
     public boolean equals(InteractionContextDTO interactionContext, Object other) {

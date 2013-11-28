@@ -1,8 +1,9 @@
 package org.leialearns.graph.model;
 
 import org.leialearns.bridge.BaseBridgeFacet;
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.enumerations.AccessMode;
-import org.leialearns.enumerations.AgentMode;
+// import org.leialearns.enumerations.AgentMode;
 import org.leialearns.graph.HasId;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.session.SessionDTO;
@@ -11,15 +12,15 @@ import org.leialearns.logic.model.Version;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.utilities.ExceptionWrapper;
 import org.leialearns.utilities.Setting;
-import org.leialearns.utilities.TypedIterable;
+// import org.leialearns.utilities.TypedIterable;
 import org.neo4j.graphdb.Direction;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+// import java.util.HashMap;
+// import java.util.Map;
 
 import static org.leialearns.graph.IdDaoSupport.toID;
 import static org.leialearns.utilities.Display.display;
@@ -28,7 +29,7 @@ import static org.leialearns.utilities.Static.equal;
 
 @NodeEntity
 public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, FarObject<Version> {
-    private final transient Setting<Long> logInterval = new Setting<Long>("Log interval", 5 * 60 * 1000L);
+    private final transient Setting<Long> logInterval = new Setting<>("Log interval", 5 * 60 * 1000L);
 
     @GraphId
     private Long id;
@@ -43,8 +44,10 @@ public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, 
     private Character modelTypeFlag;
     private Character accessModeFlag;
 
-    private transient Map<Long,SessionDTO> readers = new HashMap<Long,SessionDTO>();
-    private transient Map<Long,SessionDTO> writers = new HashMap<Long,SessionDTO>();
+    /*
+    private transient Map<Long,SessionDTO> readers = new HashMap<>();
+    private transient Map<Long,SessionDTO> writers = new HashMap<>();
+    */
 
     public Long getOrdinal() {
         return ordinal;
@@ -73,6 +76,7 @@ public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, 
         modelTypeFlag = modelType.toChar();
     }
 
+    @BridgeOverride
     public void setModelTypeFlag(char modelTypeFlag) {
         ModelType modelType = ModelType.valueOf(modelTypeFlag);
         if (modelType == null) {
@@ -89,6 +93,7 @@ public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, 
         accessModeFlag = accessMode.toChar();
     }
 
+    @BridgeOverride
     public void setAccessModeFlag(char accessModeFlag) {
         AccessMode accessMode = AccessMode.valueOf(accessModeFlag);
         if (accessMode == null) {
@@ -113,6 +118,7 @@ public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, 
         this.owner = owner;
     }
 
+    /*
     public TypedIterable<SessionDTO> getWriters() {
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
@@ -128,6 +134,7 @@ public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, 
     public void registerReader(SessionDTO reader, AgentMode agentMode) {
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
+    */
 
     public Long getLogInterval() {
         return logInterval.get();

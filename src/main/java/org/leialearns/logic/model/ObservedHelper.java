@@ -1,5 +1,6 @@
 package org.leialearns.logic.model;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.interaction.InteractionContext;
@@ -28,20 +29,23 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 public class ObservedHelper {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 
+    @BridgeOverride
     public Histogram createTransientHistogram(Observed observed, String label) {
         Histogram result = createTransientHistogram(observed);
         result.setLabel(label);
         return result;
     }
 
-    public Histogram createTransientHistogram(Observed observed) {
+    public Histogram createTransientHistogram(@SuppressWarnings("unused") Observed observed) {
         return createHistogram();
     }
 
+    @BridgeOverride
     public Histogram createHistogram(Observed observed, Node node) {
         return createHistogram(observed.getVersion(), node, "Observed");
     }
 
+    @BridgeOverride
     public Histogram createDeltaHistogram(Observed observed, Node node) {
         return createHistogram(observed.getDeltaVersion(), node, "Delta");
     }
@@ -76,6 +80,7 @@ public class ObservedHelper {
         return new HistogramObject();
     }
 
+    @BridgeOverride
     public ExpectedModel getExpectedModel(Observed observed) {
         ExpectedModel result;
         Expected expected = observed.getExpected();
@@ -90,6 +95,7 @@ public class ObservedHelper {
         return result;
     }
 
+    @BridgeOverride
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public void updateCounters(Observed newObserved, Observed oldObserved) {
         logger.debug("Update counters: [" + oldObserved + "] -> [" + newObserved + "]");
@@ -134,6 +140,7 @@ public class ObservedHelper {
         }
     }
 
+    @BridgeOverride
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public void adjustDeltaForToggledNodes(Observed newObserved, Observed oldObserved) {
         logger.debug("Adjust delta for toggled nodes: [" + oldObserved + "] -> [" + newObserved + "]");
@@ -199,6 +206,7 @@ public class ObservedHelper {
         check(CheckMode.PARTIAL, newObserved);
     }
 
+    @BridgeOverride
     protected ExpectedModel findLastExpectedModelBefore(Version limit) {
         Version expectedVersion = limit.findLastBefore(ModelType.EXPECTED, AccessMode.READABLE);
         Version toggledVersion = limit.findLastBefore(ModelType.TOGGLED, AccessMode.READABLE);
@@ -233,15 +241,18 @@ public class ObservedHelper {
         }
     }
 
+    @BridgeOverride
     public void check(Observed observed) {
         check(CheckMode.FULL, observed);
     }
 
+    @BridgeOverride
     public void check(CheckMode mode, Observed observed) {
         ExpectedModel expectedModel = observed.getExpectedModel();
         check(mode, observed, null, expectedModel);
     }
 
+    @BridgeOverride
     public void check(Observed observed, DeltaDiff.Map deltaDiffMap, ExpectedModel expectedModel) {
         check(CheckMode.FULL, observed, deltaDiffMap, expectedModel);
     }
@@ -264,6 +275,7 @@ public class ObservedHelper {
         logger.debug("Observed model passed integrity check: " + observed + suffix);
     }
 
+    @SuppressWarnings("unused")
     protected void check(CheckMode mode, Node node, Observed observed) {
         ExpectedModel expectedModel = observed.getExpectedModel();
         check(mode, node, observed, null, expectedModel);

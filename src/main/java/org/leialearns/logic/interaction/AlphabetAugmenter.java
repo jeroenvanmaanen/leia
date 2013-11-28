@@ -1,6 +1,7 @@
 package org.leialearns.logic.interaction;
 
 import org.leialearns.bridge.BaseBridgeFacet;
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.utilities.Setting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +15,12 @@ import static org.leialearns.utilities.Static.getLoggingClass;
  */
 public class AlphabetAugmenter extends BaseBridgeFacet {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private Setting<Long> fixatedDescriptionLength = new Setting<Long>("Fixated description length");
+    private Setting<Long> fixatedDescriptionLength = new Setting<>("Fixated description length");
 
     /**
      * @see org.leialearns.logic.interaction.Alphabet#getFixatedDescriptionLength()
      */
+    @BridgeOverride
     public long getFixatedDescriptionLength() {
         Alphabet alphabet = getAlphabet();
         if (!alphabet.isFixated()) {

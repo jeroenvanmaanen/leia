@@ -19,14 +19,19 @@ public class ObjectCache<T> {
     }
 
     public T get(Object id) {
+        if (!(id instanceof Long)) {
+            throw new IllegalArgumentException("The id should have type Long: " + (id == null ? "null" : id.getClass().getSimpleName()));
+        }
         T result;
         if (cache.containsKey(id)) {
             result = cache.get(id);
         } else {
-            result = retrieve.get((Long) id);
+            Long key = (Long) id;
+            result = retrieve.get(key);
             if (result == null) {
                 throw new IllegalStateException("No object found for id: " + id + ": " + cacheId);
             }
+            cache.put(key, result);
         }
         return result;
     }

@@ -12,7 +12,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class HistogramObject extends BaseDistribution implements Histogram {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private final Map<Symbol, Counter> histogram = new HashMap<Symbol, Counter>();
+    private final Map<Symbol, Counter> histogram = new HashMap<>();
     private final Throwable origin;
     private HistogramTrace trace = null;
 
@@ -30,7 +30,7 @@ public class HistogramObject extends BaseDistribution implements Histogram {
 
     @Override
     public TypedIterable<Counter> getCounters() {
-        return new TypedIterable<Counter>(histogram.values(), Counter.class);
+        return new TypedIterable<>(histogram.values(), Counter.class);
     }
 
     public long getValue(Symbol symbol) {

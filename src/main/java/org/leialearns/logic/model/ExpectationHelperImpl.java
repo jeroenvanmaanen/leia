@@ -1,12 +1,10 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.logic.interaction.Symbol;
-import org.leialearns.logic.session.NeedsRoot;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.structure.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

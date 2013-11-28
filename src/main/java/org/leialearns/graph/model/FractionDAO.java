@@ -1,5 +1,6 @@
 package org.leialearns.graph.model;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.graph.session.RootDTO;
 import org.leialearns.logic.model.Fraction;
 import org.leialearns.utilities.TypedIterable;
@@ -19,10 +20,12 @@ public class FractionDAO {
     @Autowired
     private FractionEstimateRepository fractionEstimateRepository;
 
+    @BridgeOverride
     public TypedIterable<FractionBaseDTO> findFractions(RootDTO root) {
         return new TypedIterable<>(FractionBaseDTO.class, fractionOracleRepository.findAll());
     }
 
+    @BridgeOverride
     public FractionBaseDTO findFraction(RootDTO root, long index) {
         FractionBaseDTO result;
         result = fractionOracleRepository.findByIndex(index);
@@ -33,6 +36,7 @@ public class FractionDAO {
         return result;
     }
 
+    @BridgeOverride
     public FractionBaseDTO findOrCreateFraction(RootDTO root, Fraction fraction) {
         long index = fraction.getIndex();
         long numerator = fraction.getNumerator();
@@ -44,14 +48,15 @@ public class FractionDAO {
         return createFraction(root, index, numerator, denominator);
     }
 
+    @BridgeOverride
     public FractionBaseDTO createFraction(RootDTO root, long index, long numerator, long denominator) {
         FractionEstimateDTO fraction = new FractionEstimateDTO();
         fraction.setNumerator(numerator);
         fraction.setDenominator(denominator);
-        FractionBaseDTO result = fractionEstimateRepository.save(fraction);
-        return result;
+        return fractionEstimateRepository.save(fraction);
     }
 
+    @BridgeOverride
     public FractionBaseDTO createFraction(RootDTO root, long index, long numerator, long denominator, boolean inOracle) {
         FractionBaseDTO result;
         if (inOracle) {

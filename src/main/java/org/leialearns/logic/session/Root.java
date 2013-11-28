@@ -4,7 +4,6 @@ import org.leialearns.logic.interaction.Alphabet;
 import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.model.Expectation;
 import org.leialearns.logic.model.Fraction;
-import org.leialearns.logic.model.Histogram;
 
 /**
  * Defines the singleton that contains the objects that are at least partially persisted through the ORM framework,
@@ -59,6 +58,7 @@ public interface Root {
      * @param denominator The denominator of the new object
      * @return The new fraction object
      */
+    @SuppressWarnings("unused")
     Fraction createFraction(long index, long numerator, long denominator);
 
     /**
@@ -68,6 +68,7 @@ public interface Root {
      * @param denominator The denominator of the fraction
      * @return The requested fraction object
      */
+    @SuppressWarnings("unused")
     Fraction findOrCreateFraction(long index, long numerator, long denominator);
 
     /**

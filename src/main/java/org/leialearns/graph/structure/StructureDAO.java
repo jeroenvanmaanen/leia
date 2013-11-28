@@ -1,5 +1,6 @@
 package org.leialearns.graph.structure;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.interaction.SymbolDTO;
@@ -64,6 +65,7 @@ public class StructureDAO {
         }
     }
 
+    @BridgeOverride
     public NodeDTO findOrCreateNode(StructureDTO structure, TypedIterable<DirectedSymbolDTO> path) {
         logger.trace("Before find or create node");
         Iterator<DirectedSymbolDTO> it = path.iterator();
@@ -77,12 +79,14 @@ public class StructureDAO {
         return node;
     }
 
+    @BridgeOverride
     public NodeDTO findOrCreateNode(StructureDTO structure, SymbolDTO symbol, Direction direction) {
         List<DirectedSymbolDTO> empty = new ArrayList<>(0);
         TypedIterable<DirectedSymbolDTO> iterable = new TypedIterable<>(empty, DirectedSymbolDTO.class);
         return findOrCreateNode(structure, symbol.createDirectedSymbol(direction), iterable);
     }
 
+    @BridgeOverride
     public NodeDTO findOrCreateNode(StructureDTO structure, SymbolDTO action, TypedIterable<DirectedSymbolDTO> path) {
         return findOrCreateNode(structure, action.createDirectedSymbol(Direction.ACTION), path);
     }
@@ -107,6 +111,7 @@ public class StructureDAO {
         return node;
     }
 
+    @BridgeOverride
     public void logNodes(StructureDTO structure) {
         if (logger.isInfoEnabled()) {
             SortedSet<String> nodes = new TreeSet<>();

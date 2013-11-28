@@ -1,5 +1,6 @@
 package org.leialearns.graph.structure;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.interaction.SymbolDTO;
@@ -29,10 +30,12 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
         return new TypedIterable<>(nodeRepository.findNodesByStructure(structure), NodeDTO.class);
     }
 
+    @BridgeOverride
     public TypedIterable<NodeDTO> findRootNodes(StructureDTO structure) {
         return new TypedIterable<>(nodeRepository.findRootNodes(structure), NodeDTO.class);
     }
 
+    @BridgeOverride
     public TypedIterable<NodeDTO> findChildren(NodeDTO node) {
         return new TypedIterable<>(nodeRepository.findChildren(node), NodeDTO.class);
     }
@@ -97,6 +100,7 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
         return nodeRepository.getNodeByStructureAndPath(structure, path);
     }
 
+    @BridgeOverride
     public void markExtensible(StructureDTO structure, NodeDTO node) {
         if (!structure.equals(node.getStructure())) {
             throw new IllegalArgumentException("Node does not belong to this structure: [" + node + "]: [" + structure + "]");

@@ -14,7 +14,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class CountedDTO implements FarObject<Counted> {
     private final transient Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private final Setting<VersionDTO> version = new Setting<VersionDTO>("Version");
+    private final Setting<VersionDTO> version = new Setting<>("Version");
 
     public VersionDTO getVersion() {
         return version.get();

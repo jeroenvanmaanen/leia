@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Static {
-    private static final Setting<Logger> logger = new Setting<Logger>("Logger", new Expression<Logger>() {
+    private static final Setting<Logger> logger = new Setting<>("Logger", new Expression<Logger>() {
         @Override
         public Logger get() {
             return LoggerFactory.getLogger(Static.class);

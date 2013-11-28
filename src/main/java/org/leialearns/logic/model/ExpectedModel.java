@@ -1,7 +1,6 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.enumerations.ModelType;
-import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
 
 public interface ExpectedModel extends TypedVersionExtension {

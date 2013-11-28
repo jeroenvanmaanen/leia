@@ -85,6 +85,7 @@ public class Approximation implements Comparable<Approximation>, Iterable<Approx
         return new Approximation(new TransientFraction(-1, getNumerator() * other.getNumerator(), getDenominator() * other.getDenominator()));
     }
 
+    @SuppressWarnings("unused")
     public Approximation invert() {
         return new Approximation(new TransientFraction(-1, getDenominator(), getNumerator()));
     }
@@ -110,7 +111,7 @@ public class Approximation implements Comparable<Approximation>, Iterable<Approx
     }
 
     protected Iterable<Approximation> createSingleton(final Approximation approximation) {
-        return new TransformingIterable<Approximation>(singleton, Approximation.class, new Function<Object, Approximation>() {
+        return new TransformingIterable<>(singleton, Approximation.class, new Function<Object, Approximation>() {
             @Override
             public Approximation get(Object x) {
                 return approximation;

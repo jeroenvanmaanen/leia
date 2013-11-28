@@ -1,5 +1,6 @@
 package org.leialearns.logic.session;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.logic.model.Histogram;
 import org.leialearns.logic.model.HistogramCache;
 import org.leialearns.logic.model.Version;
@@ -14,6 +15,7 @@ public class SessionAugmenter {
     /**
      * <em>See {@link org.leialearns.logic.session.Session#putHistogram(Histogram)}.</em>
      */
+    @BridgeOverride
     public void putHistogram(Histogram histogram) {
         histogramCache.putHistogram(histogram);
     }
@@ -21,6 +23,7 @@ public class SessionAugmenter {
     /**
      * <em>See {@link org.leialearns.logic.session.Session#getHistogram(org.leialearns.logic.model.Version, org.leialearns.logic.structure.Node)}.</em>
      */
+    @BridgeOverride
     public Histogram getHistogram(Version version, Node node) {
         return histogramCache.getHistogram(version, node);
     }

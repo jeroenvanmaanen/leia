@@ -1,5 +1,6 @@
 package org.leialearns.graph.model;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.interaction.SymbolDTO;
@@ -19,6 +20,9 @@ public class EstimateDAO extends IdDaoSupport<EstimateDTO> {
     EstimateRepository repository;
 
     @Autowired
+    FractionEstimateRepository fractionEstimateRepository;
+
+    @Autowired
     ToggledRepository toggledRepository;
 
     @Autowired
@@ -34,6 +38,7 @@ public class EstimateDAO extends IdDaoSupport<EstimateDTO> {
         return repository.findEstimate(version, node, symbol);
     }
 
+    @BridgeOverride
     public TypedIterable<EstimateDTO> findEstimates(VersionDTO version, NodeDTO node) {
         Set<EstimateDTO> result = repository.findEstimatesByVersionAndNode(version, node);
         return new TypedIterable<>(result, EstimateDTO.class);
@@ -44,10 +49,12 @@ public class EstimateDAO extends IdDaoSupport<EstimateDTO> {
         return new TypedIterable<>(estimates, EstimateDTO.class);
     }
 
+    @BridgeOverride
     public EstimateDTO createEstimate(ExpectedDTO expected, NodeDTO node, SymbolDTO symbol, FractionBaseDTO fraction) {
         return findOrCreate(expected.getVersion(), node, symbol, fraction);
     }
 
+    @BridgeOverride
     public EstimateDTO createEstimate(ToggledDTO toggled, NodeDTO node, SymbolDTO symbol, FractionBaseDTO fraction) {
         return findOrCreate(toggled.getVersion(), node, symbol, fraction);
     }
@@ -86,6 +93,7 @@ public class EstimateDAO extends IdDaoSupport<EstimateDTO> {
         return estimate;
     }
 
+    @BridgeOverride
     public void copyEstimates(final ExpectedDTO expected, final VersionDTO sourceVersion) {
         VersionDTO targetVersion = expected.getVersion();
         logger.debug("Copy estimates: {} => {}", sourceVersion, targetVersion);
@@ -106,6 +114,8 @@ public class EstimateDAO extends IdDaoSupport<EstimateDTO> {
                 logger.debug("Deleted: {} estimate nodes", affected);
             }
         }
+        Integer affected = fractionEstimateRepository.deleteUnusedFractions();
+        logger.debug("Deleted {} unused fractions", affected);
 
         int count = 0;
         try {

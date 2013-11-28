@@ -1,5 +1,6 @@
 package org.leialearns.graph.model;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.IdDaoSupport;
@@ -59,6 +60,7 @@ public class ObservedDAO extends IdDaoSupport<ObservedDTO> {
         return result;
     }
 
+    @BridgeOverride
     public VersionDTO getOrCreateDelta(ObservedDTO observed) {
         VersionDTO result = observed.getDeltaVersion();
         if (result == null) {
@@ -71,6 +73,7 @@ public class ObservedDAO extends IdDaoSupport<ObservedDTO> {
         return result;
     }
 
+    @BridgeOverride
     public CountedDTO getCounted(ObservedDTO observed) {
         VersionDTO version = observed.getCountedVersion();
         CountedDTO result;
@@ -82,6 +85,7 @@ public class ObservedDAO extends IdDaoSupport<ObservedDTO> {
         return result;
     }
 
+    @BridgeOverride
     public void attachCounted(ObservedDTO newObserved, ObservedDTO oldObserved) {
         VersionDTO newObservedVersion = newObserved.getVersion();
         logger.debug("New observed version (!): {}", asDisplay(newObservedVersion));
@@ -93,6 +97,7 @@ public class ObservedDAO extends IdDaoSupport<ObservedDTO> {
         logger.debug("Get counted: [" + newObserved.getCountedVersion() + "]");
     }
 
+    @BridgeOverride
     public void attachToggled(ObservedDTO observed) {
         VersionDTO newVersion = observed.getVersion();
         VersionDTO versionDTO = versionDAO.findLastBefore(newVersion, ModelType.OBSERVED, AccessMode.READABLE);
@@ -106,26 +111,31 @@ public class ObservedDAO extends IdDaoSupport<ObservedDTO> {
         save(observed);
     }
 
+    @BridgeOverride
     public void attachExpected(ObservedDTO observed) {
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }
 
+    @BridgeOverride
     public void copyCountersFromLastObserved(ObservedDTO toObserved, VersionDTO lastObserved) {
         VersionDTO toVersion = toObserved.getVersion();
         copyCountersFromLastObserved(lastObserved, toVersion);
     }
 
+    @BridgeOverride
     public void copyCountersFromLastObserved(VersionDTO lastObserved, VersionDTO toVersion) {
         logger.debug("Copy counters from last observed: [" + lastObserved + "] -> [" + toVersion + "]");
         counterDAO.copyCounters(lastObserved, toVersion);
     }
 
+    @BridgeOverride
     public TypedIterable<CounterUpdateDTO> findCounterUpdates(ObservedDTO newObserved, ObservedDTO oldObserved) {
         VersionDTO oldObservedVersion = (oldObserved == null ? null : oldObserved.getVersion());
         VersionDTO lastVersion = versionDAO.findRangeMax(newObserved.getVersion(), oldObservedVersion, ModelType.COUNTED, AccessMode.READABLE);
         return counterDAO.findCounterUpdates(newObserved.getVersion(), oldObservedVersion, lastVersion);
     }
 
+    @BridgeOverride
     public void copyCountersFromLastDelta(ObservedDTO newObserved, ObservedDTO oldObserved) {
         logger.debug("Copy counters from last delta: [" + oldObserved + "] -> [" + newObserved + "]");
         if (oldObserved != null) {

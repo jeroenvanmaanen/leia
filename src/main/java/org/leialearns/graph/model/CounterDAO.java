@@ -1,5 +1,6 @@
 package org.leialearns.graph.model;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.bridge.FactoryAccessor;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
@@ -60,16 +61,14 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
         this.repository = repository;
     }
 
-    public TypedIterable<CounterDTO> findAll() {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
-    }
-
+    @BridgeOverride
     public TypedIterable<CounterDTO> findCounters(VersionDTO version) {
-        return new TypedIterable<CounterDTO>(repository.findCountersByVersion(version), CounterDTO.class);
+        return new TypedIterable<>(repository.findCountersByVersion(version), CounterDTO.class);
     }
 
+    @BridgeOverride
     public TypedIterable<CounterDTO> findCounters(VersionDTO version, NodeDTO node) {
-        return new TypedIterable<CounterDTO>(repository.findCountersByVersionAndNode(version, node), CounterDTO.class);
+        return new TypedIterable<>(repository.findCountersByVersionAndNode(version, node), CounterDTO.class);
     }
 
     public CounterDTO findCounter(VersionDTO version, NodeDTO node, SymbolDTO symbol) {
@@ -101,6 +100,7 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
         return counter;
     }
 
+    @BridgeOverride
     public CounterDTO getCounter(CountedDTO counted, TypedIterable<DirectedSymbolDTO> path, SymbolDTO symbol) {
         VersionDTO version = counted.getVersion();
         StructureDTO structureDTO = version.getInteractionContext().getStructure();
@@ -108,21 +108,24 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
         return findOrCreateCounter(version, node, symbol);
     }
 
+    @BridgeOverride
     public CounterDTO getCounter(CountedDTO counted, NodeDTO node, SymbolDTO symbol) {
         VersionDTO version = counted.getVersion();
         return findOrCreateCounter(version, node, symbol);
     }
 
+    @BridgeOverride
     public void refresh(CounterDTO counter) {
-        logger.warn("Refresh ignored for: {}", counter);
+        logger.trace("Refresh ignored for: {}", counter);
     }
 
+    @BridgeOverride
     public void increment(final CounterDTO counter) {
         increment(counter, 1);
     }
 
     public void increment(final CounterDTO counter, final long amount) {
-        logger.debug("Counter before increment: " + counter + " + " + amount);
+        logger.trace("Counter before increment: " + counter + " + " + amount);
         if (counter == null) {
             throw new IllegalArgumentException("The counter must not be null");
         }
@@ -133,7 +136,7 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
         parameters.put("amount", amount);
         parameters.put("counter", counter.getId());
         Object newValue = repository.query("START counter = node({counter}) SET counter.value = counter.value + {amount} RETURN counter.value", parameters);
-        logger.debug("Counter after increment: " + counter + ": " + newValue);
+        logger.trace("Counter after increment: " + counter + ": " + newValue);
     }
 
     public void copyCounters(VersionDTO fromVersion, VersionDTO toVersion) {
@@ -149,6 +152,7 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
         logger.trace("}");
     }
 
+    @BridgeOverride
     public void createCountersFromRecentCounted(ObservedDTO newObserved, ObservedDTO oldObserved) {
         logger.debug("Create counters from recent counted: [" + oldObserved + "] -> [" + newObserved + "]");
         VersionDTO previousVersion;
@@ -251,7 +255,7 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
             counterUpdate.increment(update.getValue());
         }
 
-        return new TypedIterable<CounterUpdateDTO>(updateMap.values(), CounterUpdateDTO.class);
+        return new TypedIterable<>(updateMap.values(), CounterUpdateDTO.class);
     }
 
 }

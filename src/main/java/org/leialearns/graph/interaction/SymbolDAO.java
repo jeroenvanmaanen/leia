@@ -1,5 +1,6 @@
 package org.leialearns.graph.interaction;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.logic.interaction.Symbol;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ public class SymbolDAO extends IdDaoSupport<SymbolDTO> {
         super(repository);
     }
 
+    @BridgeOverride
     public Long findLargestSymbolOrdinal(AlphabetDTO alphabet) {
         Long result = alphabetRepository.findLargestSymbolOrdinal(alphabet);
         return result < 0 ? null : result;

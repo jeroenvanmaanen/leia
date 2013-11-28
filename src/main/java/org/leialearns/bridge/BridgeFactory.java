@@ -84,7 +84,7 @@ public class BridgeFactory {
     private final Class<?> nearType;
     private final Class<? extends FarObject<?>> farType;
     private final Object[] helpers;
-    private final Map<Method, Binding> methodMap = new HashMap<Method, Binding>();
+    private final Map<Method, Binding> methodMap = new HashMap<>();
     private final Method facetsGetter;
     private final Method facetsChecker;
 
@@ -208,7 +208,7 @@ public class BridgeFactory {
             if (farObject instanceof BaseBridgeFacet && ((BaseBridgeFacet) farObject).hasBridgeFacets()) {
                 facets = ((BaseBridgeFacet) farObject).getBridgeFacets();
             } else {
-                Map<Integer,Object> helperInstances = new HashMap<Integer, Object>();
+                Map<Integer,Object> helperInstances = new HashMap<>();
                 for (int i = 0; i < helpers.length; i++) {
                     Object helper = helpers[i];
                     if (helper instanceof Class) {
@@ -383,7 +383,7 @@ public class BridgeFactory {
 
     protected  <NT> TypedIterable<NT> getBridgedTypedIterable(TypedIterable<?> typedIterable, final Class<NT> type, Class<?> baseType) {
         final BridgeFactory factory = registry.getBridgeFactory(baseType);
-        return new BaseNearIterable<NT>(typedIterable, type, new Function<Object, NT>(){
+        return new BaseNearIterable<>(typedIterable, type, new Function<Object, NT>(){
             public NT get(Object x) {
                 return type.cast(factory.getNearObject(x));
             }
@@ -407,6 +407,7 @@ public class BridgeFactory {
      * @param type The type of the requested helper
      * @return The requested helper
      */
+    @SuppressWarnings("unused")
     public <T> T getHelper(Class<T> type) {
         T result = null;
         for (Object candidate : helpers) {
@@ -513,7 +514,7 @@ public class BridgeFactory {
         }
         List<BridgeAdapter> adapters;
         if (actualParameterTypes.length == formalParameterTypes.length) {
-            adapters = new ArrayList<BridgeAdapter>();
+            adapters = new ArrayList<>();
             for (int i = 0; i < formalParameterTypes.length; i++) {
                 Class<?> formalParameterType = formalParameterTypes[i];
                 Class<?> actualParameterType = actualParameterTypes[i];
@@ -606,7 +607,7 @@ public class BridgeFactory {
         }
 
         protected <NT, FT> TypedIterable<FT> adaptIterable(TypedIterable<NT> iterable, final Class<FT> farType) {
-            return new TransformingIterable<FT>(
+            return new TransformingIterable<>(
                     iterable,
                     farType,
                     new Function<Object, FT>() {
@@ -628,17 +629,10 @@ public class BridgeFactory {
     protected class BridgeIterableAdapter implements BridgeAdapter {
         private final int index;
         private final Class<?> adapterNearType;
-        private final Setting<Class<?>> adapterFarType = new Setting<Class<?>>("Iterable adapter far type", new Expression<Class<?>>() {
+        private final Setting<Class<?>> adapterFarType = new Setting<>("Iterable adapter far type", new Expression<Class<?>>() {
             @Override
             public Class<?> get() {
                 return registry.getFarType(adapterNearType);
-            }
-        });
-        private final Setting<BridgeFactory> factory = new Setting<BridgeFactory>("Iterable adapter factory", new Expression<BridgeFactory>() {
-            @Override
-            public BridgeFactory get() {
-                Class<?> farType = adapterFarType.get();
-                return registry.getBridgeFactory(farType);
             }
         });
 
@@ -677,7 +671,7 @@ public class BridgeFactory {
         }
 
         protected <FT> TransformingIterable<FT> getTransformingIterable(Iterable<?> iterable, final Class<FT> farType) {
-            return new TransformingIterable<FT>(iterable, farType, new Function<Object, FT>() {
+            return new TransformingIterable<>(iterable, farType, new Function<Object, FT>() {
                 @Override
                 public FT get(Object x) {
                     return farType.cast(getFarObject(x));
@@ -802,7 +796,7 @@ public class BridgeFactory {
             adapted = adapt(adapted);
             if (logger.isTraceEnabled()) {
                 // logger.trace("Declaring class of method: " + display(method.getDeclaringClass()));
-                List<String> messages = new ArrayList<String>();
+                List<String> messages = new ArrayList<>();
                 messages.add(displayWithTypes(targetObject) + "." + method.getName() + (adapted.length > 0 ? "(" : "()"));
                 if (adapted.length > 0) {
                     for (Object object : adapted) {

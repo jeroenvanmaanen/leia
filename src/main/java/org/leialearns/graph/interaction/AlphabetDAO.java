@@ -1,5 +1,6 @@
 package org.leialearns.graph.interaction;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.logic.interaction.Alphabet;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ public class AlphabetDAO {
     SymbolDAO symbolDAO;
 
     public TypedIterable<AlphabetDTO> findAll() {
-        return new TypedIterable<AlphabetDTO>(repository.findAll(), AlphabetDTO.class);
+        return new TypedIterable<>(repository.findAll(), AlphabetDTO.class);
     }
 
     public AlphabetDTO find(String uri) {
@@ -92,6 +93,7 @@ public class AlphabetDAO {
         return symbol;
     }
 
+    @BridgeOverride
     public void fixate(AlphabetDTO alphabetDTO) {
         alphabetDTO.markFixated();
         repository.save(alphabetDTO);

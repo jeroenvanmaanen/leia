@@ -169,7 +169,7 @@ public class Setting<T> {
         }
         logger.trace("Compare [" + thisValue + "] to: [" + value + "]");
         if (thisValue == null) {
-            // Okay
+            logger.trace("Null"); // Okay
         } else if (thisValue == value) {
             thisValue = null;
         } else if (value.equals(thisValue)) {

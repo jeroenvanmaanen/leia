@@ -27,7 +27,7 @@ public class HistogramTrace {
 
     public HistogramTrace(final Histogram left, String operator, Histogram right) {
         name = left.toString();
-        isTransient = new Setting<Boolean>("Is transient?", new Expression<Boolean>() {
+        isTransient = new Setting<>("Is transient?", new Expression<Boolean>() {
             public Boolean get() {
                 return left.getVersion() == null;
             }
@@ -40,7 +40,7 @@ public class HistogramTrace {
     }
 
     public void log(String label) {
-        Collection<Symbol> symbols = new TreeSet<Symbol>();
+        Collection<Symbol> symbols = new TreeSet<>();
         collectSymbols(symbols);
         String qualifier = (label == null || label.isEmpty() ? "" : label + ": ");
         boolean empty = symbols.isEmpty() && leftTrace == null && rightTrace == null;
@@ -106,8 +106,8 @@ public class HistogramTrace {
             rightTrace.addValues(builder, symbol);
             builder.append("), ");
         }
-        Long value = snapshot.getValue(symbol);
-        builder.append(value == null ? "?" : Long.toString(value));
+        long value = snapshot.getValue(symbol);
+        builder.append(Long.toString(value));
     }
 
     protected void addSymbols(Histogram histogram, Collection<Symbol> symbols) {

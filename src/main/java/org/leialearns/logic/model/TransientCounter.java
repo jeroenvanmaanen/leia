@@ -13,7 +13,7 @@ public class TransientCounter implements Counter {
         this.symbol = symbol;
     }
 
-    public void setId(Long id) {
+    public void setId(@SuppressWarnings("unused") Long id) {
         throw new UnsupportedOperationException();
     }
 

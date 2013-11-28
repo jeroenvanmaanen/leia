@@ -8,7 +8,10 @@ public interface Toggled extends ExpectedModel {
     Node getNode();
     void setNode(Node node);
     Boolean getInclude();
+
+    @SuppressWarnings("unused")
     void setInclude(Boolean include);
+
     Expected getExpected();
     void setExpected(Expected expected);
     void attach(Root root, Node node, Expectation expectation);

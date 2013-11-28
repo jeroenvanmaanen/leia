@@ -1,7 +1,7 @@
 package org.leialearns.logic.model;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.logic.interaction.Symbol;
-import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.utilities.Function;
 import org.leialearns.utilities.Pair;
@@ -21,28 +21,31 @@ public class CounterLogger {
     private static final double LOG10BASE2 = Math.log(10) / Math.log(2);
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 
+    @BridgeOverride
     public void logCounters(Counted counted) {
         logCounters(counted.getVersion());
     }
 
+    @BridgeOverride
     public void logCounters(Observed observed) {
         logCounters(observed, null);
     }
 
+    @BridgeOverride
     public void logCounters(Expected expected) {
         logCounters(expected, null);
     }
 
     public void logCounters(Observed observed, Node node) {
         logger.info("Logging counters for: " + observed);
-        logCounters(null, node, new ExpectedNote(observed, observed.getVersion().getOwner()), observed.getVersion(), observed.getDeltaVersion());
+        logCounters(null, node, new ExpectedNote(observed), observed.getVersion(), observed.getDeltaVersion());
     }
 
     public void logCounters(Expected expected, Node node) {
         logger.info("Logging counters for: " + expected);
         Observed observed = expected.getObserved();
         if (observed != null) {
-            logCounters(null, node, new ExpectedNote(expected, expected.getVersion().getOwner()), observed.getVersion(), observed.getDeltaVersion());
+            logCounters(null, node, new ExpectedNote(expected), observed.getVersion(), observed.getDeltaVersion());
         }
     }
 
@@ -54,6 +57,7 @@ public class CounterLogger {
         logCounters(label, null, null, version);
     }
 
+    @BridgeOverride
     public void logCounters(Node node, Version... version) {
         logCounters(null, node, null, version);
     }
@@ -67,7 +71,7 @@ public class CounterLogger {
             if (node != null) {
                 suffix += ": node: [" + display(node) + "]";
             }
-            SortedMap<String,SortedMap<String,Counter[]>> data = new TreeMap<String, SortedMap<String, Counter[]>>();
+            SortedMap<String,SortedMap<String,Counter[]>> data = new TreeMap<>();
             int index = 0;
             for (Version version : versions) {
                 if (version == null) {
@@ -225,13 +229,11 @@ public class CounterLogger {
 
     protected class ExpectedNote implements Function<Pair<Node,Symbol>,String> {
         private final ExpectedModel expectedModel;
-        private final Session session;
-        protected ExpectedNote(Observed observed, Session session) {
-            this(observed.getExpectedModel(), session);
+        protected ExpectedNote(Observed observed) {
+            this(observed.getExpectedModel());
         }
-        protected ExpectedNote(ExpectedModel expectedModel, Session session) {
+        protected ExpectedNote(ExpectedModel expectedModel) {
             this.expectedModel = expectedModel;
-            this.session = session;
         }
         public String get(Pair<Node,Symbol> pair) {
             Node node = pair.getLeft();

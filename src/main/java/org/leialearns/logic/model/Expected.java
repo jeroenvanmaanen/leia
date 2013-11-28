@@ -6,7 +6,10 @@ import org.leialearns.logic.structure.Node;
 public interface Expected extends ExpectedModel {
     Toggled getToggled();
     void setToggled(Toggled toggled);
+
+    @SuppressWarnings("unused")
     Estimate createEstimate(Node node, Symbol symbol, Fraction fraction);
+
     void copyEstimates(Version version);
     void logCounters();
 }

@@ -1,5 +1,6 @@
 package org.leialearns.graph.session;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.IdDaoSupport;
@@ -41,6 +42,7 @@ public class SessionDAO extends IdDaoSupport<SessionDTO> {
         return result;
     }
 
+    @BridgeOverride
     public void logVersions(SessionDTO owner, String label, TypedIterable<VersionDTO> versions) {
         if (logger.isDebugEnabled()) {
             String prefix = (label == null || label.isEmpty() ? "" : label + ": ");
@@ -53,6 +55,7 @@ public class SessionDAO extends IdDaoSupport<SessionDTO> {
         }
     }
 
+    @BridgeOverride
     public CountedDTO createCountedVersion(SessionDTO owner) {
         VersionDTO version = versionDAO.createVersion(owner, ModelType.COUNTED);
         CountedDTO result = versionDAO.createCountedVersion();
@@ -60,17 +63,20 @@ public class SessionDAO extends IdDaoSupport<SessionDTO> {
         return result;
     }
 
+    @BridgeOverride
     public ToggledDTO createToggledVersion(SessionDTO owner, NodeDTO node, boolean include) {
         return toggledDAO.create(owner, node, include);
     }
 
+    @BridgeOverride
     public SessionDTO refresh(final SessionDTO session) {
-        logger.debug("Refresh of session skipped: {}", session);
-        return session; // TODO: implement?
+        logger.trace("Refresh called: Ignored.");
+        return session;
     }
 
+    @BridgeOverride
     public void flush(SessionDTO session) {
-        logger.debug("Flush called: Ignored.");
+        logger.trace("Flush called: Ignored.");
     }
 
     public boolean equals(SessionDTO sessionDTO, Object other) {

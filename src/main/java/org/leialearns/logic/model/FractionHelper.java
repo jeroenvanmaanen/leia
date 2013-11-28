@@ -1,9 +1,11 @@
 package org.leialearns.logic.model;
 
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.logic.session.Root;
 
 public class FractionHelper {
 
+    @BridgeOverride
     public Fraction createTransientFraction(Root root, long index, long numerator, long denominator) {
         return new TransientFraction(index, numerator, denominator);
     }

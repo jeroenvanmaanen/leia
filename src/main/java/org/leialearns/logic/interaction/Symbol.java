@@ -44,6 +44,7 @@ public interface Symbol extends Comparable<Symbol>, HasDescriptionLength {
      * Returns a short string that denotes this symbol.
      * @return A short string that denotes this symbol
      */
+    @SuppressWarnings("unused")
     String toShortString();
 
     /**
@@ -52,6 +53,7 @@ public interface Symbol extends Comparable<Symbol>, HasDescriptionLength {
      * @param direction The direction to show with this symbol
      * @return A short string that shows the direction and this symbol
      */
+    @SuppressWarnings("unused")
     String toShortString(Direction direction);
 
     /**

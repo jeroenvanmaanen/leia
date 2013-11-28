@@ -1,6 +1,7 @@
 package org.leialearns.graph.interaction;
 
 import org.leialearns.bridge.BaseBridgeFacet;
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.HasId;
@@ -80,6 +81,7 @@ public class SymbolDTO extends BaseBridgeFacet implements HasId, FarObject<Symbo
         return literal(directionChar + show(denotation));
     }
 
+    @BridgeOverride
     public Object toShortString() {
         return toShortString(null);
     }
