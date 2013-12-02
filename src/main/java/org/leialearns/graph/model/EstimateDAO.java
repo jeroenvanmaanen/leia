@@ -62,7 +62,7 @@ public class EstimateDAO extends IdDaoSupport<EstimateDTO> {
     public EstimateDTO findOrCreate(VersionDTO version, NodeDTO node, SymbolDTO symbol, FractionBaseDTO fraction) {
         EstimateDTO result = findEstimate(version, node, symbol);
         if (result == null) {
-            create(version, node, symbol, fraction);
+            result = create(version, node, symbol, fraction);
         } else {
             if (logger.isTraceEnabled()) {
                 String fractionString = String.valueOf(fraction);

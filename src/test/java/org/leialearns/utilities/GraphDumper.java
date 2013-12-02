@@ -17,24 +17,26 @@ public class GraphDumper {
     private GraphDatabaseService graphDatabaseService;
 
     public void dumpGraph() {
-        logger.info("Begin graph dump");
-        Iterable<org.neo4j.graphdb.Node> allNodes =
-                GlobalGraphOperations.at(graphDatabaseService).getAllNodes();
-        for ( org.neo4j.graphdb.Node node : allNodes ) {
-            Long nodeId = node.getId();
-            logger.info("Node: #{}", nodeId);
-            for (String propertyKey : node.getPropertyKeys()) {
-                logger.info("  Property: #{}: {}: {}", new Object[]{nodeId, propertyKey, display(node.getProperty(propertyKey))});
-            }
-            for (Relationship relationship : node.getRelationships()) {
-                Long relationshipId = relationship.getId();
-                logger.info("  Relationship: #{}: #{} {} #{}", new Object[]{relationshipId, nodeId, arrow(relationship, node), relationship.getOtherNode(node).getId()});
-                for (String propertyKey : relationship.getPropertyKeys()) {
-                    logger.info("    Property: #{}: {}: {}", new Object[]{relationshipId, propertyKey, display(relationship.getProperty(propertyKey))});
+        if (logger.isTraceEnabled()) {
+            logger.trace("Begin graph dump");
+            Iterable<org.neo4j.graphdb.Node> allNodes =
+                    GlobalGraphOperations.at(graphDatabaseService).getAllNodes();
+            for ( org.neo4j.graphdb.Node node : allNodes ) {
+                Long nodeId = node.getId();
+                logger.trace("Node: #{}", nodeId);
+                for (String propertyKey : node.getPropertyKeys()) {
+                    logger.trace("  Property: #{}: {}: {}", new Object[]{nodeId, propertyKey, display(node.getProperty(propertyKey))});
+                }
+                for (Relationship relationship : node.getRelationships()) {
+                    Long relationshipId = relationship.getId();
+                    logger.trace("  Relationship: #{}: #{} {} #{}", new Object[]{relationshipId, nodeId, arrow(relationship, node), relationship.getOtherNode(node).getId()});
+                    for (String propertyKey : relationship.getPropertyKeys()) {
+                        logger.trace("    Property: #{}: {}: {}", new Object[]{relationshipId, propertyKey, display(relationship.getProperty(propertyKey))});
+                    }
                 }
             }
+            logger.trace("End graph dump");
         }
-        logger.info("End graph dump");
     }
 
     public String arrow(Relationship relationship, org.neo4j.graphdb.Node firstNode) {
