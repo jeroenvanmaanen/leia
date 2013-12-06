@@ -117,6 +117,7 @@
         <constructor-arg>
             <array>
                 <ref bean="fractionHelper" />
+                <ref bean="fractionDAO" />
             </array>
         </constructor-arg>
     </bean>

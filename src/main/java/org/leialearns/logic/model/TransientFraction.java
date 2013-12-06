@@ -2,6 +2,8 @@ package org.leialearns.logic.model;
 
 import java.math.BigInteger;
 
+import static org.leialearns.utilities.Static.gcd;
+
 public class TransientFraction implements Fraction {
     private final long index;
     private final long numerator;
@@ -27,6 +29,19 @@ public class TransientFraction implements Fraction {
 
     public long getDenominator() {
         return denominator;
+    }
+
+    public Fraction add(Fraction other) {
+        long a = getNumerator();
+        long b = getDenominator();
+        long c = other.getNumerator();
+        long d = other.getDenominator();
+        long gcd = gcd(b, d);
+        d = d / gcd;
+        long denominator = b * d;
+        b = b / gcd;
+        long numerator = (a * d) + (c * b);
+        return new TransientFraction(-1, numerator, denominator);
     }
 
     public int compareTo(Fraction other) {

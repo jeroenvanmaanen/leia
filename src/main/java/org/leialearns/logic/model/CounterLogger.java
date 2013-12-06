@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -38,14 +39,16 @@ public class CounterLogger {
 
     public void logCounters(Observed observed, Node node) {
         logger.info("Logging counters for: " + observed);
-        logCounters(null, node, new ExpectedNote(observed), observed.getVersion(), observed.getDeltaVersion());
+        ExpectedNoteCache expectedNoteCache = new ExpectedNoteCache(observed);
+        logCounters(null, node, new ExpectedNote(expectedNoteCache), observed.getVersion(), observed.getDeltaVersion());
     }
 
     public void logCounters(Expected expected, Node node) {
         logger.info("Logging counters for: " + expected);
         Observed observed = expected.getObserved();
         if (observed != null) {
-            logCounters(null, node, new ExpectedNote(expected), observed.getVersion(), observed.getDeltaVersion());
+            ExpectedNoteCache expectedNoteCache = new ExpectedNoteCache(expected);
+            logCounters(null, node, new ExpectedNote(expectedNoteCache), observed.getVersion(), observed.getDeltaVersion());
         }
     }
 
@@ -227,21 +230,50 @@ public class CounterLogger {
         return builder.toString();
     }
 
-    protected class ExpectedNote implements Function<Pair<Node,Symbol>,String> {
+    protected class ExpectedNoteCache {
         private final ExpectedModel expectedModel;
-        protected ExpectedNote(Observed observed) {
+        private Map<Node,Boolean> includeFlagCache = new HashMap<>();
+        private Map<Node,Expectation> expectationCache = new HashMap<>();
+        protected ExpectedNoteCache(Observed observed) {
             this(observed.getExpectedModel());
         }
-        protected ExpectedNote(ExpectedModel expectedModel) {
+        protected ExpectedNoteCache(ExpectedModel expectedModel) {
             this.expectedModel = expectedModel;
+        }
+        public boolean isIncluded(Node node) {
+            boolean result;
+            if (includeFlagCache.containsKey(node)) {
+                result = includeFlagCache.get(node);
+            } else {
+                result = expectedModel.isIncluded(node);
+                includeFlagCache.put(node, result);
+            }
+            return result;
+        }
+        public Expectation getExpectation(Node node) {
+            Expectation result;
+            if (expectationCache.containsKey(node)) {
+                result = expectationCache.get(node);
+            } else {
+                result = expectedModel.getExpectation(node);
+                expectationCache.put(node, result);
+            }
+            return result;
+        }
+    }
+
+    protected class ExpectedNote implements Function<Pair<Node,Symbol>,String> {
+        private final ExpectedNoteCache cache;
+        protected ExpectedNote(ExpectedNoteCache cache) {
+            this.cache = cache;
         }
         public String get(Pair<Node,Symbol> pair) {
             Node node = pair.getLeft();
             Symbol symbol = pair.getRight();
-            boolean isIncluded = expectedModel.isIncluded(node);
-            String result = " (i:" + expectedModel.isIncluded(node) + ")";
+            boolean isIncluded = cache.isIncluded(node);
+            String result = " (i:" + isIncluded + ")";
             if (isIncluded) {
-                Expectation expectation = expectedModel.getExpectation(node);
+                Expectation expectation = cache.getExpectation(node);
                 if (expectation == null) {
                     result += " ??";
                 } else {

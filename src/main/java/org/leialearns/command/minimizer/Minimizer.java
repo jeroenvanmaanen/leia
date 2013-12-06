@@ -5,6 +5,7 @@ import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.interaction.Symbol;
 import org.leialearns.logic.model.Counter;
+import org.leialearns.logic.model.CounterLogger;
 import org.leialearns.logic.model.DeltaDiff;
 import org.leialearns.logic.model.Expectation;
 import org.leialearns.logic.model.Expected;
@@ -48,6 +49,9 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
 
     @Autowired
     private Oracle oracle;
+
+    @Autowired
+    private CounterLogger counterLogger;
 
     /**
      * Sets the URL of the interaction context to use.
@@ -112,6 +116,11 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
         DeltaDiff deltaDiff = deltaDiffMap.get(node);
         int depth = node.getDepth();
 
+        if (depth == 1 && !expectedModel.isIncluded(node)) {
+            Expectation expectation = oracle.minimize(observed.createHistogram(node));
+            Toggled toggled = createToggled(node, expectation, null, null, true, observed, context.session);
+            logger.debug("Created toggled for root node: {}: {}", node, toggled);
+        }
         boolean nowIncluded = depth == 1 || expectedModel.isIncluded(node);
         Node subIncludedAncestor;
         Histogram observedHistogram = null;
@@ -252,18 +261,28 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
 
             if (newDescriptionLength < currentDescriptionLength) {
                 Node node = observedHistogram.getNode();
-                logger.info("Toggle: " + node);
-                result = session.createToggledVersion(node, !nowIncluded);
-                result.setObserved(observed);
-                result.attach(root, ancestorData.getNode(), ancestorExpectation);
-                if (!nowIncluded) {
-                    result.attach(root, node, expectation);
-                }
-                result.getVersion().setAccessMode(AccessMode.READABLE, session);
+                result = createToggled(node, expectation, ancestorData.getNode(), ancestorExpectation, !nowIncluded, observed, session);
             } else {
                 result = null;
             }
         }
+        return result;
+    }
+
+    protected Toggled createToggled(Node node, Expectation expectation, Node ancestorNode, Expectation ancestorExpectation, boolean newIncluded, Observed observed, Session session) {
+        Toggled result;
+        logger.info("Toggle: " + node);
+        result = session.createToggledVersion(node, newIncluded);
+        result.setObserved(observed);
+        if (ancestorNode != null) {
+            result.attach(root, ancestorNode, ancestorExpectation);
+        }
+        if (newIncluded) {
+            result.attach(root, node, expectation);
+        }
+        Version version = result.getVersion();
+        version.setAccessMode(AccessMode.READABLE, session);
+        counterLogger.logCounters(node, version);
         return result;
     }
 

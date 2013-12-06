@@ -48,9 +48,17 @@ public class ExpectationObject extends BaseDistribution implements Expectation {
         Node node = getNode();
         logger.debug("Retrieve estimates for: {}", node);
         Estimate.Iterable estimates = getVersion().findEstimates(node);
+        Fraction sum = zero.get();
         fractions.clear();
         for (Estimate estimate : estimates) {
-            fractions.put(estimate.getSymbol(), estimate.getFraction());
+            Fraction fraction = estimate.getFraction();
+            fractions.put(estimate.getSymbol(), fraction);
+            if (logger.isTraceEnabled()) {
+                sum = sum.add(fraction);
+            }
+        }
+        if (logger.isTraceEnabled()) {
+            logger.trace("Sum: {}", sum);
         }
     }
 

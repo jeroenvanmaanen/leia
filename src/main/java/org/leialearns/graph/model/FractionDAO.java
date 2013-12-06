@@ -8,7 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigInteger;
+
 import static org.leialearns.utilities.Display.asDisplay;
+import static org.leialearns.utilities.Static.gcd;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class FractionDAO {
@@ -70,6 +73,19 @@ public class FractionDAO {
         }
         logger.debug("Created fraction: {}", result);
         return result;
+    }
+
+    public FractionBaseDTO add(FractionBaseDTO fraction, FractionBaseDTO other) {
+        long a = fraction.getNumerator();
+        long b = fraction.getDenominator();
+        long c = other.getNumerator();
+        long d = other.getDenominator();
+        long gcd = gcd(b, d);
+        d = d / gcd;
+        long denominator = b * d;
+        b = b / gcd;
+        long numerator = (a * d) + (c * b);
+        return createFraction(null, -1, numerator, denominator);
     }
 
 }
