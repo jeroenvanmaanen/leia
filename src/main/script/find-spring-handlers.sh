@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -ex
+
 SPRING_HANDLERS='src/main/resources/META-INF/spring.handlers'
 rm -f "${SPRING_HANDLERS}"
 touch "${SPRING_HANDLERS}"
@@ -18,3 +20,4 @@ mvn dependency:build-classpath \
 		done
 
 cat "${SPRING_HANDLERS}"
+cp "${SPRING_HANDLERS}" 'src/assemble/resources/.'
