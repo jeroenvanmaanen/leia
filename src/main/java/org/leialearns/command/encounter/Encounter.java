@@ -118,7 +118,12 @@ public class Encounter implements org.leialearns.command.api.Encounter {
         Session session = createSession();
         InteractionContext interactionContext = session.getInteractionContext();
         Structure structure = interactionContext.getStructure();
-        Symbol nonAction = interactionContext.getActions().internalize(".");
+        logger.debug("Structure: {}", structure);
+        logger.debug("Interaction context: {}", interactionContext);
+        Alphabet actions = interactionContext.getActions();
+        logger.debug("Actions: {}", actions);
+        Symbol nonAction = actions.internalize(".");
+        logger.debug("Non-action: {}", nonAction);
 
         StreamAdapter adapter = streamAdapter.get();
         int a = 0;

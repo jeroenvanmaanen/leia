@@ -1,12 +1,31 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:neo4j="http://www.springframework.org/schema/data/neo4j"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+            http://www.springframework.org/schema/data/neo4j http://www.springframework.org/schema/data/neo4j/spring-neo4j-2.0.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+            ">
+
+    <context:annotation-config />
+    <context:spring-configured />
+    <context:component-scan base-package="org.leialearns" />
+    <tx:annotation-driven mode="proxy"/>
 
     <bean id="graphDatabaseFactory" class="org.neo4j.graphdb.factory.GraphDatabaseFactory" />
 
     <bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="graphDatabaseFactory" factory-method="newEmbeddedDatabase">
         <constructor-arg index="0" value="data/graphdb" />
     </bean>
+
+    <bean id="executionEngine" class="org.neo4j.cypher.javacompat.ExecutionEngine">
+        <constructor-arg ref="graphDatabaseService" />
+    </bean>
+
+    <neo4j:config base-package="org.leialearns.graph" graphDatabaseService="graphDatabaseService" />
 
     <bean id="interactionContextUri" class="java.lang.String">
         <constructor-arg value="http://leialearns.org/main/encounter"/>

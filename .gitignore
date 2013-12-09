@@ -1,4 +1,5 @@
 .*
+data
 target
 leia-executable.iml
 src/test/script/settings.sh
