@@ -110,6 +110,7 @@ public class Consolidator implements org.leialearns.command.api.Consolidator {
 
                     if (newObserved != null) {
                         newExpected.setObserved(newObserved);
+                        newObserved.setExpected(newExpected);
                     }
 
                     newExpectedVersion.setAccessMode(AccessMode.READABLE, session);

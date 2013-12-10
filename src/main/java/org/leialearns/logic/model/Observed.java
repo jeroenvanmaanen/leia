@@ -12,6 +12,7 @@ public interface Observed extends TypedVersionExtension {
     Counted getCounted();
     Version getDeltaVersion();
     Toggled getToggled();
+    void setExpected(Expected expected);
     Expected getExpected();
     ExpectedModel getExpectedModel();
     Version getOrCreateDelta();
@@ -24,10 +25,6 @@ public interface Observed extends TypedVersionExtension {
     Histogram createDeltaHistogram(Node node);
     void attachCounted(Observed oldObserved);
     void attachToggled();
-
-    @SuppressWarnings("unused")
-    void attachExpected();
-
     void copyCountersFromLastObserved(Version lastObserved);
     void createCountersFromRecentCounted(Observed oldObserved);
     TypedIterable<CounterUpdate> findCounterUpdates(Observed oldObserved);

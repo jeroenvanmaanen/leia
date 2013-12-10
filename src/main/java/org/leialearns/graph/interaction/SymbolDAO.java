@@ -28,10 +28,6 @@ public class SymbolDAO extends IdDaoSupport<SymbolDTO> {
         return result < 0 ? null : result;
     }
 
-    public SymbolDTO find(AlphabetDTO alphabet, String denotation) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
-    }
-
     public void setOrdinal(SymbolDTO symbolDTO) {
         if (symbolDTO.getOrdinal() == null) {
             Long ordinal = alphabetRepository.getOrdinal(symbolDTO);

@@ -112,11 +112,6 @@ public class ObservedDAO extends IdDaoSupport<ObservedDTO> {
     }
 
     @BridgeOverride
-    public void attachExpected(ObservedDTO observed) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
-    }
-
-    @BridgeOverride
     public void copyCountersFromLastObserved(ObservedDTO toObserved, VersionDTO lastObserved) {
         VersionDTO toVersion = toObserved.getVersion();
         copyCountersFromLastObserved(lastObserved, toVersion);

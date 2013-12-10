@@ -61,11 +61,6 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
         return versionRepository.findByContextAndOrdinal(context, ordinal);
     }
 
-    @BridgeOverride
-    public VersionDTO findExpected(CountedDTO counted) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
-    }
-
     public VersionDTO findLastVersion(SessionDTO owner, ModelType modelType, AccessMode accessMode) {
         VersionDTO version = versionRepository.findLastVersion(owner.getInteractionContext());
         logger.debug("Session: {}: {}", owner, showOwner(version));
