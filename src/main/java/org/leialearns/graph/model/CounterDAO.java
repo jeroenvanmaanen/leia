@@ -14,6 +14,7 @@ import org.leialearns.graph.structure.NodeRepository;
 import org.leialearns.graph.structure.StructureDTO;
 import org.leialearns.logic.model.CounterLogger;
 import org.leialearns.logic.model.Version;
+import org.leialearns.logic.structure.Node;
 import org.leialearns.utilities.Function;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
@@ -21,11 +22,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static org.leialearns.bridge.Static.getFarObject;
 import static org.leialearns.utilities.Display.asDisplay;
 import static org.leialearns.utilities.Display.show;
 import static org.leialearns.utilities.Static.getLoggingClass;
@@ -39,6 +42,11 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
     private NodeDAO nodeDAO;
 
     @Autowired
+    private NodeRepository nodeRepository;
+
+    public FactoryAccessor<Node> nodeFactoryAccessor = new FactoryAccessor<>(Node.class);
+
+    @Autowired
     private VersionRepository versionRepository;
 
     public FactoryAccessor<Version> versionFactoryAccessor = new FactoryAccessor<>(Version.class);
@@ -48,9 +56,6 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
 
     @Autowired
     private CounterLogger counterLogger;
-
-    @Autowired
-    private NodeRepository nodeRepository;
 
     @Autowired
     private SymbolRepository symbolRepository;
@@ -69,6 +74,29 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
     @BridgeOverride
     public TypedIterable<CounterDTO> findCounters(VersionDTO version, NodeDTO node) {
         return new TypedIterable<>(repository.findCountersByVersionAndNode(version, node), CounterDTO.class);
+    }
+
+    @BridgeOverride
+    public TypedIterable<CounterDTO> findCounters(VersionDTO version, Function<Node,Node.Iterable> getChildren, Function<Node,Boolean> getInclude) {
+        Collection<CounterDTO> result = new ArrayList<>();
+        StructureDTO structure = version.getInteractionContext().getStructure();
+        for (NodeDTO node : nodeDAO.findRootNodes(structure)) {
+            findCounters(version, getChildren, getInclude, node, result);
+        }
+        return new TypedIterable<>(result, CounterDTO.class);
+    }
+
+    protected void findCounters(VersionDTO version, Function<Node,Node.Iterable> getChildren, Function<Node,Boolean> getInclude, NodeDTO node, Collection<CounterDTO> result) {
+        Node near = nodeFactoryAccessor.getNearObject(node);
+        if (getInclude.get(near)) {
+            for (CounterDTO counter : findCounters(version, node)) {
+                result.add(counter);
+            }
+        }
+        for (Node nearChild : getChildren.get(near)) {
+            NodeDTO child = getFarObject(nearChild, NodeDTO.class);
+            findCounters(version, getChildren, getInclude, child, result);
+        }
     }
 
     public CounterDTO findCounter(VersionDTO version, NodeDTO node, SymbolDTO symbol) {

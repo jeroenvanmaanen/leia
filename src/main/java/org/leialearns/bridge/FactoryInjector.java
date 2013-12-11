@@ -52,7 +52,7 @@ public class FactoryInjector implements BeanPostProcessor {
             if (FactoryAccessor.class.isAssignableFrom(fieldType)) {
                 try {
                     FactoryAccessor<?> accessor = (FactoryAccessor<?>) field.get(bean);
-                    logger.trace("Factory accessor: " + field.getName() + ": " + accessor.getNearType().getSimpleName());
+                    logger.debug("Factory accessor: " + field.getName() + ": " + accessor.getNearType().getSimpleName());
                     if (registry.isFixated()) {
                         registry.get().injectInto(accessor);
                     } else {

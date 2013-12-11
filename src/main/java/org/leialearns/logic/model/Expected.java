@@ -12,4 +12,5 @@ public interface Expected extends ExpectedModel {
 
     void copyEstimates(Version version);
     void logCounters();
+    void logModel();
 }

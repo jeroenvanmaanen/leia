@@ -116,6 +116,7 @@ public class Consolidator implements org.leialearns.command.api.Consolidator {
                     newExpectedVersion.setAccessMode(AccessMode.READABLE, session);
                     logger.debug("New expected: " + newExpected);
                     newExpected.logCounters();
+                    newExpected.logModel();
                 }
             }
         }

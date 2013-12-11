@@ -9,54 +9,48 @@ do
     N=$[${N} + 1]
 done
 
-SILENT=true
-if [ ".$1" = '.-v' ]
-then
-    SILENT='false'
-    shift
-    if [ ".$1" = '.-v' ]
-    then
-        set -x
-        shift
-    fi
-fi
+function usage() {
+    echo "Usage: $(basename "$0") [ -v | -k | -o | -i <iterations> | -t <single-test> | -f <final-test> ]" >&2
+}
 
+SILENT='true'
+TRACE='false'
 KEEP_DB='false'
-if [ ".$1" = '.-k' ]
-then
-    KEEP_DB='true'
-fi
-
 OFFLINE=''
-if [ ".$1" = '.-o' ]
-then
-    OFFLINE='-o'
-    shift
-fi
-
-ITERATIONS=2
-if [ ".$1" = '.-n' ]
-then
-    ITERATIONS="$2"
-    shift
-    shift
-fi
-
+ITERATIONS='2'
 SINGLE_TEST='org.leialearns.utilities.TestUtilities'
-if [ ".$1" = '.-t' ]
-then
-    SINGLE_TEST="$2"
-    shift
-    shift
-fi
-
 FINAL_TEST=''
-if [ ".$1" = '.-f' ]
-then
-    FINAL_TEST="$2"
+
+while [ "$#" -gt 0 -a ".${1#-}" != ".$1" ]
+do
+    OPT="${1#-}"
     shift
-    shift
-fi
+    case "${OPT}" in
+    v)  if "${SILENT}"
+        then
+            SILENT='false'
+        else
+            TRACE='true'
+            set -x
+        fi
+        ;;
+    k)  KEEP_DB='true'
+        ;;
+    o)  OFFLINE='-o'
+        ;;
+    n)  ITERATIONS="$1"
+        shift
+        ;;
+    t)  SINGLE_TEST="$1"
+        shift
+        ;;
+    f)  FINAL_TEST="$1"
+        shift;;
+    *)  echo "Unknown option: -${OPT}"
+        usage
+        ;;
+    esac
+done
 
 SCRIPT="$(cd "$(dirname "$0")" ; pwd)"
 TEST="$(dirname "${SCRIPT}")"

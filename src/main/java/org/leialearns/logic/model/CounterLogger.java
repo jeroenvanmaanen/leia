@@ -52,12 +52,39 @@ public class CounterLogger {
         }
     }
 
+    @BridgeOverride
+    public void logModel(final Expected expected) {
+        logger.info("Logging model: " + expected);
+        Observed observed = expected.getObserved();
+        if (observed != null) {
+            ExpectedNoteCache expectedNoteCache = new ExpectedNoteCache(expected);
+            Function<Version,Iterable<Counter>> getCounters = new Function<Version,Iterable<Counter>>() {
+                public Iterable<Counter> get(Version version) {
+                    Function<Node,Node.Iterable> getChildren = new Function<Node, Node.Iterable>() {
+                        @Override
+                        public Node.Iterable get(Node node) {
+                            return node.findChildren();
+                        }
+                    };
+                    Function<Node,Boolean> getIncluded = new Function<Node, Boolean>() {
+                        @Override
+                        public Boolean get(Node node) {
+                            return expected.isIncluded(node);
+                        }
+                    };
+                    return version.findCounters(getChildren, getIncluded);
+                }
+            };
+            logCounters(null, getCounters, new ExpectedNote(expectedNoteCache), observed.getVersion(), observed.getDeltaVersion());
+        }
+    }
+
     public void logCounters(Version... version) {
         logCounters((String) null, version);
     }
 
     public void logCounters(String label, Version... version) {
-        logCounters(label, null, null, version);
+        logCounters(label, (Node) null, null, version);
     }
 
     @BridgeOverride
@@ -65,26 +92,45 @@ public class CounterLogger {
         logCounters(null, node, null, version);
     }
 
-    public void logCounters(String label, Node node, Function<Pair<Node,Symbol>,String> note, Version... versions) {
+    public void logCounters(String label, final Node node, Function<Pair<Node,Symbol>,String> note, Version... versions) {
+        if (logger.isInfoEnabled()) {
+            String prefix = (label != null && label.length() > 0 ? label + ": " : "");
+            if (node != null) {
+                prefix += "node: [" + display(node) + "]: ";
+            }
+            Function<Version,Iterable<Counter>> getCounters;
+            if (node == null) {
+                getCounters = new Function<Version, Iterable<Counter>>() {
+                    @Override
+                    public Iterable<Counter> get(Version version) {
+                        return version.findCounters();
+                    }
+                };
+            } else {
+                getCounters = new Function<Version, Iterable<Counter>>() {
+                    @Override
+                    public Iterable<Counter> get(Version version) {
+                        return version.findCounters(node);
+                    }
+                };
+            }
+            logCounters(prefix, getCounters, note, versions);
+        }
+    }
+
+    public void logCounters(String label, Function<Version,Iterable<Counter>> getCounters, Function<Pair<Node,Symbol>,String> note, Version... versions) {
         if (logger.isInfoEnabled()) {
             String prefix = (label != null && label.length() > 0 ? label + ": " : "");
             int[] widths = new int[3];
             String suffix = "Counters for versions: " + display(versions);
             Iterable<Counter> counters;
-            if (node != null) {
-                suffix += ": node: [" + display(node) + "]";
-            }
             SortedMap<String,SortedMap<String,Counter[]>> data = new TreeMap<>();
             int index = 0;
             for (Version version : versions) {
                 if (version == null) {
                     continue;
                 }
-                if (node == null) {
-                    counters = version.findCounters();
-                } else {
-                    counters = version.findCounters(node);
-                }
+                counters = getCounters.get(version);
                 arrangeCounters(data, counters, versions.length, index, widths);
                 index++;
             }

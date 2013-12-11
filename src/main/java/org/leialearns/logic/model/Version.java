@@ -8,6 +8,8 @@ import org.leialearns.logic.interaction.Symbol;
 import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.bridge.NearIterable;
+import org.leialearns.utilities.Function;
+import org.leialearns.utilities.TypedIterable;
 
 // import java.util.Collection;
 
@@ -35,6 +37,7 @@ public interface Version extends Comparable<Version> {
     Toggled findToggledVersion();
     Counter.Iterable findCounters();
     Counter.Iterable findCounters(Node node);
+    Counter.Iterable findCounters(Function<Node,Node.Iterable> getChildren, Function<Node,Boolean> getInclude);
     Counter findCounter(Node node, Symbol symbol);
     Counter findOrCreateCounter(Node node, Symbol symbol);
     Estimate.Iterable findEstimates(Node node);
