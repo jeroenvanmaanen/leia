@@ -57,24 +57,18 @@ public class CounterLogger {
         logger.info("Logging model: " + expected);
         Observed observed = expected.getObserved();
         if (observed != null) {
-            ExpectedNoteCache expectedNoteCache = new ExpectedNoteCache(expected);
             Function<Version,Iterable<Counter>> getCounters = new Function<Version,Iterable<Counter>>() {
                 public Iterable<Counter> get(Version version) {
-                    Function<Node,Node.Iterable> getChildren = new Function<Node, Node.Iterable>() {
-                        @Override
-                        public Node.Iterable get(Node node) {
-                            return node.findChildren();
-                        }
-                    };
                     Function<Node,Boolean> getIncluded = new Function<Node, Boolean>() {
                         @Override
                         public Boolean get(Node node) {
                             return expected.isIncluded(node);
                         }
                     };
-                    return version.findCounters(getChildren, getIncluded);
+                    return version.findCounters(null, getIncluded);
                 }
             };
+            ExpectedNoteCache expectedNoteCache = new ExpectedNoteCache(expected);
             logCounters(null, getCounters, new ExpectedNote(expectedNoteCache), observed.getVersion(), observed.getDeltaVersion());
         }
     }
@@ -327,9 +321,9 @@ public class CounterLogger {
                     if (fraction == null) {
                         result += " ?";
                     } else {
-                        result = result + " " + fraction;
+                        result = result + " " + fraction.getNumerator() + "/" + fraction.getDenominator();
                         if (fraction.getNumerator() == 0L) {
-                            result = result + " " + expectation;
+                            result = result + " " + fraction + " " + expectation;
                         }
                     }
                 }

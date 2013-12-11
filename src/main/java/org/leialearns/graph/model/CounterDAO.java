@@ -79,9 +79,27 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
     @BridgeOverride
     public TypedIterable<CounterDTO> findCounters(VersionDTO version, Function<Node,Node.Iterable> getChildren, Function<Node,Boolean> getInclude) {
         Collection<CounterDTO> result = new ArrayList<>();
-        StructureDTO structure = version.getInteractionContext().getStructure();
-        for (NodeDTO node : nodeDAO.findRootNodes(structure)) {
-            findCounters(version, getChildren, getInclude, node, result);
+        if (getChildren == null) {
+            Map<NodeDTO,Boolean> includeCache = new HashMap<>();
+            for (CounterDTO counter : findCounters(version)) {
+                NodeDTO node = counter.getNode();
+                boolean included;
+                if (includeCache.containsKey(node)) {
+                    included = includeCache.get(node);
+                } else {
+                    Node near = nodeFactoryAccessor.getNearObject(node);
+                    included = getInclude.get(near);
+                    includeCache.put(node, included);
+                }
+                if (included) {
+                    result.add(counter);
+                }
+            }
+        } else {
+            StructureDTO structure = version.getInteractionContext().getStructure();
+            for (NodeDTO node : nodeDAO.findRootNodes(structure)) {
+                findCounters(version, getChildren, getInclude, node, result);
+            }
         }
         return new TypedIterable<>(result, CounterDTO.class);
     }
