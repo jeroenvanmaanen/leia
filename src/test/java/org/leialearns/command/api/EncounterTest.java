@@ -71,7 +71,13 @@ public class EncounterTest {
             transactionHelper.runInTransaction(new Runnable() {
                 @Override
                 public void run() {
-                    encounter.command("file://" + TestUtilities.getPath(PROJECT_DIR.get(), "pom.xml"));
+//                    encounter.command("file://" + TestUtilities.getPath(PROJECT_DIR.get(), "pom.xml"));
+                    String source = "file://" + TestUtilities.getPath(PROJECT_DIR.get(), "src/test/resources/data/test.txt");
+                    try {
+                        encounter.command(source);
+                    } catch (Exception exception) {
+                        logger.error(String.format("Exception while running encounter(%s)", source), exception);
+                    }
                     Session session = createSession();
                     Structure structure = session.getInteractionContext().getStructure();
                     structure.logNodes();
