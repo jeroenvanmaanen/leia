@@ -29,8 +29,6 @@
     <bean id="structureDAO" class="org.leialearns.graph.structure.StructureDAO" />
     <bean id="sessionDAO" class="org.leialearns.graph.session.SessionDAO"/>
 
-    <!-- tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/ -->
-
     <bean id="factoryInjector" class="org.leialearns.bridge.FactoryInjector"/>
 
     <bean id="registry" class="org.leialearns.bridge.BridgeHeadTypeRegistry" />
@@ -221,10 +219,6 @@
     </bean>
 
     <bean id="root" factory-bean="rootDTO" factory-method="getNearObject" />
-
-    <!-- bean id="interactionContext" factory-bean="root" factory-method="createInteractionContext">
-        <constructor-arg value="http://leialearns.org/test/encounter" />
-    </bean -->
 
     <bean id="encounter" class="org.leialearns.command.encounter.Encounter">
         <property name="streamAdapter" ref="symbolsAdapter" />

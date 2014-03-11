@@ -3,7 +3,6 @@ package org.leialearns.command.api;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.leialearns.command.consolidator.*;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.session.Session;
 import org.leialearns.utilities.ExecutionListener;
@@ -28,8 +27,8 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 @TestExecutionListeners(value = {DependencyInjectionTestExecutionListener.class, ExecutionListener.class})
 public class ConsolidatorTest {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private final Setting<String> interactionContextUri = new Setting<String>("Interaction context URI");
-    private final Setting<Session> session = new Setting<Session>("Session", new Expression<Session>() {
+    private final Setting<String> interactionContextUri = new Setting<>("Interaction context URI");
+    private final Setting<Session> session = new Setting<>("Session", new Expression<Session>() {
         @Override
         public Session get() {
             return createSession();
