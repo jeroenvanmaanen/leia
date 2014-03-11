@@ -31,6 +31,7 @@
                 <include>org.apache.geronimo.specs:geronimo-jta_1.1_spec</include>
                 <include>org.apache.lucene:lucene-core</include>
                 <include>org.aspectj:aspectjrt</include>
+                <include>org.leialearns:bridge-pattern</include>
                 <include>org.neo4j:neo4j</include>
                 <include>org.neo4j:neo4j-cypher</include>
                 <include>org.neo4j:neo4j-cypher-dsl</include>
