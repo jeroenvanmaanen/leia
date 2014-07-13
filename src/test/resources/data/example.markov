@@ -1,0 +1,11 @@
+root -[1|]-> one_out
+one_out -[2|left ]-> one_in
+one_out -[1|right ]-> two_in
+one_out -[1|right ]-> three_in
+one_in -[1|dark\n]-> one_out
+two_out -[1|left ]-> one_in
+two_out -[1|right ]-> three_in
+two_in -[1|dark\n]-> two_out
+three_out -[1|left ]-> one_in
+three_out -[1|right ]-> two_in
+three_in -[1|light\n]-> three_out

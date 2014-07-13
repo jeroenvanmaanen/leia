@@ -107,7 +107,7 @@ public class TokensAdapter implements StreamAdapter {
                     limit--;
                 }
                 if (line != null) {
-                    line = "\r" + line + "\n";
+                    line = "\n" + line + "\r";
                 }
             } else {
                 line = null;

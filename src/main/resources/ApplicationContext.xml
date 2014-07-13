@@ -228,7 +228,8 @@
     </bean>
 
     <bean id="symbolsAdapter" class="org.leialearns.command.encounter.TokensAdapter">
-        <property name="tokenPattern" value="([\p{Alpha}]+|[\p{Digit}]+|\s*[\[{(]|[^\p{Alpha}\p{Digit}\[{(]\s*)" />
+        <!-- property name="tokenPattern" value="([\p{Alpha}]+|[\p{Digit}]+|\s*[\[{(]|[^\p{Alpha}\p{Digit}\[{(]\s*)" / -->
+        <property name="tokenPattern" value="(\s*[\p{Alpha}]+\s*|[\p{Digit}]+|\s*[\[{(]|[^\p{Alpha}\p{Digit}\[{(]\s*)" />
     </bean>
 
     <bean id="charactersAdapter" class="org.leialearns.command.encounter.TokensAdapter" />
@@ -248,5 +249,7 @@
     <bean id="consolidator" class="org.leialearns.command.consolidator.Consolidator">
         <property name="interactionContextUri" value="http://leialearns.org/test/encounter" />
     </bean>
+
+    <bean id="generator" class="org.leialearns.command.generator.Generator" />
 
 </beans>
