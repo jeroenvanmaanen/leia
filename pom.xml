@@ -11,6 +11,7 @@
   <description>Allows building all projects at once, and enables to create an IntelliJ project that contains all other projects</description>
 
   <modules>
+    <module>parent</module>
     <module>prefixencoding</module>
     <module>application</module>
   </modules>

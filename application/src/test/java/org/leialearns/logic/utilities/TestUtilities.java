@@ -1,6 +1,7 @@
 package org.leialearns.logic.utilities;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.leialearns.logic.model.Fraction;
@@ -24,9 +25,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.leialearns.logic.utilities.DescriptionLength.descriptionLength;
-import static org.leialearns.logic.utilities.DescriptionLength.prefixDecode;
-import static org.leialearns.logic.utilities.DescriptionLength.prefixEncode;
 import static org.leialearns.logic.utilities.DescriptionLength.toBinary;
+import static org.leialearns.logic.utilities.PrefixFree.prefixDecode;
+import static org.leialearns.logic.utilities.PrefixFree.prefixEncode;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -78,7 +79,7 @@ public class TestUtilities {
         String encoded = prefixEncode(n);
         logger.info("Prefix-free: " + n + ": [" + encoded + "]");
         Reader encodedReader = new StringReader(encoded);
-        BigInteger decoded = prefixDecode(encodedReader);
+        BigInteger decoded = prefixDecode(encodedReader).bigInteger();
         assertAtEnd(encodedReader);
         assertEquals(n, decoded);
     }
@@ -120,6 +121,7 @@ public class TestUtilities {
         assertEquals("description length == length of prefix-free encoding", descriptionLength, encoded.length());
     }
 
+    @Ignore
     @Test
     public void testOracle() {
         try {

@@ -262,7 +262,7 @@ public class Oracle {
     }
 
     public Expectation prefixDecode(Reader code, Collection<Symbol> symbols) {
-        int domainSize = DescriptionLength.prefixDecode(code).intValue();
+        int domainSize = PrefixFree.prefixDecode(code).intValue();
         if (symbols.size() < domainSize) {
             throw new IllegalArgumentException("Not enough symbols: " + symbols.size() + " < " + domainSize);
         }
@@ -279,7 +279,7 @@ public class Oracle {
         long denominator = 0L;
         for (int i = 0; i < domainSize; i++) {
             Symbol symbol = symbolIterator.next();
-            long index = DescriptionLength.prefixDecode(code).longValue();
+            long index = PrefixFree.prefixDecode(code).longValue();
             logger.trace("Decode: {}: {}", symbol, index);
             if (index == 1) {
                 denominator++;

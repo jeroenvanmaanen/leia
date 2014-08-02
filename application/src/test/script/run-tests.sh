@@ -10,7 +10,7 @@ do
 done
 
 function usage() {
-    echo "Usage: $(basename "$0") [ -v | -k | -o | -i <iterations> | -t <single-test> | -f <final-test> ]" >&2
+    echo "Usage: $(basename "$0") [ -v | -k | -o | -n <iterations> | -t <single-test> | -f <final-test> ]" >&2
 }
 
 SILENT='true'

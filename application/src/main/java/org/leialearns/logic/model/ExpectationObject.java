@@ -4,6 +4,7 @@ import org.leialearns.logic.interaction.Symbol;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.logic.utilities.DescriptionLength;
+import org.leialearns.logic.utilities.PrefixFree;
 import org.leialearns.utilities.Expression;
 import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TypedIterable;
@@ -77,7 +78,7 @@ public class ExpectationObject extends BaseDistribution implements Expectation {
         int missing = 0;
         StringBuilder builder = new StringBuilder("{E|");
         builder.append("#sym:");
-        builder.append(DescriptionLength.prefixEncode(BigInteger.valueOf(symbols.size())));
+        builder.append(PrefixFree.prefixEncode(BigInteger.valueOf(symbols.size())));
         for (Symbol symbol : symbols) {
             builder.append("|s#");
             builder.append(symbol.getOrdinal());
@@ -86,7 +87,7 @@ public class ExpectationObject extends BaseDistribution implements Expectation {
                 Fraction fraction = fractions.get(symbol);
                 long index = fraction.getIndex();
                 index = index < 1 ? 1 : index + 1;
-                builder.append(DescriptionLength.prefixEncode(BigInteger.valueOf(index)));
+                builder.append(PrefixFree.prefixEncode(BigInteger.valueOf(index)));
             } else {
                 builder.append("I(0)");
                 missing++;
