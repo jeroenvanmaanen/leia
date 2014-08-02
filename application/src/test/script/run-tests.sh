@@ -5,7 +5,7 @@ set -e
 N=0
 while [ "${N}" -lt '45' ]
 do
-    echo ''
+    echo '~'
     N=$[${N} + 1]
 done
 
