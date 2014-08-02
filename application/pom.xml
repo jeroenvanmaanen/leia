@@ -50,13 +50,7 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-neo4j-aspects</artifactId>
-            <version>${spring-data.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.neo4j</groupId>
-                    <artifactId>neo4j-kernel</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>${spring-data-neo4j.version}</version>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
@@ -138,7 +132,7 @@
                     <detectLinks>true</detectLinks>
                     <links>
                         <link>http://docs.spring.io/spring/docs/${spring.version}/javadoc-api</link>
-                        <link>http://docs.spring.io/spring-data/neo4j/docs/${spring-data.version}/api</link>
+                        <link>http://docs.spring.io/spring-data/neo4j/docs/${spring-data-neo4j.version}/api</link>
                     </links>
                 </configuration>
             </plugin>

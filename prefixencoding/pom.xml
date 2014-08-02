@@ -27,7 +27,7 @@
         <pluginRepository>
             <id>scala-tools.org</id>
             <name>Scala-tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
+            <url>https://oss.sonatype.org/content/groups/scala-tools</url>
         </pluginRepository>
     </pluginRepositories>
 
@@ -38,13 +38,8 @@
             <version>${scala.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-compiler</artifactId>
-            <version>${scala.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.scalatest</groupId>
-            <artifactId>scalatest_2.11</artifactId>
+            <artifactId>scalatest_2.10</artifactId>
             <version>${scalatest.version}</version>
             <scope>test</scope>
         </dependency>
