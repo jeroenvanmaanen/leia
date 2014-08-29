@@ -4,8 +4,9 @@ import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.graph.HasId;
 import org.leialearns.logic.interaction.Alphabet;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
-import org.springframework.data.neo4j.annotation.Indexed;
+//import org.springframework.data.neo4j.annotation.Indexed; // TODO: remove
 import org.springframework.data.neo4j.annotation.NodeEntity;
 
 import java.io.Serializable;
@@ -13,11 +14,12 @@ import java.io.Serializable;
 import static org.leialearns.utilities.Display.displayParts;
 
 @NodeEntity
+@TypeAlias("Alphabet")
 public class AlphabetDTO extends BaseBridgeFacet implements HasId, Serializable, Comparable<AlphabetDTO>, FarObject<Alphabet> {
     @GraphId
     private Long id;
 
-    @Indexed(unique = true, indexName = "alphabetUri")
+    // @Indexed(unique = true) // TODO: remove
     private String uri;
 
     private boolean fixated = false;

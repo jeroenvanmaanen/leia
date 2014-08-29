@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class Approximation implements Comparable<Approximation>, Iterable<Approximation> {
     final Iterable<?> singleton = Collections.unmodifiableCollection(Arrays.asList(new Object()));
 
@@ -19,7 +21,7 @@ public class Approximation implements Comparable<Approximation>, Iterable<Approx
     private int depth = 0;
 
     protected Approximation(Fraction fraction) {
-        this.fraction = fraction;
+        this.fraction = checkNotNull(fraction);
     }
 
     public Fraction getFraction() {

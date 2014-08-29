@@ -21,13 +21,13 @@ public interface AlphabetRepository extends GraphRepository<AlphabetDTO> {
             " RETURN length(r) = 0")
     boolean setEmptySymbolChain(AlphabetDTO alphabet);
 
-    @Query("START alphabet=node({0}) RETURN alphabet.denotation?")
+    @Query("START alphabet=node({0}) RETURN alphabet.denotation")
     String getDenotation(AlphabetDTO alphabet);
 
     @Query("START symbol=node({0})" +
             " MATCH symbol<-[:HAS_WORD]-alphabet, before-[old:NEXT_WORD]->alphabet" +
             " CREATE UNIQUE before-[:NEXT_WORD]->symbol-[:NEXT_WORD]->alphabet" +
-            " SET symbol.ordinal = coalesce(before.ordinal?, -1) + 1" +
+            " SET symbol.ordinal = coalesce(before.ordinal, -1) + 1" +
             " DELETE old" +
             " RETURN symbol.ordinal")
     Long getOrdinal(SymbolDTO symbol);
@@ -35,7 +35,7 @@ public interface AlphabetRepository extends GraphRepository<AlphabetDTO> {
     @Query("START alphabet=node({0}) MATCH alphabet-[:NEXT_WORD*1..]->n RETURN count(n)")
     Integer countWordChain(AlphabetDTO alphabet);
 
-    @Query("START alphabet=node({0}) MATCH last-[:NEXT_WORD]->alphabet RETURN coalesce(last.ordinal?, -1)")
+    @Query("START alphabet=node({0}) MATCH last-[:NEXT_WORD]->alphabet RETURN coalesce(last.ordinal, -1)")
     Long findLargestSymbolOrdinal(AlphabetDTO alphabet);
 
 }

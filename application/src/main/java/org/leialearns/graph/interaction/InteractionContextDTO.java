@@ -6,9 +6,12 @@ import org.leialearns.graph.HasId;
 import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.graph.structure.StructureDTO;
 import org.neo4j.graphdb.Direction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
-import org.springframework.data.neo4j.annotation.Indexed;
+// import org.springframework.data.neo4j.annotation.Indexed; // TODO: remove
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
@@ -17,15 +20,18 @@ import java.io.Serializable;
 import static org.leialearns.utilities.Display.displayParts;
 
 @NodeEntity
+@TypeAlias("InteractionContext")
 public class InteractionContextDTO extends BaseBridgeFacet implements HasId, Serializable, Comparable<InteractionContextDTO>, FarObject<InteractionContext> {
+    private static final Logger logger = LoggerFactory.getLogger(new Object(){}.getClass().getEnclosingClass());
+
     @GraphId
     private Long id;
 
-    @Indexed(unique = true, indexName = "contextUri")
+    // @Indexed(unique = true) // TODO: remove
     private String uri;
 
     @Fetch
-    @RelatedTo(direction = Direction.OUTGOING, type = "HAS_ACTIONS")
+    @RelatedTo(direction = Direction.OUTGOING, type = "HAS_ACTIONS", elementClass = AlphabetDTO.class)
     private AlphabetDTO actions;
 
     @Fetch
@@ -53,6 +59,13 @@ public class InteractionContextDTO extends BaseBridgeFacet implements HasId, Ser
     }
 
     public AlphabetDTO getActions() {
+        AlphabetDTO myActions;
+        try {
+            myActions = actions;
+        } catch (IllegalArgumentException exception) {
+            myActions = null;
+        }
+        logger.debug("Get actions: {}: {}: {}", new Object[] { id, uri, myActions });
         return actions;
     }
 

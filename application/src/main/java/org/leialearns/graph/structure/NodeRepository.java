@@ -15,6 +15,6 @@ public interface NodeRepository extends GraphRepository<NodeDTO> {
     @Query("START parent = node({0}) MATCH parent-[:HAS_CHILD]->child RETURN child")
     Set<NodeDTO> findChildren(NodeDTO node);
 
-    @Query("START structure = node({0}), structureNode = node:nodePath(path={1}) MATCH structure-[:HAS_NODE]->structureNode RETURN structureNode")
+    @Query("START structure = node({0}) MATCH structure-[:HAS_NODE]->(structureNode:Node) WHERE structureNode.path = {1} RETURN structureNode")
     NodeDTO getNodeByStructureAndPath(StructureDTO structure, String path);
 }

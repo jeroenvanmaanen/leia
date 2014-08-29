@@ -4,6 +4,7 @@ import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.graph.HasId;
 import org.leialearns.logic.structure.Structure;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -14,6 +15,7 @@ import static org.leialearns.utilities.Display.displayParts;
 import static org.leialearns.utilities.Static.equal;
 
 @NodeEntity
+@TypeAlias("Structure")
 public class StructureDTO extends BaseBridgeFacet implements HasId, Serializable, FarObject<Structure> {
     @GraphId
     private Long id;

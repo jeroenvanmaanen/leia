@@ -397,6 +397,7 @@ public class Oracle {
     }
 
     protected Approximation createApproximation(Fraction fraction) {
+        logger.debug("Create fraction: index: {}", fraction.getIndex());
         return new Approximation(fraction);
     }
 

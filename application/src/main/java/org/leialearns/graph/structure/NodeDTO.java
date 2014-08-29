@@ -6,6 +6,7 @@ import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.HasId;
 import org.leialearns.graph.interaction.SymbolDTO;
 import org.leialearns.logic.structure.Node;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -19,6 +20,7 @@ import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
 @NodeEntity
+@TypeAlias("Node")
 public class NodeDTO extends BaseBridgeFacet implements HasId, Serializable, FarObject<Node>, Comparable<NodeDTO> {
     @GraphId
     private Long id;
@@ -32,7 +34,7 @@ public class NodeDTO extends BaseBridgeFacet implements HasId, Serializable, Far
     @RelatedTo(direction = OUTGOING, type = "FOR_SYMBOL")
     private SymbolDTO symbol;
 
-    @Indexed(indexName = "nodePath", unique = false, level = Indexed.Level.GLOBAL)
+    @Indexed(unique = false /*, level = Indexed.Level.GLOBAL */)
     private String path;
 
     private Integer depth;

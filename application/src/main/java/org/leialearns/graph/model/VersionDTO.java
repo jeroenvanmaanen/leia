@@ -14,6 +14,7 @@ import org.leialearns.utilities.ExceptionWrapper;
 import org.leialearns.utilities.Setting;
 // import org.leialearns.utilities.TypedIterable;
 import org.neo4j.graphdb.Direction;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -28,6 +29,7 @@ import static org.leialearns.utilities.Display.displayParts;
 import static org.leialearns.utilities.Static.equal;
 
 @NodeEntity
+@TypeAlias("Version")
 public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, FarObject<Version> {
     private final transient Setting<Long> logInterval = new Setting<>("Log interval", 5 * 60 * 1000L);
 
@@ -69,7 +71,7 @@ public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, 
     }
 
     public ModelType getModelType() {
-        return ModelType.valueOf(modelTypeFlag);
+        return modelTypeFlag == null ? null : ModelType.valueOf(modelTypeFlag);
     }
 
     public void setModelType(ModelType modelType) {
@@ -86,7 +88,7 @@ public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, 
     }
 
     public AccessMode getAccessMode() {
-        return AccessMode.valueOf(accessModeFlag);
+        return accessModeFlag == null ? null : AccessMode.valueOf(accessModeFlag);
     }
 
     public void setAccessMode(AccessMode accessMode) {

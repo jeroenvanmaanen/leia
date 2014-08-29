@@ -15,13 +15,19 @@
     <context:component-scan base-package="org.leialearns" />
     <tx:annotation-driven mode="proxy"/>
 
-    <!-- bean id="testGraphDatabaseFactory" class="org.neo4j.test.TestGraphDatabaseFactory" / -->
     <bean id="graphDatabaseFactory" class="org.neo4j.graphdb.factory.GraphDatabaseFactory" />
 
-    <!--bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="testGraphDatabaseFactory" factory-method="newImpermanentDatabase" / -->
+    <!-- BEGIN embedded database -->
     <bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="graphDatabaseFactory" factory-method="newEmbeddedDatabase">
         <constructor-arg index="0" value="target/graphdb" />
     </bean>
+    <!-- END embedded database -->
+
+    <!-- BEGIN REST database -!->
+    <bean id="graphDatabaseService" class="org.springframework.data.neo4j.rest.SpringRestGraphDatabase">
+        <constructor-arg value="http://localhost:7474/db/data" />
+    </bean>
+    <!-!- END REST database-->
 
     <bean id="executionEngine" class="org.neo4j.cypher.javacompat.ExecutionEngine">
         <constructor-arg ref="graphDatabaseService" />

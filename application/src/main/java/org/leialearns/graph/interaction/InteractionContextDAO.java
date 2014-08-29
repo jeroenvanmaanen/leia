@@ -1,10 +1,13 @@
 package org.leialearns.graph.interaction;
 
+import com.google.common.base.Joiner;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.IdDaoSupport;
+import org.leialearns.graph.model.VersionDTO;
 import org.leialearns.graph.structure.StructureDAO;
 import org.leialearns.graph.structure.StructureDTO;
+import org.leialearns.graph.util.GraphLogger;
 import org.leialearns.utilities.ExceptionWrapper;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
@@ -15,8 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.leialearns.utilities.Static.getLoggingClass;
 
@@ -32,6 +37,9 @@ public class InteractionContextDAO extends IdDaoSupport<InteractionContextDTO> {
 
     @Autowired
     private StructureDAO structureDAO;
+
+    @Autowired
+    private GraphLogger graphLogger;
 
     public InteractionContextDTO find(String uri) {
         InteractionContextDTO result = repository.getInteractionContextByUri(uri);
@@ -79,10 +87,30 @@ public class InteractionContextDAO extends IdDaoSupport<InteractionContextDTO> {
             result.setResponses(responses);
             result.setStructure(structure);
             result = repository.save(result);
+            logNextVersions(result);
+            logActions(result);
             repository.setEmptyVersionChain(result);
+            logNextVersions(result);
+            logActions(result);
+            logger.debug("New interaction context: actions: {}", result.getActions());
         }
         logger.debug("Result: {}", result);
         return result;
+    }
+
+    private void logActions(InteractionContextDTO context) {
+        logger.debug("Interaction context: actions: {}: [{}]", context, Joiner.on(", ").join(repository.getActions(context)));
+    }
+
+    private void logNextVersions(InteractionContextDTO context) {
+        graphLogger.log("Interaction context", context, 3);
+        Set<VersionDTO> versions = repository.getNextVersions(context);
+        Long[] ids = new Long[versions.size()];
+        Iterator<VersionDTO> it = versions.iterator();
+        for (int i = 0; i < ids.length; i++) {
+            ids[i] = it.next().getId();
+        }
+        logger.debug("Interaction context: next versions: {}: [{}]", context, Joiner.on(", ").join(ids));
     }
 
     @BridgeOverride

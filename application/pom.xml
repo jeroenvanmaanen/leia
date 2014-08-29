@@ -33,6 +33,11 @@
             <version>${commons-lang.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <version>${spring.version}</version>
@@ -51,7 +56,26 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-neo4j-aspects</artifactId>
             <version>${spring-data-neo4j.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.neo4j</groupId>
+                    <artifactId>neo4j-kernel</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+        <!--
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-neo4j-rest</artifactId>
+            <version>${spring-data-neo4j.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.neo4j</groupId>
+                    <artifactId>neo4j-kernel</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        -->
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
@@ -67,6 +91,13 @@
             <artifactId>neo4j-kernel</artifactId>
             <version>${neo4j.version}</version>
             <type>test-jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-kernel</artifactId>
+            <version>${neo4j.version}</version>
+            <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -136,12 +167,13 @@
                     </links>
                 </configuration>
             </plugin>
+<!--
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <version>1.2</version>
                 <dependencies>
-                    <!-- NB: You must use Maven 2.0.9 or above or these are ignored (see MNG-2972) -->
+                    <!- - NB: You must use Maven 2.0.9 or above or these are ignored (see MNG-2972) - ->
                     <dependency>
                         <groupId>org.aspectj</groupId>
                         <artifactId>aspectjrt</artifactId>
@@ -177,6 +209,7 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
+-->
         </plugins>
     </build>
 

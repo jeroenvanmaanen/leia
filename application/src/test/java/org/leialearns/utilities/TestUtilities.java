@@ -52,7 +52,11 @@ public class TestUtilities {
         System.err.print("Project directory: ");
         System.err.println(projectDir);
         String logDir = getPath(projectDir, "target", "log");
-        String configFile = getPath(projectDir, "src", "test", "resources", "logging.properties");
+        String configDir = getPath(projectDir, "src", "test", "resources");
+        String configFile = getPath(configDir, "logging.properties");
+        if (!(new File(configFile).exists())) {
+            configFile = getPath(configDir, "logging-sample+default.properties");
+        }
         InputStream loggingProperties = new FileInputStream(configFile);
         new LogConfigurator(logDir).configure(loggingProperties);
     }

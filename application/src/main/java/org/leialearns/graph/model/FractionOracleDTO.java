@@ -1,11 +1,13 @@
 package org.leialearns.graph.model;
 
+import com.google.common.base.Objects;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
-import org.springframework.data.neo4j.support.index.IndexType;
 
 @NodeEntity
+@TypeAlias("FractionOracle")
 public class FractionOracleDTO extends FractionBaseDTO {
 
     @GraphId
@@ -16,7 +18,7 @@ public class FractionOracleDTO extends FractionBaseDTO {
 
     private transient long gcd = 0;
 
-    @Indexed(unique = true, indexName = "oracleFractionIndex", indexType = IndexType.SIMPLE, numeric = false)
+    @Indexed(unique = true, numeric = false)
     private Long index;
 
     @Override
@@ -65,7 +67,7 @@ public class FractionOracleDTO extends FractionBaseDTO {
 
     @Override
     public Long getIndex() {
-        return index;
+        return Objects.firstNonNull(index, -1L);
     }
 
     @Override

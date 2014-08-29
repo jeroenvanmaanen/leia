@@ -154,8 +154,9 @@ public class ObserverTest {
                         Version version = extension.getVersion();
                         logger.debug("Extension: {}: version: {}", extension, version);
                         Version attached = theSession.findVersion(version.getOrdinal());
+                        Session owner = attached.getOwner(); // TODO: why is this different from theSession?
                         if (attached != null) {
-                            attached.setAccessMode(AccessMode.READABLE, theSession);
+                            attached.setAccessMode(AccessMode.READABLE, owner);
                         }
                     }
                 }

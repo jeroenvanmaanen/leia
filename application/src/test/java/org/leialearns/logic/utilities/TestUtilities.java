@@ -1,7 +1,6 @@
 package org.leialearns.logic.utilities;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.leialearns.logic.model.Fraction;
@@ -121,7 +120,6 @@ public class TestUtilities {
         assertEquals("description length == length of prefix-free encoding", descriptionLength, encoded.length());
     }
 
-    @Ignore
     @Test
     public void testOracle() {
         try {
