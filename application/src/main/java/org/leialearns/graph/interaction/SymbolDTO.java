@@ -30,6 +30,9 @@ public class SymbolDTO extends BaseBridgeFacet implements HasId, FarObject<Symbo
     @RelatedTo(direction = INCOMING, type = "HAS_WORD")
     private AlphabetDTO alphabet;
 
+    @RelatedTo(direction = OUTGOING, type = "NEXT_SYMBOL")
+    private SymbolDTO nextSymbol;
+
     @Indexed(unique = false)
     private String denotation;
 
@@ -46,6 +49,14 @@ public class SymbolDTO extends BaseBridgeFacet implements HasId, FarObject<Symbo
 
     public void setAlphabet(AlphabetDTO alphabet) {
         this.alphabet = alphabet;
+    }
+
+    public SymbolDTO getNextSymbol() {
+        return nextSymbol;
+    }
+
+    public void setNextSymbol(SymbolDTO nextSymbol) {
+        this.nextSymbol = nextSymbol;
     }
 
     public String getDenotation() {

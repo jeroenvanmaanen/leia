@@ -17,7 +17,8 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 public class EstimateDAO extends IdDaoSupport<EstimateDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 
-    EstimateRepository repository;
+    @Autowired
+    private EstimateRepository repository;
 
     @Autowired
     FractionEstimateRepository fractionEstimateRepository;
@@ -28,10 +29,9 @@ public class EstimateDAO extends IdDaoSupport<EstimateDTO> {
     @Autowired
     FractionDAO fractionDAO;
 
-    @Autowired
-    public EstimateDAO(EstimateRepository repository) {
-        super(repository);
-        this.repository = repository;
+    @Override
+    protected EstimateRepository getRepository() {
+        return repository;
     }
 
     public EstimateDTO findEstimate(VersionDTO version, NodeDTO node, SymbolDTO symbol) {

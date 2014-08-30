@@ -12,10 +12,13 @@ import org.leialearns.graph.structure.StructureDTO;
 import org.leialearns.logic.session.NeedsRoot;
 import org.leialearns.logic.session.Root;
 import org.leialearns.utilities.TypedIterable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 public class RootDTO implements FarObject<Root> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(new Object() {}.getClass().getEnclosingClass());
     private final NeedsRoot[] needsRootItems;
 
     @Autowired
@@ -42,10 +45,12 @@ public class RootDTO implements FarObject<Root> {
         this.needsRootItems = needsRootItems;
     }
 
+    @BridgeOverride
     public InteractionContextDTO createInteractionContext(String interactionContextURI) {
         return interactionContextDAO.findOrCreate(interactionContextURI);
     }
 
+    @BridgeOverride
     public InteractionContextDTO createInteractionContext(String interactionContextURI, String actionsURI, String responsesURI, String structureURI) {
         AlphabetDTO actions = alphabetDAO.findOrCreate(actionsURI);
         AlphabetDTO responses = alphabetDAO.findOrCreate(responsesURI);
@@ -55,6 +60,7 @@ public class RootDTO implements FarObject<Root> {
 
     public SessionDTO createSession(String interactionContextURI) {
         InteractionContextDTO interactionContext = interactionContextDAO.findOrCreate(interactionContextURI);
+        LOGGER.debug("InteractionContext: {}", interactionContext);
         return createSession(interactionContext);
     }
 

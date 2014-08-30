@@ -15,15 +15,15 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 public class ToggledDAO extends IdDaoSupport<ToggledDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 
+    @Autowired
     private ToggledRepository repository;
 
     @Autowired
     private VersionDAO versionDAO;
 
-    @Autowired
-    public ToggledDAO(ToggledRepository repository) {
-        super(repository);
-        this.repository = repository;
+    @Override
+    protected ToggledRepository getRepository() {
+        return repository;
     }
 
     public ToggledDTO create(SessionDTO owner, NodeDTO node, boolean include) {

@@ -11,12 +11,12 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 public class ExpectedDAO extends IdDaoSupport<ExpectedDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 
+    @Autowired
     private ExpectedRepository repository;
 
-    @Autowired
-    public ExpectedDAO(ExpectedRepository repository) {
-        super(repository);
-        this.repository = repository;
+    @Override
+    protected ExpectedRepository getRepository() {
+        return repository;
     }
 
     public ExpectedDTO find(VersionDTO version) {

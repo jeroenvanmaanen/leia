@@ -17,10 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Display.displayWithTypes;
-import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class SessionDAO extends IdDaoSupport<SessionDTO> {
-    private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
+    private static final Logger logger = LoggerFactory.getLogger(new Object(){}.getClass().getEnclosingClass());
+
+    @Autowired
+    private SessionRepository repository;
 
     @Autowired
     private VersionDAO versionDAO;
@@ -28,16 +30,19 @@ public class SessionDAO extends IdDaoSupport<SessionDTO> {
     @Autowired
     private ToggledDAO toggledDAO;
 
-    @Autowired
-    public SessionDAO(SessionRepository repository) {
-        super(repository);
+    @Override
+    protected SessionRepository getRepository() {
+        return repository;
     }
 
     public SessionDTO create(RootDTO root, InteractionContextDTO interactionContext) {
+        logger.debug("Context: {}", interactionContext);
         SessionDTO result = new SessionDTO();
         result.setRoot(root);
         result.setInteractionContext(interactionContext);
         result = save(result);
+        InteractionContextDTO resultContext = result.getInteractionContext();
+        logger.debug("Context: {}, {}", resultContext, resultContext.getURI());
         logger.trace("Stack trace", new Throwable());
         return result;
     }

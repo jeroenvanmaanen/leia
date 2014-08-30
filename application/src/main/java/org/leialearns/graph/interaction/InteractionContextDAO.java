@@ -4,7 +4,6 @@ import com.google.common.base.Joiner;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.IdDaoSupport;
-import org.leialearns.graph.model.VersionDTO;
 import org.leialearns.graph.structure.StructureDAO;
 import org.leialearns.graph.structure.StructureDTO;
 import org.leialearns.graph.util.GraphLogger;
@@ -18,16 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import static org.leialearns.utilities.Static.getLoggingClass;
 
 @Transactional("neo4jTransactionManager")
 public class InteractionContextDAO extends IdDaoSupport<InteractionContextDTO> {
-    private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
+    private static final Logger logger = LoggerFactory.getLogger(new Object(){}.getClass().getEnclosingClass());
 
     @Autowired
     InteractionContextRepository repository;
@@ -41,9 +36,21 @@ public class InteractionContextDAO extends IdDaoSupport<InteractionContextDTO> {
     @Autowired
     private GraphLogger graphLogger;
 
+    @Override
+    protected InteractionContextRepository getRepository() {
+        return repository;
+    }
+
     public InteractionContextDTO find(String uri) {
         InteractionContextDTO result = repository.getInteractionContextByUri(uri);
-        logger.debug("Result: {}: {}", uri, result);
+        if (result == null) {
+            logger.debug("No result: {}", uri);
+        } else {
+            graphLogger.log("Interaction context", result, 3);
+            logActions(result);
+            logger.debug("Existing interaction context: actions: {}", result.getActions());
+            logger.debug("Result: {}: {}", uri, result);
+        }
         return result;
     }
 
@@ -67,7 +74,7 @@ public class InteractionContextDAO extends IdDaoSupport<InteractionContextDTO> {
                 AlphabetDTO actions = alphabetDAO.findOrCreate(actionsURI);
                 AlphabetDTO responses = alphabetDAO.findOrCreate(responsesURI);
                 StructureDTO structure = structureDAO.findOrCreate(structureURI);
-                result = findOrCreate(uri, actions, responses, structure);
+                result = create(uri, actions, responses, structure);
             }
         } catch (Throwable e) {
             throw ExceptionWrapper.wrap(e);
@@ -81,36 +88,32 @@ public class InteractionContextDAO extends IdDaoSupport<InteractionContextDTO> {
         }
         InteractionContextDTO result = find(uri);
         if (result == null) {
-            result = new InteractionContextDTO();
-            result.setURI(uri);
-            result.setActions(actions);
-            result.setResponses(responses);
-            result.setStructure(structure);
-            result = repository.save(result);
-            logNextVersions(result);
-            logActions(result);
-            repository.setEmptyVersionChain(result);
-            logNextVersions(result);
-            logActions(result);
-            logger.debug("New interaction context: actions: {}", result.getActions());
+            result = create(uri, actions, responses, structure);
         }
+        logger.debug("Result: {}", result);
+        return result;
+    }
+
+    private InteractionContextDTO create(String uri, AlphabetDTO actions, AlphabetDTO responses, StructureDTO structure) {
+        if (uri == null) {
+            throw new IllegalArgumentException("Argument URI should not be null");
+        }
+        InteractionContextDTO result = new InteractionContextDTO();
+        result.setURI(uri);
+        result.setActions(actions);
+        result.setResponses(responses);
+        result.setStructure(structure);
+        result = repository.save(result);
+        graphLogger.log("Interaction context", result, 3);
+        logActions(result);
+        logger.debug("New interaction context: actions: {}", result.getActions());
+        logger.debug("New interaction context: responses: {}", result.getResponses());
         logger.debug("Result: {}", result);
         return result;
     }
 
     private void logActions(InteractionContextDTO context) {
         logger.debug("Interaction context: actions: {}: [{}]", context, Joiner.on(", ").join(repository.getActions(context)));
-    }
-
-    private void logNextVersions(InteractionContextDTO context) {
-        graphLogger.log("Interaction context", context, 3);
-        Set<VersionDTO> versions = repository.getNextVersions(context);
-        Long[] ids = new Long[versions.size()];
-        Iterator<VersionDTO> it = versions.iterator();
-        for (int i = 0; i < ids.length; i++) {
-            ids[i] = it.next().getId();
-        }
-        logger.debug("Interaction context: next versions: {}: [{}]", context, Joiner.on(", ").join(ids));
     }
 
     @BridgeOverride

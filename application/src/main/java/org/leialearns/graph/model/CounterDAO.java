@@ -36,7 +36,11 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 public class CounterDAO extends IdDaoSupport<CounterDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 
+    @Autowired
     private CounterRepository repository;
+
+    @Autowired
+    private CounterLogger counterLogger;
 
     @Autowired
     private NodeDAO nodeDAO;
@@ -52,18 +56,11 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
     public FactoryAccessor<Version> versionFactoryAccessor = new FactoryAccessor<>(Version.class);
 
     @Autowired
-    private CounterRepository counterRepository;
-
-    @Autowired
-    private CounterLogger counterLogger;
-
-    @Autowired
     private SymbolRepository symbolRepository;
 
-    @Autowired
-    public CounterDAO(CounterRepository repository) {
-        super(repository);
-        this.repository = repository;
+    @Override
+    protected CounterRepository getRepository() {
+        return repository;
     }
 
     @BridgeOverride
@@ -187,7 +184,7 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
 
     public void copyCounters(VersionDTO fromVersion, VersionDTO toVersion) {
         logger.debug("Copy counters: " + fromVersion + ": " + toVersion);
-        Set<CounterDTO> counters = counterRepository.findCountersByVersion(fromVersion);
+        Set<CounterDTO> counters = repository.findCountersByVersion(fromVersion);
         logger.trace("Copying counters: {");
         for (CounterDTO counter : counters) {
             SymbolDTO symbolDTO = counter.getSymbol();
@@ -249,7 +246,7 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
             logger.trace("  Pair: {}", asDisplay(pair));
             NodeDTO node = nodeCache.get(pair.get("node_id"));
             SymbolDTO symbol = symbolCache.get(pair.get("symbol_id"));
-            CounterDTO exists = counterRepository.findCounterByVersionAndNodeAndSymbol(toVersion, node, symbol);
+            CounterDTO exists = repository.findCounterByVersionAndNodeAndSymbol(toVersion, node, symbol);
             if (exists == null) {
                 logger.debug("  " + node + " [" + show(symbol.getDenotation()) + "]");
                 create(toVersion, node, symbol);
@@ -284,7 +281,7 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
 
         InteractionContextDTO context = toVersion.getInteractionContext();
         logger.debug("Find updates: {}: {}: {}: {}", new Object[]{context, toVersion, minOrdinal, maxOrdinal});
-        Set<CounterDTO> updates = counterRepository.findUpdates(toVersion.getInteractionContext(), toVersion, minOrdinal, maxOrdinal);
+        Set<CounterDTO> updates = repository.findUpdates(toVersion.getInteractionContext(), toVersion, minOrdinal, maxOrdinal);
         Map<String,CounterUpdateDTO> updateMap = new HashMap<>();
         for (CounterDTO update : updates) {
             String key = "" + update.getNode().getId() + "|" + update.getSymbol().getId();
@@ -293,7 +290,7 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
                 counterUpdate = updateMap.get(key);
             } else {
                 logger.debug("Create new update for: #{} <- (#{}, {}, {})", new Object[]{toVersion.getOrdinal(), update.getVersion().getOrdinal(), update.getNode(), update.getSymbol()});
-                CounterDTO counter = counterRepository.findCounterByVersionAndNodeAndSymbol(toVersion, update.getNode(), update.getSymbol());
+                CounterDTO counter = repository.findCounterByVersionAndNodeAndSymbol(toVersion, update.getNode(), update.getSymbol());
                 counterUpdate = new CounterUpdateDTO(counter);
                 updateMap.put(key, counterUpdate);
             }

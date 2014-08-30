@@ -37,7 +37,10 @@ public class GraphLogger {
         } else {
             nodeId = null;
         }
-        if (nodeId != null) {
+        if (nodeId == null) {
+            logger.debug("No node ID found for object: {}", object);
+        } else {
+            logger.debug("Found node ID for object: {}: {}", nodeId, object);
             Map<String,Object> parameters = new HashMap<>();
             parameters.put("startNode", nodeId);
             final ExecutionResult result = executionEngine.execute("START n = node({startNode}) MATCH (n)-[r]->(m) RETURN n, r, m", parameters);

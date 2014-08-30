@@ -6,8 +6,6 @@ import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.cypher.javacompat.ExecutionResult;
 // import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.repository.GraphRepository;
 
@@ -17,21 +15,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 import static org.leialearns.bridge.Static.getFarObject;
-import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
-    private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private final GraphRepository<DTO> repository;
-
-    public IdDaoSupport() {
-        logger.debug("No repository: {}", getClass());
-        repository = null;
-    }
-
-    public IdDaoSupport(GraphRepository<DTO> repository) {
-        logger.debug("Repository: {}: {}", getClass(), repository);
-        this.repository = repository;
-    }
 
     @Autowired
     private ExecutionEngine executionEngine;
@@ -74,8 +59,12 @@ public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
         return it.next();
     }
 
+    protected GraphRepository<DTO> getRepository() {
+        throw new UnsupportedOperationException(String.format("DAO does not override method getRepository(): %s", getClass().getSimpleName()));
+    }
+
     public DTO save(DTO dto) {
-        return repository.save(dto);
+        return getRepository().save(dto);
     }
 
     /**
@@ -85,7 +74,7 @@ public class IdDaoSupport<DTO extends HasId & FarObject<?>> {
      * @return The result of the query as a DTO
      */
     protected DTO findDTO(String query, Object... parameters) {
-        return repository.query(query, createParameterMap(parameters)).singleOrNull();
+        return getRepository().query(query, createParameterMap(parameters)).singleOrNull();
     }
 
     /*

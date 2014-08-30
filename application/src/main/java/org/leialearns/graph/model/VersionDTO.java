@@ -15,6 +15,7 @@ import org.leialearns.utilities.Setting;
 // import org.leialearns.utilities.TypedIterable;
 import org.neo4j.graphdb.Direction;
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -37,14 +38,17 @@ public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, 
     private Long id;
 
     @RelatedTo(direction = Direction.OUTGOING, type = "IN_CONTEXT")
-    private InteractionContextDTO interactionContext;
+    @Fetch private InteractionContextDTO interactionContext;
 
     @RelatedTo(direction = Direction.OUTGOING, type = "OWNED_BY")
-    private SessionDTO owner;
+    @Fetch private SessionDTO owner;
 
-    private Long ordinal;
-    private Character modelTypeFlag;
-    private Character accessModeFlag;
+    @RelatedTo(direction = Direction.OUTGOING, type = "NEXT_VERSION")
+    @Fetch private VersionDTO nextVersion;
+
+    @Fetch private Long ordinal;
+    @Fetch private Character modelTypeFlag;
+    @Fetch private Character accessModeFlag;
 
     /*
     private transient Map<Long,SessionDTO> readers = new HashMap<>();
@@ -120,7 +124,15 @@ public class VersionDTO extends BaseBridgeFacet implements HasId, Serializable, 
         this.owner = owner;
     }
 
-    /*
+    public VersionDTO getNextVersion() {
+        return nextVersion;
+    }
+
+    public void setNextVersion(VersionDTO nextVersion) {
+        this.nextVersion = nextVersion;
+    }
+
+/*
     public TypedIterable<SessionDTO> getWriters() {
         throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
     }

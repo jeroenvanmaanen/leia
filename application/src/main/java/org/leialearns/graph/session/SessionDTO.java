@@ -9,6 +9,7 @@ import org.leialearns.utilities.BaseExpression;
 import org.neo4j.graphdb.Direction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -28,7 +29,7 @@ public class SessionDTO extends BaseBridgeFacet implements HasId, Serializable, 
     private transient RootDTO root;
 
     @RelatedTo(direction = Direction.INCOMING, type = "HAS_SESSION")
-    private InteractionContextDTO interactionContext;
+    @Fetch private InteractionContextDTO interactionContext;
 
     public Long getId() {
         return id;

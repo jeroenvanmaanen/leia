@@ -1,6 +1,7 @@
 package org.leialearns.graph.interaction;
 
 import org.leialearns.bridge.BridgeOverride;
+import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.logic.interaction.Alphabet;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
@@ -9,14 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import static org.leialearns.bridge.Static.getFarObject;
-import static org.leialearns.utilities.Display.asDisplay;
 import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
-public class AlphabetDAO {
+public class AlphabetDAO extends IdDaoSupport<AlphabetDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private Map<Long,Boolean> isFixated = new HashMap<>();
 
@@ -28,6 +27,11 @@ public class AlphabetDAO {
 
     @Autowired
     SymbolDAO symbolDAO;
+
+    @Override
+    protected AlphabetRepository getRepository() {
+        return repository;
+    }
 
     public TypedIterable<AlphabetDTO> findAll() {
         return new TypedIterable<>(repository.findAll(), AlphabetDTO.class);
@@ -48,19 +52,6 @@ public class AlphabetDAO {
             alphabet = repository.save(alphabet);
             if (logger.isDebugEnabled()) {
                 logger.debug("Alphabet: " + alphabet.toString());
-                logger.debug("Chain count: {}", repository.countWordChain(alphabet));
-            }
-            boolean added = repository.setEmptySymbolChain(alphabet);
-            if (logger.isDebugEnabled()) {
-                logger.debug("Added: {}: {}", added, repository.getDenotation(alphabet));
-                long chainCount = repository.countWordChain(alphabet);
-                logger.debug("Chain count: " + chainCount);
-                if (chainCount > 1) {
-                    Set<SymbolDTO> symbols = repository.findInternalizedSymbols(alphabet);
-                    for (SymbolDTO symbol : symbols) {
-                        logger.debug("Internalized symbol: {}", asDisplay(symbol));
-                    }
-                }
             }
         }
         logger.debug("Alphabet: " + alphabet.toString());
@@ -69,6 +60,7 @@ public class AlphabetDAO {
 
     public SymbolDTO internalize(AlphabetDTO alphabet, String denotation) {
         logger.trace(display(alphabet) + ".internalize(" + display(denotation) + ")");
+
         SymbolDTO symbol = repository.findSymbol(alphabet, denotation);
         if (symbol == null) {
             // Use getFixated rather than isFixated() to avoid forcing the state of the alphabet to fixated for subsequent operations
@@ -79,18 +71,39 @@ public class AlphabetDAO {
             symbol = new SymbolDTO();
             symbol.setAlphabet(alphabet);
             symbol.setDenotation(denotation);
-            symbol = symbolRepository.save(symbol);
-            symbolDAO.setOrdinal(symbol);
-            logger.debug("Chain count: " + repository.countWordChain(alphabet));
-            logger.debug("Internalized: " + symbol);
-        } else {
-            symbol.setAlphabet(alphabet);
-            if (symbol.getOrdinal() == null) {
-                symbolDAO.setOrdinal(symbol);
-                symbolDAO.save(symbol);
-            }
         }
+
+        symbol.setAlphabet(alphabet);
+        if (symbol.getOrdinal() == null) {
+            setOrdinal(symbol, alphabet);
+        }
+
         return symbol;
+    }
+
+    protected void setOrdinal(SymbolDTO symbol, AlphabetDTO alphabet) {
+        SymbolDTO lastSymbol = alphabet.getLastSymbol();
+        Long lastOrdinal = lastSymbol == null ? null : lastSymbol.getOrdinal();
+        long nextOrdinal = lastOrdinal == null ? 1L : lastOrdinal + 1L;
+        symbol.setOrdinal(nextOrdinal);
+        symbol = symbolRepository.save(symbol);
+
+        if (lastSymbol != null) {
+            lastSymbol.setNextSymbol(symbol);
+            symbolDAO.save(lastSymbol);
+        }
+
+
+        alphabet.setLastSymbol(symbol);
+        save(alphabet);
+
+        logger.debug("Internalized: " + symbol);
+    }
+
+    @BridgeOverride
+    public Long findLargestSymbolOrdinal(AlphabetDTO alphabet) {
+        SymbolDTO lastSymbol = alphabet == null ? null : alphabet.getLastSymbol();
+        return lastSymbol == null ? null : lastSymbol.getOrdinal();
     }
 
     @BridgeOverride
@@ -100,6 +113,7 @@ public class AlphabetDAO {
         logger.debug("Fixated alphabet: [" + alphabetDTO + "]");
     }
 
+    @BridgeOverride
     public boolean isFixated(AlphabetDTO alphabet) {
         Long alphabetId = alphabet.getId();
         boolean result;

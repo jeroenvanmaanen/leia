@@ -18,14 +18,17 @@ public class ObservedDAO extends IdDaoSupport<ObservedDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 
     @Autowired
+    ObservedRepository repository;
+
+    @Autowired
     VersionDAO versionDAO;
 
     @Autowired
     CounterDAO counterDAO;
 
-    @Autowired
-    public ObservedDAO(ObservedRepository repository) {
-        super(repository);
+    @Override
+    protected ObservedRepository getRepository() {
+        return repository;
     }
 
     public ObservedDTO find(VersionDTO version) {

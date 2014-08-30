@@ -19,10 +19,7 @@ public class InteractionContextTest {
     private static final String ACTIONS_URI = CONTEXT_URI + "/actions";
 
     @Autowired
-    private AlphabetRepository alphabetRepository;
-
-    @Autowired
-    private InteractionContextRepository interactionContextRepository;
+    private AlphabetDAO alphabetDAO;
 
     @Autowired
     private InteractionContextDAO interactionContextDAO;
@@ -31,20 +28,16 @@ public class InteractionContextTest {
     public void testDirect() {
         AlphabetDTO actions = new AlphabetDTO();
         actions.setURI(ACTIONS_URI);
-        alphabetRepository.save(actions);
+        alphabetDAO.save(actions);
 
         InteractionContextDTO context = new InteractionContextDTO();
         context.setURI(CONTEXT_URI);
         context.setActions(actions);
-        interactionContextRepository.save(context);
+        interactionContextDAO.save(context);
 
         logger.info("Actions: {}", context.getActions());
 
-        context = interactionContextRepository.getInteractionContextByUri(CONTEXT_URI);
-        logger.info("Actions: {}", context.getActions());
-
-        interactionContextRepository.setEmptyVersionChain(context);
-
+        context = interactionContextDAO.find(CONTEXT_URI);
         logger.info("Actions: {}", context.getActions());
     }
 

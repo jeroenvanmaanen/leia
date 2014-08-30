@@ -3,6 +3,7 @@ package org.leialearns.graph.interaction;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.graph.HasId;
+import org.leialearns.graph.model.VersionDTO;
 import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.graph.structure.StructureDTO;
 import org.neo4j.graphdb.Direction;
@@ -28,19 +29,19 @@ public class InteractionContextDTO extends BaseBridgeFacet implements HasId, Ser
     private Long id;
 
     // @Indexed(unique = true) // TODO: remove
-    private String uri;
+    @Fetch private String uri;
 
-    @Fetch
-    @RelatedTo(direction = Direction.OUTGOING, type = "HAS_ACTIONS", elementClass = AlphabetDTO.class)
-    private AlphabetDTO actions;
+    @RelatedTo(direction = Direction.OUTGOING, type = "HAS_ACTIONS")
+    @Fetch private AlphabetDTO actions;
 
-    @Fetch
     @RelatedTo(direction = Direction.OUTGOING, type = "HAS_RESPONSES")
-    private AlphabetDTO responses;
+    @Fetch private AlphabetDTO responses;
 
-    @Fetch
     @RelatedTo(direction = Direction.OUTGOING, type = "HAS_STRUCTURE")
-    private StructureDTO structure;
+    @Fetch private StructureDTO structure;
+
+    @RelatedTo(direction = Direction.OUTGOING, type = "LATEST_VERSION")
+    @Fetch private VersionDTO latestVersion;
 
     public Long getId() {
         return id;
@@ -89,6 +90,13 @@ public class InteractionContextDTO extends BaseBridgeFacet implements HasId, Ser
         this.structure = structure;
     }
 
+    public VersionDTO getLatestVersion() {
+        return latestVersion;
+    }
+
+    public void setLatestVersion(VersionDTO latestVersion) {
+        this.latestVersion = latestVersion;
+    }
 
     public int compareTo(InteractionContextDTO interactionContext) {
         return this.uri.compareTo(interactionContext.getURI());
@@ -96,7 +104,18 @@ public class InteractionContextDTO extends BaseBridgeFacet implements HasId, Ser
 
     @Override
     public boolean equals(Object other) {
-        return other instanceof InteractionContextDTO && uri.equals(((InteractionContextDTO) other).getURI());
+        boolean result;
+        if (other instanceof InteractionContextDTO) {
+            InteractionContextDTO otherDTO = (InteractionContextDTO) other;
+            if (id != null && id.equals(otherDTO.getId())) {
+                result = true;
+            } else {
+                result = uri != null && uri.equals(((InteractionContextDTO) other).getURI());
+            }
+        } else {
+            result = false;
+        }
+        return result;
     }
 
     @Override

@@ -17,7 +17,7 @@
 
     <bean id="graphDatabaseFactory" class="org.neo4j.graphdb.factory.GraphDatabaseFactory" />
 
-    <bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="graphDatabaseFactory" factory-method="newEmbeddedDatabase">
+    <bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="graphDatabaseFactory" factory-method="newEmbeddedDatabase" destroy-method="shutdown">
         <constructor-arg index="0" value="data/graphdb" />
     </bean>
 

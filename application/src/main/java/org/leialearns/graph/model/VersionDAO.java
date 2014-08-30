@@ -4,8 +4,8 @@ import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.IdDaoSupport;
+import org.leialearns.graph.interaction.InteractionContextDAO;
 import org.leialearns.graph.interaction.InteractionContextDTO;
-import org.leialearns.graph.interaction.InteractionContextRepository;
 import org.leialearns.graph.session.SessionDTO;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
@@ -20,11 +20,12 @@ import java.util.Set;
 import static org.leialearns.utilities.Display.asDisplay;
 import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Static.equal;
-import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class VersionDAO extends IdDaoSupport<VersionDTO> {
-    private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private final VersionRepository versionRepository;
+    private static final Logger logger = LoggerFactory.getLogger(new Object(){}.getClass().getEnclosingClass());
+
+    @Autowired
+    private VersionRepository repository;
 
     @Autowired
     private ObservedDAO observedDAO;
@@ -33,23 +34,33 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
     private ToggledDAO toggledDAO;
 
     @Autowired
-    private InteractionContextRepository interactionContextRepository;
+    private InteractionContextDAO interactionContextDAO;
 
-    @Autowired
-    public VersionDAO(VersionRepository repository) {
-        super(repository);
-        versionRepository = repository;
+    @Override
+    protected VersionRepository getRepository() {
+        return repository;
     }
 
     public VersionDTO createVersion(SessionDTO owner, ModelType modelType) {
         InteractionContextDTO interactionContext = owner.getInteractionContext();
+        VersionDTO latestVersion = interactionContext.getLatestVersion();
+        Long latestOrdinal = latestVersion == null ? null : latestVersion.getOrdinal();
+        long nextOrdinal = latestOrdinal == null ? 1L : latestOrdinal + 1L;
+
         VersionDTO result = new VersionDTO();
         result.setInteractionContext(interactionContext);
         result.setModelType(modelType);
         result.setAccessMode(AccessMode.LOCKED);
+        result.setOrdinal(nextOrdinal);
         result = save(result);
         result.setOwner(owner);
-        setOrdinal(result);
+
+        interactionContext.setLatestVersion(result);
+        interactionContextDAO.save(interactionContext);
+        if (latestVersion != null) {
+            latestVersion.setNextVersion(result);
+        }
+
         logger.debug("Created version: " + result);
         return result;
     }
@@ -58,17 +69,17 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
     public VersionDTO findVersion(SessionDTO owner, long ordinal) {
         InteractionContextDTO context = owner.getInteractionContext();
         logger.debug("Find version: {}.#{}", owner, ordinal);
-        return versionRepository.findByContextAndOrdinal(context, ordinal);
+        return repository.findByContextAndOrdinal(context, ordinal);
     }
 
     public VersionDTO findLastVersion(SessionDTO owner, ModelType modelType, AccessMode accessMode) {
-        VersionDTO version = versionRepository.findLastVersion(owner.getInteractionContext());
+        VersionDTO version = repository.findLastVersion(owner.getInteractionContext());
         logger.debug("Session: {}: {}", owner, showOwner(version));
         return findLastBeforeOrEqual(version, modelType, accessMode);
     }
 
     public VersionDTO findLastBefore(VersionDTO version, ModelType modelType, AccessMode accessMode) {
-        VersionDTO previousVersion = versionRepository.findPreviousVersion(version);
+        VersionDTO previousVersion = repository.findPreviousVersion(version);
         logger.debug("Session: {}: {}", showOwner(version), showOwner(previousVersion));
         return findLastBeforeOrEqual(previousVersion, modelType, accessMode);
     }
@@ -85,7 +96,7 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
             if ((modelType == null || version.getModelType() == modelType) && (accessMode == null ? versionAccessMode != AccessMode.EXCLUDE : versionAccessMode == accessMode)) {
                 break;
             }
-            version = versionRepository.findPreviousVersion(version);
+            version = repository.findPreviousVersion(version);
             logger.debug("Session: {}", showOwner(version));
         }
         if (version != null && version.getId() == null) {
@@ -113,16 +124,16 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
         if (previousVersion == null) {
             InteractionContextDTO context = owner.getInteractionContext();
             logger.trace("Interaction context: [{}]", context);
-            candidate = versionRepository.findFirstVersion(context);
+            candidate = repository.findFirstVersion(context);
         } else {
-            candidate = versionRepository.findNextVersion(previousVersion);
+            candidate = repository.findNextVersion(previousVersion);
         }
         logger.trace("Start at: {}", candidate);
         if (candidate != null) {
             long lastVersionOrdinal = lastVersion.getOrdinal();
             while (candidate.getOrdinal() < lastVersionOrdinal &&
                     (candidate.getModelType() != modelType || candidate.getAccessMode() == accessMode || candidate.getAccessMode() == AccessMode.EXCLUDE)) {
-                VersionDTO newCandidate = versionRepository.findNextVersion(candidate);
+                VersionDTO newCandidate = repository.findNextVersion(candidate);
                 logger.trace("New candidate: {}", newCandidate);
                 if (newCandidate == null) {
                     break;
@@ -132,7 +143,7 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
 
             logger.trace("Last candidate: {}", candidate);
             while (candidate != null && candidate.getOrdinal() > previousVersionOrdinal && (candidate.getModelType() != modelType || candidate.getAccessMode() != accessMode)) {
-                candidate = versionRepository.findPreviousVersion(candidate);
+                candidate = repository.findPreviousVersion(candidate);
                 logger.trace("Previous candidate: {}", candidate);
             }
             if (candidate != null && candidate.getOrdinal() <= previousVersionOrdinal) {
@@ -153,9 +164,9 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
 
         Set<VersionDTO> result;
         if (accessMode == null) {
-            result = versionRepository.findRange(interactionContext, minOrdinal, maxOrdinal, modelType.toChar());
+            result = repository.findRange(interactionContext, minOrdinal, maxOrdinal, modelType.toChar());
         } else {
-            result = versionRepository.findRange(interactionContext, minOrdinal, maxOrdinal, modelType.toChar(), accessMode.toChar());
+            result = repository.findRange(interactionContext, minOrdinal, maxOrdinal, modelType.toChar(), accessMode.toChar());
         }
         return new TypedIterable<>(result, VersionDTO.class);
     }
@@ -163,7 +174,7 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
     protected void logRange(InteractionContextDTO context, long minOrdinal, long maxOrdinal) {
         if (logger.isTraceEnabled()) {
             logger.trace("Range: " + minOrdinal + " -> " + maxOrdinal + " {");
-            Set<VersionDTO> versions = versionRepository.findRange(context, minOrdinal, maxOrdinal);
+            Set<VersionDTO> versions = repository.findRange(context, minOrdinal, maxOrdinal);
             for (VersionDTO version : versions) {
                 logger.trace("  " + version);
             }
@@ -229,16 +240,6 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
                 logger.warn("Waiting for lock on version: [" + this + "]: [" + session + "]");
                 nextTime = now + versionDTO.getLogInterval();
             }
-        }
-    }
-
-    public void setOrdinal(VersionDTO version) {
-        if (version.getOrdinal() == null) {
-            Long ordinal = interactionContextRepository.getOrdinal(version);
-            logger.trace("Set ordinal of: [" + display(version) + "]: to: " + ordinal);
-            //version.setOrdinal(ordinal);
-        } else {
-            logger.trace("Ordinal was already set: [" + version + "]");
         }
     }
 
