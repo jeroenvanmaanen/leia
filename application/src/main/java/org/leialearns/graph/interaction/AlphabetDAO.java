@@ -84,7 +84,7 @@ public class AlphabetDAO extends IdDaoSupport<AlphabetDTO> {
     protected void setOrdinal(SymbolDTO symbol, AlphabetDTO alphabet) {
         SymbolDTO lastSymbol = alphabet.getLastSymbol();
         Long lastOrdinal = lastSymbol == null ? null : lastSymbol.getOrdinal();
-        long nextOrdinal = lastOrdinal == null ? 1L : lastOrdinal + 1L;
+        long nextOrdinal = lastOrdinal == null ? 0L : lastOrdinal + 1L;
         symbol.setOrdinal(nextOrdinal);
         symbol = symbolRepository.save(symbol);
 
