@@ -21,23 +21,23 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 
     @Autowired
-    private NodeRepository nodeRepository;
+    private NodeRepository repository;
 
     @Autowired
     private StructureDAO structureDAO;
 
     public TypedIterable<NodeDTO> findNodes(StructureDTO structure) {
-        return new TypedIterable<>(nodeRepository.findNodesByStructure(structure), NodeDTO.class);
+        return new TypedIterable<>(repository.findNodesByStructure(structure), NodeDTO.class);
     }
 
     @BridgeOverride
     public TypedIterable<NodeDTO> findRootNodes(StructureDTO structure) {
-        return new TypedIterable<>(nodeRepository.findRootNodes(structure), NodeDTO.class);
+        return new TypedIterable<>(repository.findRootNodes(structure), NodeDTO.class);
     }
 
     @BridgeOverride
     public TypedIterable<NodeDTO> findChildren(NodeDTO node) {
-        return new TypedIterable<>(nodeRepository.findChildren(node), NodeDTO.class);
+        return new TypedIterable<>(repository.findChildren(node), NodeDTO.class);
     }
 
     public NodeDTO find(StructureDTO structure, TypedIterable<DirectedSymbolDTO> path) {
@@ -81,12 +81,12 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
             logger.trace("  Depth: [" + result.getDepth() + "]");
             logger.trace("  Symbol: [" + result.getSymbol().toString(result.getDirection()) + "]");
             logger.trace("}");
-            result = nodeRepository.save(result);
+            result = repository.save(result);
             if (parent == null) {
                 linkTo(structure, "HAS_ROOT", result);
                 logger.debug("Root nodes: {}: {}", asDisplay(structure), new BaseExpression<Set<NodeDTO>>() {
                     public Set<NodeDTO> get() {
-                        return nodeRepository.findRootNodes(structure);
+                        return repository.findRootNodes(structure);
                     }
                 });
             }
@@ -97,7 +97,7 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
     }
 
     protected NodeDTO find(StructureDTO structure, String path) {
-        return nodeRepository.getNodeByStructureAndPath(structure, path);
+        return repository.getNodeByStructureAndPath(structure, path);
     }
 
     @BridgeOverride
@@ -107,7 +107,20 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
         }
         node.setExtensible(true);
         logger.trace("Marked extensible: {}", node);
-        nodeRepository.save(node);
+        repository.save(node);
+    }
+
+    @BridgeOverride
+    public int getDepth(NodeDTO node) {
+        Integer depth = node.getDepth();
+        if (depth == null) {
+            NodeDTO fresh = repository.findOne(node.getId());
+            depth = fresh.getDepth();
+        }
+        if (depth == null) {
+            throw new IllegalStateException(String.format("Node has no depth: %s", node.getId()));
+        }
+        return depth;
     }
 
     public boolean equals(NodeDTO node, Object other) {
@@ -120,7 +133,7 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
 
     public String toString(NodeDTO node) {
         if (node.getStructure() == null) {
-            node = nodeRepository.findOne(node.getId());
+            node = repository.findOne(node.getId());
         }
         StringBuilder builder = new StringBuilder("[Node|");
         builder.append(toID(null, node));
@@ -136,7 +149,7 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
 
     public void showPath(NodeDTO node, StringBuilder builder) {
         if (node.getStructure() == null) {
-            node = nodeRepository.findOne(node.getId());
+            node = repository.findOne(node.getId());
         }
         NodeDTO parent = node.getParent();
         if (parent != null) {
@@ -149,7 +162,7 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
 
     public void showPathReverse(NodeDTO node, StringBuilder builder) {
         if (node.getStructure() == null) {
-            node = nodeRepository.findOne(node.getId());
+            node = repository.findOne(node.getId());
         }
         NodeDTO parent = node.getParent();
         SymbolDTO symbol = node.getSymbol();

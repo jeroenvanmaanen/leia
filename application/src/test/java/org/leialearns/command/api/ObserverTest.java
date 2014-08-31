@@ -150,6 +150,7 @@ public class ObserverTest {
                 @Override
                 public void run() {
                     Session theSession = session.get().refresh();
+                    logger.debug("Session: {}", theSession);
                     for (TypedVersionExtension extension : registry) {
                         Version version = extension.getVersion();
                         logger.debug("Extension: {}: version: {}", extension, version);

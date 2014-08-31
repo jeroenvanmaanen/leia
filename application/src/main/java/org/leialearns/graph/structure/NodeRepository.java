@@ -6,7 +6,6 @@ import org.springframework.data.neo4j.repository.GraphRepository;
 import java.util.Set;
 
 public interface NodeRepository extends GraphRepository<NodeDTO> {
-    NodeDTO findById(Long id);
     Set<NodeDTO> findNodesByStructure(StructureDTO structure);
 
     @Query("START structure = node({0}) MATCH structure-[:HAS_ROOT]->rootNode RETURN rootNode")

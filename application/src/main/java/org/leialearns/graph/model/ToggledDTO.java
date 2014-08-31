@@ -7,6 +7,7 @@ import org.leialearns.graph.HasId;
 import org.leialearns.logic.model.Toggled;
 import org.leialearns.graph.structure.NodeDTO;
 import org.neo4j.graphdb.Direction;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -23,18 +24,18 @@ public class ToggledDTO extends BaseBridgeFacet implements HasId, Serializable, 
     private Long id;
 
     @RelatedTo(direction = Direction.OUTGOING, type = "EXTENDS")
-    private VersionDTO version;
+    @Fetch private VersionDTO version;
 
     @RelatedTo(direction = Direction.OUTGOING, type = "FOR_NODE")
-    private NodeDTO node;
+    @Fetch private NodeDTO node;
 
     @RelatedTo(direction = Direction.OUTGOING, type = "REFERENCE_EXPECTED")
-    private ExpectedDTO expected;
+    @Fetch private ExpectedDTO expected;
 
     @RelatedTo(direction = Direction.OUTGOING, type = "REFERENCE_OBSERVED")
-    private ObservedDTO observed;
+    @Fetch private ObservedDTO observed;
 
-    private Boolean include;
+    @Fetch private Boolean include;
 
     public Long getId() {
         return id;

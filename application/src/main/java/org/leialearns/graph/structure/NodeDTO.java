@@ -36,11 +36,11 @@ public class NodeDTO extends BaseBridgeFacet implements HasId, Serializable, Far
     @Fetch private SymbolDTO symbol;
 
     @Indexed(unique = false /*, level = Indexed.Level.GLOBAL */)
-    private String path;
+    @Fetch private String path;
 
-    private Integer depth;
-    private Character directionFlag;
-    private Boolean extensible;
+    @Fetch private Integer depth;
+    @Fetch private Character directionFlag;
+    @Fetch private Boolean extensible;
 
     public Long getId() {
         return id;
@@ -74,7 +74,7 @@ public class NodeDTO extends BaseBridgeFacet implements HasId, Serializable, Far
         this.path = path;
     }
 
-    public int getDepth() {
+    public Integer getDepth() {
         return depth;
     }
 

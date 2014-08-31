@@ -57,6 +57,7 @@ public class TestUtilities {
         if (!(new File(configFile).exists())) {
             configFile = getPath(configDir, "logging-sample+default.properties");
         }
+        System.err.println("Configuring logging using config file: " + configFile);
         InputStream loggingProperties = new FileInputStream(configFile);
         new LogConfigurator(logDir).configure(loggingProperties);
     }

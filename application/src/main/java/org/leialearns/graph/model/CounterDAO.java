@@ -234,7 +234,7 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
         ObjectCache<NodeDTO> nodeCache = new ObjectCache<>("Nodes", new Function<Long, NodeDTO>() {
             @Override
             public NodeDTO apply(Long id) {
-                return nodeRepository.findById(id);
+                return nodeRepository.findOne(id);
             }
         });
         ObjectCache<SymbolDTO> symbolCache = new ObjectCache<>("Symbols", new Function<Long, SymbolDTO>() {
