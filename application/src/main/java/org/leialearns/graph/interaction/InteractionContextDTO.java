@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
-// import org.springframework.data.neo4j.annotation.Indexed; // TODO: remove
+import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
@@ -28,7 +28,7 @@ public class InteractionContextDTO extends BaseBridgeFacet implements HasId, Ser
     @GraphId
     private Long id;
 
-    // @Indexed(unique = true) // TODO: remove
+    @Indexed(unique = true)
     @Fetch private String uri;
 
     @RelatedTo(direction = Direction.OUTGOING, type = "HAS_ACTIONS")

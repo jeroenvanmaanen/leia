@@ -76,6 +76,7 @@ public class InteractionContextDAO extends IdDaoSupport<InteractionContextDTO> {
                 AlphabetDTO responses = alphabetDAO.findOrCreate(responsesURI);
                 StructureDTO structure = structureDAO.findOrCreate(structureURI);
                 result = create(uri, actions, responses, structure);
+                logger.debug("Created new interaction context: {}", result);
             }
         } catch (Throwable e) {
             throw ExceptionWrapper.wrap(e);
