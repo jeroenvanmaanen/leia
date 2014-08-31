@@ -102,8 +102,7 @@ public class AlphabetDAO extends IdDaoSupport<AlphabetDTO> {
 
     @BridgeOverride
     public Long findLargestSymbolOrdinal(AlphabetDTO alphabet) {
-        SymbolDTO lastSymbol = alphabet == null ? null : alphabet.getLastSymbol();
-        return lastSymbol == null ? null : lastSymbol.getOrdinal();
+        return repository.findLargestSymbolOrdinal(alphabet);
     }
 
     @BridgeOverride

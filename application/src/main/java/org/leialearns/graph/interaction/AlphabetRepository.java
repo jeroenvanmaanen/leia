@@ -8,4 +8,7 @@ public interface AlphabetRepository extends GraphRepository<AlphabetDTO> {
 
     @Query("START alphabet=node({0}) MATCH alphabet-[:HAS_WORD]->symbol WHERE symbol.denotation = {1} RETURN symbol")
     SymbolDTO findSymbol(AlphabetDTO alphabet, String denotation);
+
+    @Query("START alphabet=node({0}) MATCH alphabet-[:LAST_SYMBOL]->last RETURN last.ordinal")
+    Long findLargestSymbolOrdinal(AlphabetDTO alphabetDTO);
 }
