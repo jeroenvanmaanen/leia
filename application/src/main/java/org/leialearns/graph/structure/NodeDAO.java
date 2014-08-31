@@ -123,6 +123,11 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
         return depth;
     }
 
+    @BridgeOverride
+    public NodeDTO getParent(NodeDTO node) {
+        return repository.getParent(node);
+    }
+
     public boolean equals(NodeDTO node, Object other) {
         return equal(node, adapt(other, NodeDTO.class));
     }
