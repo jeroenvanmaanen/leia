@@ -3,7 +3,6 @@ package org.leialearns.command.api;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.leialearns.command.minimizer.*;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.interaction.Symbol;
@@ -48,8 +47,8 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 @TestExecutionListeners(value = {DependencyInjectionTestExecutionListener.class, ExecutionListener.class})
 public class MinimizerTest {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private final Setting<String> interactionContextUri = new Setting<String>("Interaction context URI");
-    private final Setting<Session> session = new Setting<Session>("Session", new Expression<Session>() {
+    private final Setting<String> interactionContextUri = new Setting<>("Interaction context URI");
+    private final Setting<Session> session = new Setting<>("Session", new Expression<Session>() {
         @Override
         public Session get() {
             return createSession();
@@ -94,7 +93,6 @@ public class MinimizerTest {
         transactionHelper.runInTransaction(new Runnable() {
             @Override
             public void run() {
-                logger.info("Start test");
                 Session session = getSession();
                 Version observedVersion = session.findLastVersion(ModelType.OBSERVED, AccessMode.READABLE);
                 if (observedVersion != null) {
@@ -105,7 +103,7 @@ public class MinimizerTest {
                     assertNotNull("Root node", rootNode);
                     Histogram histogram = observed.createHistogram(rootNode);
                     logger.info("Minimizer: histogram: " + rootNode + ": {");
-                    Collection<Symbol> symbols = new TreeSet<Symbol>();
+                    Collection<Symbol> symbols = new TreeSet<>();
                     for (Counter counter : histogram.getCounters()) {
                         symbols.add(counter.getSymbol());
                         logger.info("  " + counter);

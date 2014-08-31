@@ -21,7 +21,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.leialearns.utilities.Display.asDisplay;
 import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
@@ -47,8 +46,6 @@ public class InteractionTest {
         transactionHelper.runInTransaction(new Runnable() {
             @Override
             public void run() {
-                logger.info("Start test");
-
                 InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test-fixated");
                 assertNotNull("Interaction context", interactionContext);
                 assertNotNull("Actions", interactionContext.getActions());

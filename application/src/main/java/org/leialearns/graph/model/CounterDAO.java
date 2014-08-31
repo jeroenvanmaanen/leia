@@ -160,8 +160,8 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
     }
 
     @BridgeOverride
-    public void refresh(CounterDTO counter) {
-        logger.trace("Refresh ignored for: {}", counter);
+    public CounterDTO fresh(CounterDTO counter) {
+        return repository.findOne(counter.getId());
     }
 
     @BridgeOverride

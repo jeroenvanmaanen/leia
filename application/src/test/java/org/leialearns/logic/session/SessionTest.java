@@ -42,7 +42,6 @@ public class SessionTest {
 
     @Test
     public void testRoot() {
-        logger.info("Start test");
         InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test");
         assertNotNull("Interaction context", interactionContext);
         assertNotNull("Actions", interactionContext.getActions());
@@ -75,7 +74,6 @@ public class SessionTest {
 
     @Test
     public void testSessions() {
-        logger.info("Start test");
         Session rootSession = root.createSession("http://leialearns.org/test/sessions");
         InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test/sessions");
         Session newSession = root.createSession(interactionContext);

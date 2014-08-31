@@ -48,7 +48,6 @@ public class ModelTest {
 
     @Test
     public void testVersions() {
-        logger.info("Start test");
         transactionHelper.runInTransaction(new Runnable() {
             @Override
             public void run() {
@@ -64,7 +63,6 @@ public class ModelTest {
 
     @Test
     public void testCounters() {
-        logger.info("Start test");
         transactionHelper.runInTransaction(new Runnable() {
             @Override
             public void run() {
@@ -78,7 +76,8 @@ public class ModelTest {
                 Node node = structure.findOrCreateNode(path);
                 assertNotNull(node);
                 logger.debug("Node: [" + node + "]");
-                assertTrue(node.getStructure().getMaxDepth() >= node.getDepth());
+                InteractionContext updatedContext = root.createInteractionContext(interactionContext.getURI());
+                assertTrue(updatedContext.getStructure().getMaxDepth() >= node.getDepth());
 
                 Symbol light = interactionContext.getResponses().internalize("light");
                 assertNotNull(light);
@@ -88,7 +87,8 @@ public class ModelTest {
                 assertNotNull(counter);
                 long oldValue = counter.getValue();
                 counter.increment();
-                assertEquals(oldValue + 1, counter.getValue());
+                Counter updatedCounter = counter.fresh();
+                assertEquals(oldValue + 1, updatedCounter.getValue());
             }
         });
     }

@@ -55,7 +55,8 @@ public class TransientCounter implements Counter {
     }
 
     @Override
-    public void refresh() {
+    public TransientCounter fresh() {
+        return this;
     }
 
     @Override

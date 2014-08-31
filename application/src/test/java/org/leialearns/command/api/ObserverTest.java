@@ -90,7 +90,6 @@ public class ObserverTest {
 
     @Test
     public void testObserver() {
-        logger.info("Start test");
         final Setting<Session> session = new Setting<>("Session");
         final Counted[] counted = new Counted[3];
         final Toggled[] toggled = new Toggled[3];

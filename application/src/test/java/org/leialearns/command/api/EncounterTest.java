@@ -66,7 +66,6 @@ public class EncounterTest {
 
     @Test
     public void testEncounter() {
-        logger.info("Start test");
         graphDumper.dumpGraph();
         try {
             transactionHelper.runInTransaction(new Runnable() {

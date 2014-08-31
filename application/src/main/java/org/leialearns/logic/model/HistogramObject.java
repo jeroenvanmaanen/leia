@@ -74,8 +74,7 @@ public class HistogramObject extends BaseDistribution implements Histogram {
         histogram.clear();
         Counter.Iterable counters = getVersion().findCounters(getNode());
         for (Counter counter : counters) {
-            counter.refresh();
-            histogram.put(counter.getSymbol(), counter);
+            histogram.put(counter.getSymbol(), counter.fresh());
         }
         if (logger.isTraceEnabled()) {
             trace = new HistogramTrace(this);

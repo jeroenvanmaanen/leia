@@ -6,7 +6,7 @@ public interface Counter extends Locus {
     long getValue();
     void increment();
     void increment(long amount);
-    void refresh();
+    Counter fresh();
 
     interface Iterable extends NearIterable<Counter> {
         Counter declareNearType();
