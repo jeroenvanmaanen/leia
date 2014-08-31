@@ -16,6 +16,7 @@ function usage() {
 SILENT='true'
 TRACE='false'
 KEEP_DB='false'
+GO_NOW='false'
 OFFLINE=''
 ITERATIONS='2'
 SINGLE_TEST='org.leialearns.utilities.TestUtilities'
@@ -35,6 +36,8 @@ do
         fi
         ;;
     k)  KEEP_DB='true'
+        ;;
+    g)  GO_NOW='true'
         ;;
     o)  OFFLINE='-o'
         ;;
@@ -68,10 +71,10 @@ function run-maven () {
     local LOG_FILE="$1"
     local RC='0'
     shift
-    echo ">>> Run maven:" "$@" | tee -a "${LOG_FILE}"
+    "${SILENT}" || echo ">>> Run maven:" "$@" | tee -a "${LOG_FILE}"
     if egrep -s "${ERROR_PATTERN}" "${LOG_FILE}"
     then
-        echo ">>> Skipped." | tee -a "${LOG_FILE}"
+        "${SILENT}" || echo ">>> Skipped." | tee -a "${LOG_FILE}"
         RC='1'
     else
         mvn ${OFFLINE} "$@" 2>&1 | tee -a "${LOG_FILE}"
@@ -83,7 +86,14 @@ LOG_FILE="${LOG_DIR}/mvn.log"
 
 [ -d "${LOG_DIR}" ] || mkdir -p "${LOG_DIR}"
 echo -n '' > "${LOG_FILE}"
-run-maven "${LOG_FILE}" clean javadoc:javadoc 2>&1 | grep -v '^Generating '
+declare -a TARGETS=( 'clean' )
+if "${GO_NOW}"
+then
+    :
+else
+    TARGETS[${#TARGETS}]='javadoc:javadoc'
+fi
+run-maven "${LOG_FILE}" "${TARGETS[@]}" 2>&1 | grep -v '^Generating '
 
 "${SRC}/assemble/script/inject-favicon.sh"
 

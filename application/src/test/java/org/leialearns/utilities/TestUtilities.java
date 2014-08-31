@@ -29,7 +29,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/ApplicationContext.xml","/org/leialearns/AppTest-context.xml"})
-@TestExecutionListeners(value = {DependencyInjectionTestExecutionListener.class})
+@TestExecutionListeners(value = {DependencyInjectionTestExecutionListener.class, ExecutionListener.class})
 public class TestUtilities {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 

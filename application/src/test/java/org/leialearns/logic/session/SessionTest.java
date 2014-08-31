@@ -83,11 +83,16 @@ public class SessionTest {
 
     @Test
     public void testSessions() {
-        Session rootSession = root.createSession("http://leialearns.org/test/sessions");
-        InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test/sessions");
-        Session newSession = root.createSession(interactionContext);
-        assertFalse("Sessions should be different: " + display(rootSession) + ": " + display(newSession), equal(rootSession, newSession));
-        assertEquals(rootSession.getInteractionContext(), newSession.getInteractionContext());
+        transactionHelper.runInTransaction(new Runnable() {
+            @Override
+            public void run() {
+                Session rootSession = root.createSession("http://leialearns.org/test/sessions");
+                InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test/sessions");
+                Session newSession = root.createSession(interactionContext);
+                assertFalse("Sessions should be different: " + display(rootSession) + ": " + display(newSession), equal(rootSession, newSession));
+                assertEquals(rootSession.getInteractionContext(), newSession.getInteractionContext());
+            }
+        });
     }
 
 }

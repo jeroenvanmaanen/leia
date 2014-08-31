@@ -53,11 +53,11 @@ public class StructureDAO {
             throw new IllegalArgumentException("Node does not belong to structure: [" + node + "]: [" + structure + "]");
         }
         final int nodeDepth = node.getDepth();
-        logger.debug("Update max depth: [{}]: {}: [{}]: {}", new Object[] { structure, structure.getMaxDepth(), node, nodeDepth });
+        logger.trace("Update max depth: [{}]: {}: [{}]: {}", new Object[] { structure, structure.getMaxDepth(), node, nodeDepth });
         if (nodeDepth > structure.getMaxDepth()) {
             Integer newNodeDepth = repository.updateMaxDepth(structure, nodeDepth);
             StructureDTO updatedStructure = repository.findOne(structure.getId());
-            logger.debug("Updated max depth: {}: {}", updatedStructure, newNodeDepth);
+            logger.trace("Updated max depth: {}: {}", updatedStructure, newNodeDepth);
             if (updatedStructure.getMaxDepth() < nodeDepth) {
                 RuntimeException exception = new IllegalStateException("Structure max depth less than node depth: " + updatedStructure.getMaxDepth() + ": " + nodeDepth);
                 logger.warn("Exception", exception);

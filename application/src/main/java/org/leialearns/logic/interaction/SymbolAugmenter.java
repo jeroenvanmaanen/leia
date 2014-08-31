@@ -24,7 +24,7 @@ public class SymbolAugmenter extends BaseBridgeFacet {
     public long descriptionLength() {
         Symbol symbol = (Symbol) getBridgeFacets().getNearObject();
         Alphabet alphabet = symbol.getAlphabet();
-        logger.debug("Alphabet of symbol: " + display(alphabet));
+        logger.trace("Alphabet of symbol: " + display(alphabet));
         boolean fixatedAlphabet = alphabet.isFixated();
         long result;
         if (fixatedAlphabet) {

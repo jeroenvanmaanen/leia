@@ -118,7 +118,7 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
 
     public CounterDTO findCounter(VersionDTO version, NodeDTO node, SymbolDTO symbol) {
         CounterDTO result;
-        logger.debug("Find counter: {}: {}: {}", new Object[] { version, node, symbol });
+        logger.trace("Find counter: {}: {}: {}", new Object[] { version, node, symbol });
         if (version == null || node == null || symbol == null) {
             result = null;
         } else {

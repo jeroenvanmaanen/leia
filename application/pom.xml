@@ -167,13 +167,13 @@
                     </links>
                 </configuration>
             </plugin>
-<!--
+<!-- START AspectJ -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <version>1.2</version>
                 <dependencies>
-                    <!- - NB: You must use Maven 2.0.9 or above or these are ignored (see MNG-2972) - ->
+                    <!-- NB: You must use Maven 2.0.9 or above or these are ignored (see MNG-2972) -->
                     <dependency>
                         <groupId>org.aspectj</groupId>
                         <artifactId>aspectjrt</artifactId>
@@ -209,7 +209,7 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
--->
+<!-- END AspectJ -->
         </plugins>
     </build>
 

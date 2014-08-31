@@ -160,7 +160,7 @@ public class Encounter implements org.leialearns.command.api.Encounter {
             Alphabet responses = interactionContext.getResponses();
             while (adapter.hasNext()) {
                 String token = adapter.next();
-                logger.debug("Token: " + show(token));
+                logger.info("Token: " + show(token));
                 Symbol symbol = responses.internalize(token);
                 logger.debug("Symbol: " + symbol.toString(Direction.RESPONSE) + ": " + symbol.descriptionLength());
                 DirectedSymbol directedSymbol = symbol.createDirectedSymbol(Direction.RESPONSE);
