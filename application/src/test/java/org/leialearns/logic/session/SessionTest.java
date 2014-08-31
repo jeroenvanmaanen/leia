@@ -8,6 +8,7 @@ import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.interaction.Symbol;
 import org.leialearns.utilities.ExecutionListener;
 import org.leialearns.utilities.TestUtilities;
+import org.leialearns.utilities.TransactionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class SessionTest {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 
     @Autowired
+    private TransactionHelper transactionHelper;
+
+    @Autowired
     private Root root;
 
     @BeforeClass
@@ -42,34 +46,39 @@ public class SessionTest {
 
     @Test
     public void testRoot() {
-        InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test");
-        assertNotNull("Interaction context", interactionContext);
-        assertNotNull("Actions", interactionContext.getActions());
-        assertNotNull("Responses", interactionContext.getResponses());
-        assertNotNull("Structure", interactionContext.getStructure());
+        transactionHelper.runInTransaction(new Runnable() {
+            @Override
+            public void run() {
+                InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test");
+                assertNotNull("Interaction context", interactionContext);
+                assertNotNull("Actions", interactionContext.getActions());
+                assertNotNull("Responses", interactionContext.getResponses());
+                assertNotNull("Structure", interactionContext.getStructure());
 
-        Alphabet.Iterable alphabetIterable = root.findAlphabets();
-        assertFalse("Empty alphabetDAO.findAll()", alphabetIterable.isEmpty());
-        for (Object object : alphabetIterable) {
-            assertTrue("Expected alphabet: " + display(object), object instanceof Alphabet);
-        }
+                Alphabet.Iterable alphabetIterable = root.findAlphabets();
+                assertFalse("Empty alphabetDAO.findAll()", alphabetIterable.isEmpty());
+                for (Object object : alphabetIterable) {
+                    assertTrue("Expected alphabet: " + display(object), object instanceof Alphabet);
+                }
 
-        Alphabet actions = interactionContext.getActions();
-        logger.debug("Actions: " + actions.toString());
+                Alphabet actions = interactionContext.getActions();
+                logger.debug("Actions: " + actions.toString());
 
-        actions.internalize("");
-        actions.internalize("left");
-        Symbol right = actions.internalize("right");
-        logger.debug("Symbol 'right': [" + right + "] in: [" + right.getAlphabet() + "]");
+                actions.internalize("");
+                actions.internalize("left");
+                Symbol right = actions.internalize("right");
+                logger.debug("Symbol 'right': [" + right + "] in: [" + right.getAlphabet() + "]");
 
-        Alphabet responses = interactionContext.getResponses();
-        logger.debug("Responses: " + responses.toString());
+                Alphabet responses = interactionContext.getResponses();
+                logger.debug("Responses: " + responses.toString());
 
-        responses.internalize("dark");
-        Symbol light = responses.internalize("light");
-        logger.debug("Symbol 'light': [" + light + "] in: [" + light.getAlphabet() + "]");
+                responses.internalize("dark");
+                Symbol light = responses.internalize("light");
+                logger.debug("Symbol 'light': [" + light + "] in: [" + light.getAlphabet() + "]");
 
-        assertEquals("http://leialearns.org/test/structure", interactionContext.getStructure().getURI());
+                assertEquals("http://leialearns.org/test/structure", interactionContext.getStructure().getURI());
+            }
+        });
     }
 
     @Test
