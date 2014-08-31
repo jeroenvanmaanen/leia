@@ -7,6 +7,7 @@ import org.leialearns.graph.HasId;
 import org.leialearns.graph.interaction.SymbolDTO;
 import org.leialearns.logic.structure.Node;
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -32,7 +33,7 @@ public class NodeDTO extends BaseBridgeFacet implements HasId, Serializable, Far
     private NodeDTO parent;
 
     @RelatedTo(direction = OUTGOING, type = "FOR_SYMBOL")
-    private SymbolDTO symbol;
+    @Fetch private SymbolDTO symbol;
 
     @Indexed(unique = false /*, level = Indexed.Level.GLOBAL */)
     private String path;
@@ -114,26 +115,22 @@ public class NodeDTO extends BaseBridgeFacet implements HasId, Serializable, Far
     }
 
     public String toString() {
-        StringBuilder builder = new StringBuilder("[Node|" + toID(null, this) + "|" + (getExtensible() ? "E" : "T") + "|(");
-        showPathReverse(builder);
-        builder.append(")]");
+        StringBuilder builder = new StringBuilder("[Node|");
+        builder.append(toID(null, this));
+        builder.append('|');
+        builder.append(toID("N", parent));
+        builder.append('|');
+        builder.append(toID("S", structure));
+        builder.append('|');
+        builder.append(getExtensible() ? "E" : "T");
+        builder.append('|');
+        if (symbol == null) {
+            builder.append('?');
+        } else {
+            builder.append(symbol.toShortString(getDirection()));
+        }
+        builder.append(']');
         return builder.toString();
-    }
-
-    public void showPath(StringBuilder builder) {
-        if (parent != null) {
-            parent.showPath(builder);
-            builder.append(' ');
-        }
-        builder.append(symbol == null ? "?" : symbol.toShortString(getDirection()));
-    }
-
-    public void showPathReverse(StringBuilder builder) {
-        builder.append(symbol == null ? "?" : symbol.toShortString(getDirection()));
-        if (parent != null) {
-            builder.append(' ');
-            parent.showPathReverse(builder);
-        }
     }
 
     public int compareTo(NodeDTO other) {

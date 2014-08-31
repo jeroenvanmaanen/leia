@@ -33,6 +33,7 @@ import static org.leialearns.utilities.Static.join;
  */
 public class SimpleFormatter extends Formatter {
     private static final Logger logger = LoggerFactory.getLogger("stack-trace");
+    private static final int SOURCE_PART_MAX_LENGTH = 60;
     private static final Pattern ORGANISATION_RE = Pattern.compile("^([^.]*[.][^.]*)[.](.*)$");
     private static final ThreadLocal<DateFormat> DATE_FORMATTER = new ThreadLocal<DateFormat>() {
         @Override
@@ -57,7 +58,7 @@ public class SimpleFormatter extends Formatter {
     private static final Pattern CAUSED_BY_RE = Pattern.compile("^Caused by", Pattern.MULTILINE);
     private static final Pattern HEAD_RE = Pattern.compile("^((?:(?:[\t ]*at   |[^\t ])[^\n]*\n)*).*", Pattern.DOTALL);
     private static final Pattern DELETE_RE = Pattern.compile("(^[\t ]*at   .*\n)+", Pattern.MULTILINE);
-    private final Setting<Boolean> regexFormat = new SilentSetting<Boolean>("Regex format flag", false);
+    private final Setting<Boolean> regexFormat = new SilentSetting<>("Regex format flag", false);
 
     /**
      * Creates a new <code>SimpleFormatter</code> instance.
@@ -101,8 +102,8 @@ public class SimpleFormatter extends Formatter {
             }
         } else {
             StringTokenizer tokenizer = new StringTokenizer(sourceClass, ".");
-            List<String> organisationList = new ArrayList<String>();
-            LinkedList<String> sourceClassList = new LinkedList<String>();
+            List<String> organisationList = new ArrayList<>();
+            LinkedList<String> sourceClassList = new LinkedList<>();
             while (tokenizer.hasMoreTokens()) {
                 String token = tokenizer.nextToken();
                 if (organisationList.size() < 2) {
@@ -125,14 +126,14 @@ public class SimpleFormatter extends Formatter {
                     } else {
                         partLength++;
                     }
-                    if (wasFirst || length + partLength < 40) {
+                    if (wasFirst || length + partLength < SOURCE_PART_MAX_LENGTH) {
                         length += partLength;
                     } else {
                         it.previous();
                         break;
                     }
                 } while (it.hasNext());
-                List<String> partList = new ArrayList<String>();
+                List<String> partList = new ArrayList<>();
                 while (it.hasPrevious()) {
                     String part = it.previous();
                     partList.add(part);

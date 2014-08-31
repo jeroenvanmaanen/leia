@@ -6,6 +6,7 @@ import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.HasId;
 import org.leialearns.logic.model.Observed;
 import org.neo4j.graphdb.Direction;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -21,19 +22,19 @@ public class ObservedDTO extends BaseBridgeFacet implements HasId, Serializable,
     private Long id;
 
     @RelatedTo(direction = Direction.OUTGOING, type = "EXTENDS")
-    private VersionDTO version;
+    @Fetch private VersionDTO version;
 
     @RelatedTo(direction = Direction.OUTGOING, type = "HAS_COUNTED")
-    private VersionDTO countedVersion;
+    @Fetch private VersionDTO countedVersion;
 
     @RelatedTo(direction = Direction.OUTGOING, type = "HAS_DELTA")
-    private VersionDTO deltaVersion;
+    @Fetch private VersionDTO deltaVersion;
 
     @RelatedTo(direction = Direction.OUTGOING, type = "HAS_TOGGLED")
-    private ToggledDTO toggled;
+    @Fetch private ToggledDTO toggled;
 
     @RelatedTo(direction = Direction.OUTGOING, type = "HAS_EXPECTED")
-    private ExpectedDTO expected;
+    @Fetch private ExpectedDTO expected;
 
     public Long getId() {
         return id;

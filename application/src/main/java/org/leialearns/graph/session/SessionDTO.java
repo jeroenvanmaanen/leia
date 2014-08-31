@@ -28,7 +28,7 @@ public class SessionDTO extends BaseBridgeFacet implements HasId, Serializable, 
     private Long id;
     private transient RootDTO root;
 
-    @RelatedTo(direction = Direction.INCOMING, type = "HAS_SESSION")
+    @RelatedTo(direction = Direction.OUTGOING, type = "IN_CONTEXT")
     @Fetch private InteractionContextDTO interactionContext;
 
     public Long getId() {

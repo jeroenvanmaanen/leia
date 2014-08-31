@@ -13,4 +13,7 @@ public interface InteractionContextRepository extends GraphRepository<Interactio
 
     @Query("START context=node({0}) MATCH context-[:HAS_ACTIONS]->alphabet RETURN alphabet")
     Set<AlphabetDTO> getActions(InteractionContextDTO context);
+
+    @Query("Start context=node({0}) MATCH context<-[:IN_CONTEXT]-(version:Version) RETURN version")
+    Set<VersionDTO> getVersions(InteractionContextDTO context);
 }

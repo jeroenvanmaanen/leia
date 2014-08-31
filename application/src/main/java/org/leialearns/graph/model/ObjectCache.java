@@ -1,6 +1,6 @@
 package org.leialearns.graph.model;
 
-import org.leialearns.utilities.Function;
+import com.google.common.base.Function;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +27,7 @@ public class ObjectCache<T> {
             result = cache.get(id);
         } else {
             Long key = (Long) id;
-            result = retrieve.get(key);
+            result = retrieve.apply(key);
             if (result == null) {
                 throw new IllegalStateException("No object found for id: " + id + ": " + cacheId);
             }

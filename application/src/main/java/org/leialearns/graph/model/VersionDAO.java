@@ -52,8 +52,8 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
         result.setModelType(modelType);
         result.setAccessMode(AccessMode.LOCKED);
         result.setOrdinal(nextOrdinal);
-        result = save(result);
         result.setOwner(owner);
+        result = save(result);
 
         interactionContext.setLatestVersion(result);
         interactionContextDAO.save(interactionContext);
@@ -73,7 +73,7 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
     }
 
     public VersionDTO findLastVersion(SessionDTO owner, ModelType modelType, AccessMode accessMode) {
-        VersionDTO version = repository.findLastVersion(owner.getInteractionContext());
+        VersionDTO version = owner.getInteractionContext().getLatestVersion();
         logger.debug("Session: {}: {}", owner, showOwner(version));
         return findLastBeforeOrEqual(version, modelType, accessMode);
     }

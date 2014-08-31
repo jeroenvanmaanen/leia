@@ -118,6 +118,48 @@ public class NodeDAO extends IdDaoSupport<NodeDTO> {
         return node.compareTo(adapt(other, NodeDTO.class));
     }
 
+    public String toString(NodeDTO node) {
+        if (node.getStructure() == null) {
+            node = nodeRepository.findOne(node.getId());
+        }
+        StringBuilder builder = new StringBuilder("[Node|");
+        builder.append(toID(null, node));
+        builder.append('|');
+        builder.append(toID("S", node.getStructure()));
+        builder.append('|');
+        builder.append(node.getExtensible() ? "E" : "T");
+        builder.append("|(");
+        showPathReverse(node, builder);
+        builder.append(")]");
+        return builder.toString();
+    }
+
+    public void showPath(NodeDTO node, StringBuilder builder) {
+        if (node.getStructure() == null) {
+            node = nodeRepository.findOne(node.getId());
+        }
+        NodeDTO parent = node.getParent();
+        if (parent != null) {
+            showPath(parent, builder);
+            builder.append(' ');
+        }
+        SymbolDTO symbol = node.getSymbol();
+        builder.append(symbol == null ? "?" : symbol.toShortString(node.getDirection()));
+    }
+
+    public void showPathReverse(NodeDTO node, StringBuilder builder) {
+        if (node.getStructure() == null) {
+            node = nodeRepository.findOne(node.getId());
+        }
+        NodeDTO parent = node.getParent();
+        SymbolDTO symbol = node.getSymbol();
+        builder.append(symbol == null ? "?" : symbol.toShortString(node.getDirection()));
+        if (parent != null) {
+            builder.append(' ');
+            showPathReverse(parent, builder);
+        }
+    }
+
     protected StringBuilder appendToPath(StringBuilder builder, SymbolDTO symbolDTO, Direction direction) {
         if (symbolDTO == null) {
             throw new IllegalArgumentException("Symbol should not be null");

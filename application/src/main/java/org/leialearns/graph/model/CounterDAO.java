@@ -1,5 +1,6 @@
 package org.leialearns.graph.model;
 
+import com.google.common.base.Function;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.bridge.FactoryAccessor;
 import org.leialearns.enumerations.ModelType;
@@ -15,7 +16,7 @@ import org.leialearns.graph.structure.StructureDTO;
 import org.leialearns.logic.model.CounterLogger;
 import org.leialearns.logic.model.Version;
 import org.leialearns.logic.structure.Node;
-import org.leialearns.utilities.Function;
+import org.leialearns.logic.utilities.Static;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static java.lang.Boolean.TRUE;
 import static org.leialearns.bridge.Static.getFarObject;
 import static org.leialearns.utilities.Display.asDisplay;
 import static org.leialearns.utilities.Display.show;
@@ -85,7 +87,7 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
                     included = includeCache.get(node);
                 } else {
                     Node near = nodeFactoryAccessor.getNearObject(node);
-                    included = getInclude.get(near);
+                    included = getInclude.apply(near) == TRUE;
                     includeCache.put(node, included);
                 }
                 if (included) {
@@ -103,12 +105,12 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
 
     protected void findCounters(VersionDTO version, Function<Node,Node.Iterable> getChildren, Function<Node,Boolean> getInclude, NodeDTO node, Collection<CounterDTO> result) {
         Node near = nodeFactoryAccessor.getNearObject(node);
-        if (getInclude.get(near)) {
+        if (getInclude.apply(near) == TRUE) {
             for (CounterDTO counter : findCounters(version, node)) {
                 result.add(counter);
             }
         }
-        for (Node nearChild : getChildren.get(near)) {
+        for (Node nearChild : Static.notNull(getChildren.apply(near))) {
             NodeDTO child = getFarObject(nearChild, NodeDTO.class);
             findCounters(version, getChildren, getInclude, child, result);
         }
@@ -231,13 +233,13 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
         Set<Map<String,Object>> missing = versionRepository.findMissing(interactionContext, ModelType.COUNTED.toChar(), minOrdinal, maxOrdinal);
         ObjectCache<NodeDTO> nodeCache = new ObjectCache<>("Nodes", new Function<Long, NodeDTO>() {
             @Override
-            public NodeDTO get(Long id) {
+            public NodeDTO apply(Long id) {
                 return nodeRepository.findById(id);
             }
         });
         ObjectCache<SymbolDTO> symbolCache = new ObjectCache<>("Symbols", new Function<Long, SymbolDTO>() {
             @Override
-            public SymbolDTO get(Long id) {
+            public SymbolDTO apply(Long id) {
                 return symbolRepository.findById(id);
             }
         });

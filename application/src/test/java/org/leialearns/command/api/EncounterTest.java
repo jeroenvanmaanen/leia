@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
+import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.model.Counted;
 import org.leialearns.logic.model.Version;
 import org.leialearns.logic.session.Root;
@@ -34,8 +35,8 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 @TestExecutionListeners(value = {DependencyInjectionTestExecutionListener.class, ExecutionListener.class})
 public class EncounterTest {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private static final Setting<String> PROJECT_DIR = new Setting<String>("Project directory");
-    private final Setting<String> interactionContextUri = new Setting<String>("Interaction context URI");
+    private static final Setting<String> PROJECT_DIR = new Setting<>("Project directory");
+    private final Setting<String> interactionContextUri = new Setting<>("Interaction context URI");
 
     @Autowired
     private TransactionHelper transactionHelper;
@@ -79,7 +80,11 @@ public class EncounterTest {
                         logger.error(String.format("Exception while running encounter(%s)", source), exception);
                     }
                     Session session = createSession();
-                    Structure structure = session.getInteractionContext().getStructure();
+                    InteractionContext interactionContext = session.getInteractionContext();
+                    for (Version version : interactionContext.getVersions()) {
+                        logger.debug("Version: {}", version);
+                    }
+                    Structure structure = interactionContext.getStructure();
                     structure.logNodes();
                     Version version = session.findOrCreateLastVersion(ModelType.COUNTED, AccessMode.READABLE);
                     assertEquals(version, encounter.getLastVersion());

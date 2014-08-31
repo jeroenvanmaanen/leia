@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.IdDaoSupport;
+import org.leialearns.graph.model.VersionDTO;
 import org.leialearns.graph.structure.StructureDAO;
 import org.leialearns.graph.structure.StructureDTO;
 import org.leialearns.graph.util.GraphLogger;
@@ -132,6 +133,11 @@ public class InteractionContextDAO extends IdDaoSupport<InteractionContextDTO> {
 
     public boolean equals(InteractionContextDTO interactionContext, Object other) {
         return interactionContext.equals(adapt(other, InteractionContextDTO.class));
+    }
+
+    @BridgeOverride
+    public TypedIterable<VersionDTO> getVersions(InteractionContextDTO interactionContext) {
+        return new TypedIterable<>(repository.getVersions(interactionContext), VersionDTO.class);
     }
 
 }

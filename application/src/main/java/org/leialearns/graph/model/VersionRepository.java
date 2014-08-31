@@ -19,11 +19,6 @@ public interface VersionRepository extends GraphRepository<VersionDTO> {
             " RETURN version")
     VersionDTO findFirstVersion(InteractionContextDTO interactionContext);
 
-    @Query("START context=node({0})" +
-            " MATCH version-[:IN_CONTEXT]->context, version-[:NEXT_VERSION]->context" +
-            " RETURN version")
-    VersionDTO findLastVersion(InteractionContextDTO interactionContext);
-
     @Query("START nextVersion=node({0})" +
             " MATCH nextVersion-[:IN_CONTEXT]->context, version-[:IN_CONTEXT]->context, version-[:NEXT_VERSION]->nextVersion" +
             " RETURN version")

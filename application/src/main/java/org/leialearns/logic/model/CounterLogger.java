@@ -1,9 +1,9 @@
 package org.leialearns.logic.model;
 
+import com.google.common.base.Function;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.logic.interaction.Symbol;
 import org.leialearns.logic.structure.Node;
-import org.leialearns.utilities.Function;
 import org.leialearns.utilities.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,11 +57,11 @@ public class CounterLogger {
         logger.info("Logging model: " + expected);
         Observed observed = expected.getObserved();
         if (observed != null) {
-            Function<Version,Iterable<Counter>> getCounters = new Function<Version,Iterable<Counter>>() {
-                public Iterable<Counter> get(Version version) {
+            Function<Version,Iterable<Counter>> getCounters = new Function<Version, Iterable<Counter>>() {
+                public Iterable<Counter> apply(Version version) {
                     Function<Node,Boolean> getIncluded = new Function<Node, Boolean>() {
                         @Override
-                        public Boolean get(Node node) {
+                        public Boolean apply(Node node) {
                             return expected.isIncluded(node);
                         }
                     };
@@ -96,14 +96,14 @@ public class CounterLogger {
             if (node == null) {
                 getCounters = new Function<Version, Iterable<Counter>>() {
                     @Override
-                    public Iterable<Counter> get(Version version) {
+                    public Iterable<Counter> apply(Version version) {
                         return version.findCounters();
                     }
                 };
             } else {
                 getCounters = new Function<Version, Iterable<Counter>>() {
                     @Override
-                    public Iterable<Counter> get(Version version) {
+                    public Iterable<Counter> apply(Version version) {
                         return version.findCounters(node);
                     }
                 };
@@ -124,7 +124,7 @@ public class CounterLogger {
                 if (version == null) {
                     continue;
                 }
-                counters = getCounters.get(version);
+                counters = getCounters.apply(version);
                 arrangeCounters(data, counters, versions.length, index, widths);
                 index++;
             }
@@ -236,7 +236,7 @@ public class CounterLogger {
                     messageBuilder.append(value);
                 }
                 if (note != null) {
-                    messageBuilder.append(note.get(new Pair<>(node, symbolObject)));
+                    messageBuilder.append(note.apply(new Pair<>(node, symbolObject)));
                 }
                 logger.info(messageBuilder.toString());
             }
@@ -307,7 +307,8 @@ public class CounterLogger {
         protected ExpectedNote(ExpectedNoteCache cache) {
             this.cache = cache;
         }
-        public String get(Pair<Node,Symbol> pair) {
+        @Override
+        public String apply(Pair<Node,Symbol> pair) {
             Node node = pair.getLeft();
             Symbol symbol = pair.getRight();
             boolean isIncluded = cache.isIncluded(node);

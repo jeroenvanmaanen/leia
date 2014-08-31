@@ -7,6 +7,8 @@ import org.leialearns.utilities.Setting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
+
 public class Static {
     private static final Setting<Logger> logger = new Setting<>("Logger", new Expression<Logger>() {
         @Override
@@ -34,4 +36,26 @@ public class Static {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T> Iterable<T> notNull(Iterable<T> iterable) {
+        return iterable == null ? Collections.EMPTY_LIST : iterable;
+    }
+
+    public static <T extends Comparable<T>> int compare(T left, T right) {
+        int result;
+        if (left == null) {
+            if (right == null) {
+                result = 0;
+            } else {
+                result = -1;
+            }
+        } else {
+            if (right == null) {
+                result = 1;
+            } else {
+                result = left.compareTo(right);
+            }
+        }
+        return result;
+    }
 }

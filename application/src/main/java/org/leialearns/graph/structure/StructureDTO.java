@@ -12,7 +12,6 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import java.io.Serializable;
 
 import static org.leialearns.utilities.Display.displayParts;
-import static org.leialearns.utilities.Static.equal;
 
 @NodeEntity
 @TypeAlias("Structure")
@@ -58,7 +57,17 @@ public class StructureDTO extends BaseBridgeFacet implements HasId, Serializable
 
     @Override
     public boolean equals(Object other) {
-        return other instanceof StructureDTO && equal(uri, ((StructureDTO) other).getURI());
+        boolean result = false;
+        if (other instanceof StructureDTO) {
+            StructureDTO otherStructure = (StructureDTO) other;
+            Long otherId = otherStructure.getId();
+            if (id != null && otherId != null) {
+                result = id.equals(otherId);
+            } else {
+                result = uri != null && uri.equals(otherStructure.getURI());
+            }
+        }
+        return result;
     }
 
     @Override

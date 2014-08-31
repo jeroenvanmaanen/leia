@@ -56,9 +56,10 @@ public class StructureDAO {
         logger.debug("Update max depth: [{}]: {}: [{}]: {}", new Object[] { structure, structure.getMaxDepth(), node, nodeDepth });
         if (nodeDepth > structure.getMaxDepth()) {
             Integer newNodeDepth = repository.updateMaxDepth(structure, nodeDepth);
-            logger.debug("Updated max depth: {}: {}", structure, newNodeDepth);
-            if (structure.getMaxDepth() < nodeDepth) {
-                RuntimeException exception = new IllegalStateException("Structure max depth less than node depth: " + structure.getMaxDepth() + ": " + nodeDepth);
+            StructureDTO updatedStructure = repository.findOne(structure.getId());
+            logger.debug("Updated max depth: {}: {}", updatedStructure, newNodeDepth);
+            if (updatedStructure.getMaxDepth() < nodeDepth) {
+                RuntimeException exception = new IllegalStateException("Structure max depth less than node depth: " + updatedStructure.getMaxDepth() + ": " + nodeDepth);
                 logger.warn("Exception", exception);
                 throw exception;
             }
@@ -116,7 +117,7 @@ public class StructureDAO {
         if (logger.isInfoEnabled()) {
             SortedSet<String> nodes = new TreeSet<>();
             for (NodeDTO node : nodeDAO.findNodes(structure)) {
-                nodes.add(node.toString());
+                nodes.add(nodeDAO.toString(node));
             }
             logger.info("Structure: [" + this + "]: {");
             for (String node : nodes) {

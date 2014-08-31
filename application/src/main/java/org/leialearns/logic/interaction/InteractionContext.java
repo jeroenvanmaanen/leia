@@ -59,4 +59,10 @@ public interface InteractionContext extends Comparable<InteractionContext> {
      */
     Version.Iterable findVersionsInRange(long minOrdinal, long maxOrdinal, ModelType modelType, AccessMode accessMode);
 
+    /**
+     * Returns all versions for this interaction context.
+     *
+     * @return All versions for this interaction context
+     */
+    Version.Iterable getVersions();
 }

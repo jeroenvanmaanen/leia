@@ -115,6 +115,7 @@ public class ObserverTest {
 
                     Observed lastCreated = observer.getLastCreated();
                     assertNotNull(lastCreated);
+                    lastCreated = lastCreated.getVersion().createObservedVersion(); // Get a fresh copy from the database
                     Version lastCreatedVersion = lastCreated.getVersion();
                     assertEquals(ModelType.OBSERVED, lastCreated.getModelType());
                     if (lastCreatedVersion.getAccessMode() != AccessMode.EXCLUDE) {
@@ -124,6 +125,7 @@ public class ObserverTest {
                         logger.debug("Toggled attached to last created: [" + lastAttachedToggled + "]");
                         assertEquals(counted[0], lastCreated.getCounted());
                         assertEquals(lastAttachedToggled, toggled[0]);
+                        lastCreated.check();
                     } else {
                         logger.debug("Not readable: [" + lastCreatedVersion + "]");
                     }
@@ -133,7 +135,6 @@ public class ObserverTest {
                     if (toggleNode != null) {
                         observedVersion.logCounters(toggleNode.getParent());
                     }
-                    lastCreated.check();
                 }
             });
         } catch (Throwable exception) {
@@ -154,8 +155,8 @@ public class ObserverTest {
                         Version version = extension.getVersion();
                         logger.debug("Extension: {}: version: {}", extension, version);
                         Version attached = theSession.findVersion(version.getOrdinal());
-                        Session owner = attached.getOwner(); // TODO: why is this different from theSession?
                         if (attached != null) {
+                            Session owner = attached.getOwner(); // TODO: why is this different from theSession?
                             attached.setAccessMode(AccessMode.READABLE, owner);
                         }
                     }
@@ -292,7 +293,7 @@ public class ObserverTest {
         Map<Integer, int[]> stats = new TreeMap<>();
         Node toggleNode = null;
         for (Node node : nodeIterable) {
-            if (toggleNode == null && node.getDepth() > 2) {
+            if (node.getDepth() > 2) {
                 toggleNode = node;
                 break;
             }

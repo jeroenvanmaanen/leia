@@ -1,5 +1,6 @@
 package org.leialearns.logic.model;
 
+import com.google.common.base.Function;
 import org.leialearns.enumerations.AccessMode;
 // import org.leialearns.enumerations.AgentMode;
 import org.leialearns.enumerations.ModelType;
@@ -8,8 +9,6 @@ import org.leialearns.logic.interaction.Symbol;
 import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.bridge.NearIterable;
-import org.leialearns.utilities.Function;
-import org.leialearns.utilities.TypedIterable;
 
 // import java.util.Collection;
 

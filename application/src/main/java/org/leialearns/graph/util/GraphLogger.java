@@ -1,11 +1,13 @@
 package org.leialearns.graph.util;
 
+import com.google.common.base.Function;
 import org.leialearns.graph.HasId;
 import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.cypher.javacompat.ExecutionResult;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.RelationshipType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static java.lang.String.format;
+import static org.leialearns.logic.utilities.Static.compare;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class GraphLogger {
@@ -43,7 +46,7 @@ public class GraphLogger {
             logger.debug("Found node ID for object: {}: {}", nodeId, object);
             Map<String,Object> parameters = new HashMap<>();
             parameters.put("startNode", nodeId);
-            final ExecutionResult result = executionEngine.execute("START n = node({startNode}) MATCH (n)-[r]->(m) RETURN n, r, m", parameters);
+            final ExecutionResult result = executionEngine.execute("START n = node({startNode}) MATCH (n)-[r]-(m) RETURN n, r, m", parameters);
             Map<Node,Set<ArcTo>> arcs = new HashMap<>();
             Iterator<Map<String,Object>> it = result.iterator();
             Node startNode = null;
@@ -55,17 +58,21 @@ public class GraphLogger {
                 }
                 Relationship relationship = (Relationship) row.get("r");
                 Node to = (Node) row.get("m");
-                Set<ArcTo> nodeArcs;
-                if (arcs.containsKey(from)) {
-                    nodeArcs = arcs.get(from);
+                if (relationship != null && to != null) {
+                    Set<ArcTo> nodeArcs;
+                    if (arcs.containsKey(from)) {
+                        nodeArcs = arcs.get(from);
+                    } else {
+                        nodeArcs = new HashSet<>();
+                        arcs.put(from, nodeArcs);
+                    }
+                    nodeArcs.add(new ArcTo(relationship, to));
                 } else {
-                    nodeArcs = new HashSet<>();
-                    arcs.put(from, nodeArcs);
+                    logger.warn("Null? {}, {}", relationship, to);
                 }
-                nodeArcs.add(new ArcTo(relationship, to));
             }
             ArcTo top = new ArcTo(null, startNode);
-            top.logNode = new LogNode(formatNode(startNode));
+            top.logNode = createLogNode(top);
             List<ArcTo> level = new ArrayList<>();
             level.add(top);
             while (!arcs.isEmpty()) {
@@ -81,10 +88,7 @@ public class GraphLogger {
             Node node = arcTo.node;
             if (arcs.containsKey(node)) {
                 for (ArcTo deeper : arcs.get(node)) {
-                    boolean reverse = deeper.relationship.getEndNode().getId() != deeper.node.getId();
-                    String formattedRelationship = formatRelationship(deeper.relationship, reverse);
-                    String formattedNode = formatNode(deeper.node);
-                    deeper.logNode = new LogNode(format("%s %s", formattedRelationship, formattedNode));
+                    deeper.logNode = createLogNode(deeper);
                     arcTo.logNode.add(deeper.logNode);
                     nextLevel.add(deeper);
                 }
@@ -94,7 +98,16 @@ public class GraphLogger {
         return nextLevel;
     }
 
-    protected String formatRelationship(Relationship relationship, boolean reverse) {
+    protected static LogNode<ArcTo> createLogNode(final ArcTo arcTo) {
+        return new LogNode<>(arcTo, new Function<ArcTo,String>() {
+            @Override
+            public String apply(ArcTo arcTo) {
+                return arcTo.relationshipLabel + " " + arcTo.nodeLabel;
+            }
+        });
+    }
+
+    protected static String formatRelationship(Relationship relationship, boolean reverse) {
         StringBuilder builder = new StringBuilder();
         if (relationship == null) {
             builder.append("-[?]-");
@@ -114,36 +127,67 @@ public class GraphLogger {
         return builder.toString();
     }
 
-    protected String formatNode(Node node) {
+    protected static String formatNode(Node node) {
         StringBuilder builder = new StringBuilder();
         if (node == null) {
             builder.append("(?)");
         } else {
             builder.append('(');
-            builder.append(node.getId());
-            builder.append(':');
             for (Label label : node.getLabels()) {
                 builder.append(label.name());
-                builder.append(':');
+                builder.append(": ");
             }
+            boolean first = true;
             for (String propertyKey : node.getPropertyKeys()) {
+                if (propertyKey.equals("facets")) {
+                    continue;
+                }
+                if (first) {
+                    first = false;
+                } else {
+                    builder.append(", ");
+                }
                 builder.append(propertyKey);
                 builder.append('=');
                 builder.append(node.getProperty(propertyKey));
-                builder.append(", ");
             }
+            builder.append(" | #");
+            builder.append(node.getId());
             builder.append(')');
         }
         return builder.toString();
     }
 
-    protected static class ArcTo {
+    protected static String getTypeName(Relationship relationship) {
+        RelationshipType type = relationship == null ? null : relationship.getType();
+        return type == null ? "" : type.name();
+    }
+
+    protected static class ArcTo implements Comparable<ArcTo> {
         private final Relationship relationship;
         private final Node node;
+        private final String relationshipLabel;
+        private final String nodeLabel;
         private LogNode logNode = null;
         private ArcTo(Relationship relationship, Node node) {
             this.relationship = relationship;
             this.node = node;
+            if (relationship == null) {
+                relationshipLabel = "-[/]-";
+            } else {
+                relationshipLabel = formatRelationship(relationship, relationship.getEndNode().getId() != node.getId());
+            }
+            nodeLabel = formatNode(node);
+        }
+        public int compareTo(ArcTo other) {
+            int result = other == null ? 1 : compare(getTypeName(relationship), getTypeName(other.relationship));
+            if (result == 0) {
+                result = nodeLabel.compareTo(other.nodeLabel);
+            }
+            if (result == 0) {
+                result = Long.signum(relationship.getId() - other.relationship.getId());
+            }
+            return result;
         }
         public boolean equals(Object other) {
             boolean result;

@@ -125,7 +125,7 @@ public class Observer implements org.leialearns.command.api.Observer {
                 newObservedVersion.setAccessMode(AccessMode.EXCLUDE, session);
             }
         }
-
+        logger.debug("Access mode: {}: {}", newObservedVersion, newObservedVersion.getAccessMode());
     }
 
 }
