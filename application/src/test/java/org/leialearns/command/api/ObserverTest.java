@@ -94,45 +94,42 @@ public class ObserverTest {
         final Toggled[] toggled = new Toggled[3];
         final Collection<TypedVersionExtension> registry = new ArrayList<>();
         try {
-            transactionHelper.runInTransaction(new Runnable() {
-                @Override
-                public void run() {
-                    session.set(getSession());
-                    // Setup versions
-                    // The pattern is to create three new versions such that the first and the last are READABLE,
-                    // but the second is only set to readable in the 'finally' section.
-                    // Therefore only the versions up and until the first new version can be consolidated
-                    // as the second can still change.
-                    setupCounted(counted, registry);
-                    Node toggleNode = getToggleNode();
-                    logger.info("Toggle node: {}", toggleNode);
-                    setupToggled(toggled, registry, toggleNode);
+            transactionHelper.runInTransaction(() -> {
+                session.set(getSession());
+                // Setup versions
+                // The pattern is to create three new versions such that the first and the last are READABLE,
+                // but the second is only set to readable in the 'finally' section.
+                // Therefore only the versions up and until the first new version can be consolidated
+                // as the second can still change.
+                setupCounted(counted, registry);
+                Node toggleNode = getToggleNode();
+                logger.info("Toggle node: {}", toggleNode);
+                setupToggled(toggled, registry, toggleNode);
 
-                    // Run the observer
-                    observer.command();
+                // Run the observer
+                observer.command();
 
-                    Observed lastCreated = observer.getLastCreated();
-                    assertNotNull(lastCreated);
-                    lastCreated = lastCreated.getVersion().createObservedVersion(); // Get a fresh copy from the database
-                    Version lastCreatedVersion = lastCreated.getVersion();
-                    assertEquals(ModelType.OBSERVED, lastCreated.getModelType());
-                    if (lastCreatedVersion.getAccessMode() != AccessMode.EXCLUDE) {
-                        logger.debug("Last created version: [" + lastCreatedVersion + "]");
-                        assertEquals(AccessMode.READABLE, lastCreatedVersion.getAccessMode());
-                        Toggled lastAttachedToggled = lastCreated.getToggled();
-                        logger.debug("Toggled attached to last created: [" + lastAttachedToggled + "]");
-                        assertEquals(counted[0], lastCreated.getCounted());
-                        assertEquals(lastAttachedToggled, toggled[0]);
-                        lastCreated.check();
-                    } else {
-                        logger.debug("Not readable: [" + lastCreatedVersion + "]");
-                    }
-                    Observed observedVersion = lastCreatedVersion.createObservedVersion();
-                    assertEquals(ModelType.OBSERVED, observedVersion.getModelType());
-                    observedVersion.logCounters();
-                    if (toggleNode != null) {
-                        observedVersion.logCounters(toggleNode.getParent());
-                    }
+                Observed lastCreated = observer.getLastCreated();
+                assertNotNull(lastCreated);
+                lastCreated = lastCreated.getVersion().createObservedVersion(); // Get a fresh copy from the database
+                Version lastCreatedVersion = lastCreated.getVersion();
+                assertEquals(ModelType.OBSERVED, lastCreated.getModelType());
+                if (lastCreatedVersion.getAccessMode() != AccessMode.EXCLUDE) {
+                    logger.debug("Last created version: [" + lastCreatedVersion + "]");
+                    assertEquals(AccessMode.READABLE, lastCreatedVersion.getAccessMode());
+                    Toggled lastAttachedToggled = lastCreated.getToggled();
+                    logger.debug("Toggled attached to last created: [" + lastAttachedToggled + "]");
+                    assertEquals(counted[0], lastCreated.getCounted());
+                    assertEquals(lastAttachedToggled, toggled[0]);
+                    lastCreated.check();
+                } else {
+                    logger.debug("Not readable: [" + lastCreatedVersion + "]");
+                }
+                Observed observedVersion = lastCreatedVersion.createObservedVersion();
+                assertEquals(ModelType.OBSERVED, observedVersion.getModelType());
+                observedVersion.logCounters();
+                if (toggleNode != null) {
+                    observedVersion.logCounters(toggleNode.getParent());
                 }
             });
         } catch (Throwable exception) {
