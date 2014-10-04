@@ -124,12 +124,7 @@ public class TestUtilities {
     public void testOracle() {
         try {
             assertNotNull(oracle);
-            transactionHelper.runInTransaction(new Runnable() {
-                @Override
-                public void run() {
-                    oracle.reset();
-                }
-            });
+            transactionHelper.runInTransaction(oracle::reset);
             compare(2, 7, 3, 7, -1);
             compare(3, 7, 2, 7, 1);
             compare(2, 7, 2, 7, 1);

@@ -17,7 +17,6 @@ import org.leialearns.logic.structure.Node;
 import org.leialearns.logic.structure.Structure;
 import org.leialearns.utilities.ExceptionWrapper;
 import org.leialearns.utilities.ExecutionListener;
-import org.leialearns.utilities.Expression;
 import org.leialearns.bridge.NearIterable;
 import org.leialearns.utilities.GraphDumper;
 import org.leialearns.utilities.Setting;
@@ -49,14 +48,9 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 @TestExecutionListeners(value = {DependencyInjectionTestExecutionListener.class, ExecutionListener.class})
 public class ObserverTest {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private final Fan MISSING_FAN = new Fan(false, new ArrayList<Node>());
-    private final Setting<String> interactionContextUri = new Setting<>("Interaction context URI");
-    private final Setting<Session> session = new Setting<>("Session", new Expression<Session>() {
-        @Override
-        public Session get() {
-            return createSession();
-        }
-    });
+    private final Fan MISSING_FAN = new Fan(false, new ArrayList<>());
+    private final Setting<String> interactionContextUri;
+    private final Setting<Session> session;
 
     @Autowired
     private TransactionHelper transactionHelper;
@@ -69,6 +63,11 @@ public class ObserverTest {
 
     @Autowired
     private GraphDumper graphDumper;
+
+    public ObserverTest() {
+        interactionContextUri = new Setting<>("Interaction context URI");
+        session = new Setting<>("Session", this::createSession);
+    }
 
     @Autowired
     public void setInteractionContextUri(String interactionContextUri) {

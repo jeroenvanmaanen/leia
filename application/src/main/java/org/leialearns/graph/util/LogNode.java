@@ -1,11 +1,12 @@
 package org.leialearns.graph.util;
 
-import com.google.common.base.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.constraints.NotNull;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.function.Function;
 
 import static org.leialearns.utilities.Static.getLoggingClass;
 
@@ -38,7 +39,7 @@ public class LogNode<T extends Comparable<T>> implements Comparable<LogNode<T>> 
     }
 
     @Override
-    public int compareTo(LogNode<T> other) {
+    public int compareTo(@NotNull LogNode<T> other) {
         return this.object.compareTo(other.object);
     }
 }

@@ -7,7 +7,6 @@ import org.leialearns.logic.model.Fraction;
 import org.leialearns.logic.model.Histogram;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.session.Session;
-import org.leialearns.utilities.Expression;
 import org.leialearns.utilities.Pair;
 import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TypedIterable;
@@ -33,24 +32,13 @@ import java.util.regex.Pattern;
 
 // import static org.leialearns.utilities.Display.display;
 // import static org.leialearns.utilities.Display.asDisplay;
-import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class Oracle {
     private static final Pattern WHITE_SPACE_RE = Pattern.compile("\\s+");
     private static final Pattern ENTRY_RE = Pattern.compile("^[(]([0-9]*),([0-9]*)%([0-9]*)[)]$");
-    private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private final Setting<Approximation> half = new Setting<>("Fraction half", new Expression<Approximation>() {
-        @Override
-        public Approximation get() {
-            return createApproximation(-1, 1, 2);
-        }
-    });
-    private Setting<Approximation> approximations = new Setting<>("Approximations", new Expression<Approximation>() {
-        @Override
-        public Approximation get() {
-            return self.getApproximations(null);
-        }
-    });
+    private static final Logger logger = LoggerFactory.getLogger(new Object(){}.getClass().getEnclosingClass());
+    private final Setting<Approximation> half = new Setting<>("Fraction half", () -> createApproximation(-1, 1, 2));
+    private final Setting<Approximation> approximations;
     private long largestIndex = 0;
     private String dataUrl = null;
 
@@ -59,6 +47,10 @@ public class Oracle {
 
     @Autowired
     private Root root;
+
+    public Oracle() {
+        approximations = new Setting<>("Approximations", () -> self.getApproximations(null));
+    }
 
     public void setData(String dataUrl) {
         this.dataUrl = dataUrl;

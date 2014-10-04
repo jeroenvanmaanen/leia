@@ -46,52 +46,46 @@ public class SessionTest {
 
     @Test
     public void testRoot() {
-        transactionHelper.runInTransaction(new Runnable() {
-            @Override
-            public void run() {
-                InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test");
-                assertNotNull("Interaction context", interactionContext);
-                assertNotNull("Actions", interactionContext.getActions());
-                assertNotNull("Responses", interactionContext.getResponses());
-                assertNotNull("Structure", interactionContext.getStructure());
+        transactionHelper.runInTransaction(() -> {
+            InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test");
+            assertNotNull("Interaction context", interactionContext);
+            assertNotNull("Actions", interactionContext.getActions());
+            assertNotNull("Responses", interactionContext.getResponses());
+            assertNotNull("Structure", interactionContext.getStructure());
 
-                Alphabet.Iterable alphabetIterable = root.findAlphabets();
-                assertFalse("Empty alphabetDAO.findAll()", alphabetIterable.isEmpty());
-                for (Object object : alphabetIterable) {
-                    assertTrue("Expected alphabet: " + display(object), object instanceof Alphabet);
-                }
-
-                Alphabet actions = interactionContext.getActions();
-                logger.debug("Actions: " + actions.toString());
-
-                actions.internalize("");
-                actions.internalize("left");
-                Symbol right = actions.internalize("right");
-                logger.debug("Symbol 'right': [" + right + "] in: [" + right.getAlphabet() + "]");
-
-                Alphabet responses = interactionContext.getResponses();
-                logger.debug("Responses: " + responses.toString());
-
-                responses.internalize("dark");
-                Symbol light = responses.internalize("light");
-                logger.debug("Symbol 'light': [" + light + "] in: [" + light.getAlphabet() + "]");
-
-                assertEquals("http://leialearns.org/test/structure", interactionContext.getStructure().getURI());
+            Alphabet.Iterable alphabetIterable = root.findAlphabets();
+            assertFalse("Empty alphabetDAO.findAll()", alphabetIterable.isEmpty());
+            for (Object object : alphabetIterable) {
+                assertTrue("Expected alphabet: " + display(object), object instanceof Alphabet);
             }
+
+            Alphabet actions = interactionContext.getActions();
+            logger.debug("Actions: " + actions.toString());
+
+            actions.internalize("");
+            actions.internalize("left");
+            Symbol right = actions.internalize("right");
+            logger.debug("Symbol 'right': [" + right + "] in: [" + right.getAlphabet() + "]");
+
+            Alphabet responses = interactionContext.getResponses();
+            logger.debug("Responses: " + responses.toString());
+
+            responses.internalize("dark");
+            Symbol light = responses.internalize("light");
+            logger.debug("Symbol 'light': [" + light + "] in: [" + light.getAlphabet() + "]");
+
+            assertEquals("http://leialearns.org/test/structure", interactionContext.getStructure().getURI());
         });
     }
 
     @Test
     public void testSessions() {
-        transactionHelper.runInTransaction(new Runnable() {
-            @Override
-            public void run() {
-                Session rootSession = root.createSession("http://leialearns.org/test/sessions");
-                InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test/sessions");
-                Session newSession = root.createSession(interactionContext);
-                assertFalse("Sessions should be different: " + display(rootSession) + ": " + display(newSession), equal(rootSession, newSession));
-                assertEquals(rootSession.getInteractionContext(), newSession.getInteractionContext());
-            }
+        transactionHelper.runInTransaction(() -> {
+            Session rootSession = root.createSession("http://leialearns.org/test/sessions");
+            InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test/sessions");
+            Session newSession = root.createSession(interactionContext);
+            assertFalse("Sessions should be different: " + display(rootSession) + ": " + display(newSession), equal(rootSession, newSession));
+            assertEquals(rootSession.getInteractionContext(), newSession.getInteractionContext());
         });
     }
 

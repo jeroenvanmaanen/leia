@@ -11,6 +11,7 @@
     <url>http://leialearns.org</url>
 
     <properties>
+        <java.version>1.8</java.version>
         <leialearns.version>1.0-SNAPSHOT</leialearns.version>
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

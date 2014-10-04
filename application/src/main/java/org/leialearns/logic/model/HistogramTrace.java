@@ -1,7 +1,6 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.logic.interaction.Symbol;
-import org.leialearns.utilities.Expression;
 import org.leialearns.utilities.Setting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +26,7 @@ public class HistogramTrace {
 
     public HistogramTrace(final Histogram left, String operator, Histogram right) {
         name = left.toString();
-        isTransient = new Setting<>("Is transient?", new Expression<Boolean>() {
-            public Boolean get() {
-                return left.getVersion() == null;
-            }
-        });
+        isTransient = new Setting<>("Is transient?", () -> left.getVersion() == null);
         origin = left.getOrigin();
         leftTrace = left.getTrace();
         this.operator = operator;

@@ -18,7 +18,6 @@ import org.leialearns.logic.structure.Node;
 import org.leialearns.logic.structure.Structure;
 import org.leialearns.logic.utilities.Oracle;
 import org.leialearns.utilities.ExecutionListener;
-import org.leialearns.utilities.Expression;
 import org.leialearns.utilities.GraphDumper;
 import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TestUtilities;
@@ -48,12 +47,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 public class MinimizerTest {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Setting<String> interactionContextUri = new Setting<>("Interaction context URI");
-    private final Setting<Session> session = new Setting<>("Session", new Expression<Session>() {
-        @Override
-        public Session get() {
-            return createSession();
-        }
-    });
+    private final Setting<Session> session = new Setting<>("Session", this::createSession);
 
     @Autowired
     private TransactionHelper transactionHelper;
@@ -90,57 +84,54 @@ public class MinimizerTest {
 
     @Test
     public void testMinimizer() {
-        transactionHelper.runInTransaction(new Runnable() {
-            @Override
-            public void run() {
-                Session session = getSession();
-                Version observedVersion = session.findLastVersion(ModelType.OBSERVED, AccessMode.READABLE);
-                if (observedVersion != null) {
-                    Observed observed = observedVersion.createObservedVersion();
-                    logger.info("Observed: " + observed);
-                    Structure structure = session.getInteractionContext().getStructure();
-                    Node rootNode = structure.findRootNodes().first();
-                    assertNotNull("Root node", rootNode);
-                    Histogram histogram = observed.createHistogram(rootNode);
-                    logger.info("Minimizer: histogram: " + rootNode + ": {");
-                    Collection<Symbol> symbols = new TreeSet<>();
-                    for (Counter counter : histogram.getCounters()) {
-                        symbols.add(counter.getSymbol());
-                        logger.info("  " + counter);
-                    }
-                    logger.info("}");
-                    if (symbols.isEmpty()) {
-                        logger.warn("Empty histogram");
-                    } else {
-                        Expectation expectation = oracle.minimize(histogram);
-                        if (expectation == null) {
-                            logger.warn("No expectation");
-                        } else {
-                            expectation.log("Test expectation");
-                            String prefixEncoding = expectation.prefixEncode(symbols);
-                            String[] parts = prefixEncoding.split("\\|");
-                            logger.info("Prefix encoding: {");
-                            for (String part : parts) {
-                                logger.info("  " + part);
-                            }
-                            logger.info("}");
-                            Reader encodedReader = new StringReader(prefixEncoding);
-                            Expectation decoded = oracle.prefixDecode(encodedReader, symbols);
-                            assertAtEnd(encodedReader);
-                            Fraction sum = root.createTransientFraction(0, 0, 1);
-                            for (Symbol symbol : symbols) {
-                                Fraction decodedFraction = decoded.getFraction(symbol);
-                                assertEquals(expectation.getFraction(symbol), decodedFraction);
-                                sum = oracle.add(sum, decodedFraction);
-                            }
-                            assertEquals(root.createTransientFraction(1, 1, 1), sum);
-                        }
-                        minimizer.command();
-                        graphDumper.dumpGraph();
-                    }
-                } else {
-                    logger.warn("No last observed version");
+        transactionHelper.runInTransaction(() -> {
+            Session session = getSession();
+            Version observedVersion = session.findLastVersion(ModelType.OBSERVED, AccessMode.READABLE);
+            if (observedVersion != null) {
+                Observed observed = observedVersion.createObservedVersion();
+                logger.info("Observed: " + observed);
+                Structure structure = session.getInteractionContext().getStructure();
+                Node rootNode = structure.findRootNodes().first();
+                assertNotNull("Root node", rootNode);
+                Histogram histogram = observed.createHistogram(rootNode);
+                logger.info("Minimizer: histogram: " + rootNode + ": {");
+                Collection<Symbol> symbols = new TreeSet<>();
+                for (Counter counter : histogram.getCounters()) {
+                    symbols.add(counter.getSymbol());
+                    logger.info("  " + counter);
                 }
+                logger.info("}");
+                if (symbols.isEmpty()) {
+                    logger.warn("Empty histogram");
+                } else {
+                    Expectation expectation = oracle.minimize(histogram);
+                    if (expectation == null) {
+                        logger.warn("No expectation");
+                    } else {
+                        expectation.log("Test expectation");
+                        String prefixEncoding = expectation.prefixEncode(symbols);
+                        String[] parts = prefixEncoding.split("\\|");
+                        logger.info("Prefix encoding: {");
+                        for (String part : parts) {
+                            logger.info("  " + part);
+                        }
+                        logger.info("}");
+                        Reader encodedReader = new StringReader(prefixEncoding);
+                        Expectation decoded = oracle.prefixDecode(encodedReader, symbols);
+                        assertAtEnd(encodedReader);
+                        Fraction sum = root.createTransientFraction(0, 0, 1);
+                        for (Symbol symbol : symbols) {
+                            Fraction decodedFraction = decoded.getFraction(symbol);
+                            assertEquals(expectation.getFraction(symbol), decodedFraction);
+                            sum = oracle.add(sum, decodedFraction);
+                        }
+                        assertEquals(root.createTransientFraction(1, 1, 1), sum);
+                    }
+                    minimizer.command();
+                    graphDumper.dumpGraph();
+                }
+            } else {
+                logger.warn("No last observed version");
             }
         });
     }

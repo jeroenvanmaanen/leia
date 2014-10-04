@@ -5,7 +5,6 @@ import org.leialearns.logic.session.Root;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.logic.utilities.DescriptionLength;
 import org.leialearns.logic.utilities.PrefixFree;
-import org.leialearns.utilities.Expression;
 import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
@@ -22,18 +21,11 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class ExpectationObject extends BaseDistribution implements Expectation {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private Setting<Fraction> zero = new Setting<>("Zero", new Expression<Fraction>() {
-        @Override
-        public Fraction get() {
-            return root.createTransientFraction(-1, 0, 1);
-        }
-    });
+    private final Setting<Fraction> zero;
     Map<Symbol,Fraction> fractions = new HashMap<>();
 
-    private Root root;
-
     public ExpectationObject(Root root) {
-        this.root = root;
+        this.zero = new Setting<>("Zero", () -> root.createTransientFraction(-1, 0, 1));
     }
 
     public void setFractions(Map<Symbol,Fraction> fractions) {

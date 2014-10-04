@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.session.Session;
 import org.leialearns.utilities.ExecutionListener;
-import org.leialearns.utilities.Expression;
 import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TestUtilities;
 import org.leialearns.utilities.TransactionHelper;
@@ -28,12 +27,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 public class ConsolidatorTest {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Setting<String> interactionContextUri = new Setting<>("Interaction context URI");
-    private final Setting<Session> session = new Setting<>("Session", new Expression<Session>() {
-        @Override
-        public Session get() {
-            return createSession();
-        }
-    });
+    private final Setting<Session> session = new Setting<>("Session", this::createSession);
 
     @Autowired
     private Consolidator consolidator;
@@ -64,12 +58,9 @@ public class ConsolidatorTest {
 
     @Test
     public void testConsolidator() {
-        transactionHelper.runInTransaction(new Runnable() {
-            @Override
-            public void run() {
-                consolidator.command();
-                logger.info("Consolidator finished: " + consolidator.getLastExpected());
-            }
+        transactionHelper.runInTransaction(() -> {
+            consolidator.command();
+            logger.info("Consolidator finished: " + consolidator.getLastExpected());
         });
     }
 

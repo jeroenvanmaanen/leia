@@ -1,6 +1,5 @@
 package org.leialearns.logic.model;
 
-import com.google.common.base.Function;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.logic.interaction.Symbol;
 import org.leialearns.logic.structure.Node;
@@ -13,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.function.Function;
 
 import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Display.show;
@@ -57,17 +57,7 @@ public class CounterLogger {
         logger.info("Logging model: " + expected);
         Observed observed = expected.getObserved();
         if (observed != null) {
-            Function<Version,Iterable<Counter>> getCounters = new Function<Version, Iterable<Counter>>() {
-                public Iterable<Counter> apply(Version version) {
-                    Function<Node,Boolean> getIncluded = new Function<Node, Boolean>() {
-                        @Override
-                        public Boolean apply(Node node) {
-                            return expected.isIncluded(node);
-                        }
-                    };
-                    return version.findCounters(null, getIncluded);
-                }
-            };
+            Function<Version,Iterable<Counter>> getCounters = version -> version.findCounters(null, expected::isIncluded);
             ExpectedNoteCache expectedNoteCache = new ExpectedNoteCache(expected);
             logCounters(null, getCounters, new ExpectedNote(expectedNoteCache), observed.getVersion(), observed.getDeltaVersion());
         }
@@ -94,19 +84,9 @@ public class CounterLogger {
             }
             Function<Version,Iterable<Counter>> getCounters;
             if (node == null) {
-                getCounters = new Function<Version, Iterable<Counter>>() {
-                    @Override
-                    public Iterable<Counter> apply(Version version) {
-                        return version.findCounters();
-                    }
-                };
+                getCounters = Version::findCounters;
             } else {
-                getCounters = new Function<Version, Iterable<Counter>>() {
-                    @Override
-                    public Iterable<Counter> apply(Version version) {
-                        return version.findCounters(node);
-                    }
-                };
+                getCounters = version -> version.findCounters(node);
             }
             logCounters(prefix, getCounters, note, versions);
         }

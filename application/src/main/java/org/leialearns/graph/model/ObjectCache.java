@@ -1,9 +1,8 @@
 package org.leialearns.graph.model;
 
-import com.google.common.base.Function;
-
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 public class ObjectCache<T> {
     private final String cacheId;

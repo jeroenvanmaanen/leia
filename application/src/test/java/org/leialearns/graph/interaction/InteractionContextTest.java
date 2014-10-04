@@ -31,34 +31,28 @@ public class InteractionContextTest {
 
     @Test
     public void testDirect() {
-        transactionHelper.runInTransaction(new Runnable() {
-            @Override
-            public void run() {
-                AlphabetDTO actions = new AlphabetDTO();
-                actions.setURI(ACTIONS_URI);
-                alphabetDAO.save(actions);
+        transactionHelper.runInTransaction(() -> {
+            AlphabetDTO actions = new AlphabetDTO();
+            actions.setURI(ACTIONS_URI);
+            alphabetDAO.save(actions);
 
-                InteractionContextDTO context = new InteractionContextDTO();
-                context.setURI(CONTEXT_URI);
-                context.setActions(actions);
-                interactionContextDAO.save(context);
+            InteractionContextDTO context = new InteractionContextDTO();
+            context.setURI(CONTEXT_URI);
+            context.setActions(actions);
+            interactionContextDAO.save(context);
 
-                logger.info("Actions: {}", context.getActions());
+            logger.info("Actions: {}", context.getActions());
 
-                context = interactionContextDAO.find(CONTEXT_URI);
-                logger.info("Actions: {}", context.getActions());
-            }
+            context = interactionContextDAO.find(CONTEXT_URI);
+            logger.info("Actions: {}", context.getActions());
         });
     }
 
     @Test
     public void testDAO() {
-        transactionHelper.runInTransaction(new Runnable() {
-            @Override
-            public void run() {
-                InteractionContextDTO context = interactionContextDAO.findOrCreate(CONTEXT_URI);
-                logger.info("Actions: {}", context.getActions());
-            }
+        transactionHelper.runInTransaction(() -> {
+            InteractionContextDTO context = interactionContextDAO.findOrCreate(CONTEXT_URI);
+            logger.info("Actions: {}", context.getActions());
         });
     }
 

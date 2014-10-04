@@ -1,6 +1,5 @@
 package org.leialearns.graph.model;
 
-import com.google.common.base.Function;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.bridge.FactoryAccessor;
 import org.leialearns.enumerations.ModelType;
@@ -28,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import static java.lang.Boolean.TRUE;
 import static org.leialearns.bridge.Static.getFarObject;
@@ -231,18 +231,8 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
         }
 
         Set<Map<String,Object>> missing = versionRepository.findMissing(interactionContext, ModelType.COUNTED.toChar(), minOrdinal, maxOrdinal);
-        ObjectCache<NodeDTO> nodeCache = new ObjectCache<>("Nodes", new Function<Long, NodeDTO>() {
-            @Override
-            public NodeDTO apply(Long id) {
-                return nodeRepository.findOne(id);
-            }
-        });
-        ObjectCache<SymbolDTO> symbolCache = new ObjectCache<>("Symbols", new Function<Long, SymbolDTO>() {
-            @Override
-            public SymbolDTO apply(Long id) {
-                return symbolRepository.findById(id);
-            }
-        });
+        ObjectCache<NodeDTO> nodeCache = new ObjectCache<>("Nodes", (Function<Long, NodeDTO>) nodeRepository::findOne);
+        ObjectCache<SymbolDTO> symbolCache = new ObjectCache<>("Symbols", symbolRepository::findById);
         logger.debug("Missing: {");
         for (Map<String,Object> pair : missing) {
             logger.trace("  Pair: {}", asDisplay(pair));

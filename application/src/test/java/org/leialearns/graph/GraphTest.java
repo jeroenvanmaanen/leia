@@ -3,7 +3,6 @@ package org.leialearns.graph;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.leialearns.utilities.ExecutionListener;
-import org.leialearns.utilities.Expression;
 import org.leialearns.utilities.Setting;
 import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.cypher.javacompat.ExecutionResult;
@@ -38,12 +37,9 @@ public class GraphTest {
     @Autowired
     private ExecutionEngine executionEngine;
 
-    private Setting<Boolean> initialized = new Setting<>("Initialized", new Expression<Boolean>() {
-        @Override
-        public Boolean get() {
-            createDatabase();
-            return true;
-        }
+    private Setting<Boolean> initialized = new Setting<>("Initialized", () -> {
+        createDatabase();
+        return true;
     });
 
     @Test
@@ -62,7 +58,7 @@ public class GraphTest {
                 " second=node:user({secondUserQuery})\n" +
                 "MATCH p=shortestPath(first-[*..4]-second)\n" +
                 "RETURN length(p) AS distance";
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put( "firstUserQuery", "name:" + firstUser );
         params.put( "secondUserQuery", "name:" + secondUser );
         return executionEngine.execute(query, params);
@@ -93,8 +89,7 @@ public class GraphTest {
         executionEngine.execute( cypher );
 
         // Index all nodes in "user" index
-        Transaction tx = graphDatabaseService.beginTx();
-        try {
+        try (Transaction tx = graphDatabaseService.beginTx()) {
             Iterable<Node> allNodes =
                     GlobalGraphOperations.at(graphDatabaseService).getAllNodes();
             for ( Node node : allNodes ) {
@@ -105,8 +100,6 @@ public class GraphTest {
                 }
             }
             tx.success();
-        } finally {
-            tx.finish();
         }
     }
 }

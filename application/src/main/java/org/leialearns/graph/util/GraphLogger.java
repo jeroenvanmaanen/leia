@@ -1,6 +1,5 @@
 package org.leialearns.graph.util;
 
-import com.google.common.base.Function;
 import org.leialearns.graph.HasId;
 import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.cypher.javacompat.ExecutionResult;
@@ -13,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.aspects.core.NodeBacked;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -99,12 +99,7 @@ public class GraphLogger {
     }
 
     protected static LogNode<ArcTo> createLogNode(final ArcTo arcTo) {
-        return new LogNode<>(arcTo, new Function<ArcTo,String>() {
-            @Override
-            public String apply(ArcTo arcTo) {
-                return arcTo.relationshipLabel + " " + arcTo.nodeLabel;
-            }
-        });
+        return new LogNode<>(arcTo, arcTo1 -> arcTo1.relationshipLabel + " " + arcTo1.nodeLabel);
     }
 
     protected static String formatRelationship(Relationship relationship, boolean reverse) {
@@ -179,7 +174,10 @@ public class GraphLogger {
             }
             nodeLabel = formatNode(node);
         }
-        public int compareTo(ArcTo other) {
+        public int compareTo(@NotNull ArcTo other) {
+            return compareToSafe(other);
+        }
+        private int compareToSafe(ArcTo other) {
             int result = other == null ? 1 : compare(getTypeName(relationship), getTypeName(other.relationship));
             if (result == 0) {
                 result = nodeLabel.compareTo(other.nodeLabel);

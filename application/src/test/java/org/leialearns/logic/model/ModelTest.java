@@ -48,48 +48,42 @@ public class ModelTest {
 
     @Test
     public void testVersions() {
-        transactionHelper.runInTransaction(new Runnable() {
-            @Override
-            public void run() {
-                InteractionContext interactionContext = TestUtilities.setupNodes(root, "http://leialearns.org/test/nodes");
-                Session session = root.createSession(interactionContext);
-                assertNotNull(session);
+        transactionHelper.runInTransaction(() -> {
+            InteractionContext interactionContext = TestUtilities.setupNodes(root, "http://leialearns.org/test/nodes");
+            Session session = root.createSession(interactionContext);
+            assertNotNull(session);
 
-                Version version = session.findOrCreateLastVersion(ModelType.COUNTED, null);
-                assertNotNull(version);
-            }
+            Version version = session.findOrCreateLastVersion(ModelType.COUNTED, null);
+            assertNotNull(version);
         });
     }
 
     @Test
     public void testCounters() {
-        transactionHelper.runInTransaction(new Runnable() {
-            @Override
-            public void run() {
-                InteractionContext interactionContext = TestUtilities.setupNodes(root, "http://leialearns.org/test/nodes");
-                Session session = root.createSession(interactionContext);
-                assertNotNull(session);
-                Version version = session.findOrCreateLastVersion(ModelType.COUNTED, null);
-                assertNotNull(version);
-                DirectedSymbol.Iterable path = interactionContext.createPath(">left", "<dark");
-                Structure structure = version.getInteractionContext().getStructure();
-                Node node = structure.findOrCreateNode(path);
-                assertNotNull(node);
-                logger.debug("Node: [" + node + "]");
-                InteractionContext updatedContext = root.createInteractionContext(interactionContext.getURI());
-                assertTrue(updatedContext.getStructure().getMaxDepth() >= node.getDepth());
+        transactionHelper.runInTransaction(() -> {
+            InteractionContext interactionContext = TestUtilities.setupNodes(root, "http://leialearns.org/test/nodes");
+            Session session = root.createSession(interactionContext);
+            assertNotNull(session);
+            Version version = session.findOrCreateLastVersion(ModelType.COUNTED, null);
+            assertNotNull(version);
+            DirectedSymbol.Iterable path = interactionContext.createPath(">left", "<dark");
+            Structure structure = version.getInteractionContext().getStructure();
+            Node node = structure.findOrCreateNode(path);
+            assertNotNull(node);
+            logger.debug("Node: [" + node + "]");
+            InteractionContext updatedContext = root.createInteractionContext(interactionContext.getURI());
+            assertTrue(updatedContext.getStructure().getMaxDepth() >= node.getDepth());
 
-                Symbol light = interactionContext.getResponses().internalize("light");
-                assertNotNull(light);
+            Symbol light = interactionContext.getResponses().internalize("light");
+            assertNotNull(light);
 
-                Counted countedVersion = version.createCountedVersion();
-                Counter counter = countedVersion.getCounter(path, light);
-                assertNotNull(counter);
-                long oldValue = counter.getValue();
-                counter.increment();
-                Counter updatedCounter = counter.fresh();
-                assertEquals(oldValue + 1, updatedCounter.getValue());
-            }
+            Counted countedVersion = version.createCountedVersion();
+            Counter counter = countedVersion.getCounter(path, light);
+            assertNotNull(counter);
+            long oldValue = counter.getValue();
+            counter.increment();
+            Counter updatedCounter = counter.fresh();
+            assertEquals(oldValue + 1, updatedCounter.getValue());
         });
     }
 

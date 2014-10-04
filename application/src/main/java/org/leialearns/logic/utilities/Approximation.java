@@ -2,9 +2,9 @@ package org.leialearns.logic.utilities;
 
 import org.leialearns.logic.model.Fraction;
 import org.leialearns.logic.model.TransientFraction;
-import org.leialearns.utilities.Function;
 import org.leialearns.utilities.TransformingIterable;
 
+import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -96,7 +96,7 @@ public class Approximation implements Comparable<Approximation>, Iterable<Approx
         return createApproximationIterator(left, createSingleton(this), right);
     }
 
-    public int compareTo(Approximation other) {
+    public int compareTo(@NotNull Approximation other) {
         return Long.signum((getNumerator() * other.getDenominator()) - (other.getNumerator() * getDenominator()));
     }
 
@@ -113,15 +113,11 @@ public class Approximation implements Comparable<Approximation>, Iterable<Approx
     }
 
     protected Iterable<Approximation> createSingleton(final Approximation approximation) {
-        return new TransformingIterable<>(singleton, Approximation.class, new Function<Object, Approximation>() {
-            @Override
-            public Approximation get(Object x) {
-                return approximation;
-            }
-        });
+        return new TransformingIterable<>(singleton, Approximation.class, x -> approximation);
     }
 
-    protected Iterator<Approximation> createApproximationIterator(Iterable<Approximation>... iterables) {
+    @SafeVarargs
+    protected final Iterator<Approximation> createApproximationIterator(Iterable<Approximation>... iterables) {
         return new ApproximationIterator(iterables);
     }
 
@@ -129,6 +125,7 @@ public class Approximation implements Comparable<Approximation>, Iterable<Approx
         private final Iterator<Iterable<Approximation>> iterables;
         private Iterator<Approximation> current = null;
 
+        @SafeVarargs
         protected ApproximationIterator(Iterable<Approximation>... iterables) {
             this.iterables = Arrays.asList(iterables).iterator();
             setCurrent();

@@ -68,29 +68,26 @@ public class EncounterTest {
     public void testEncounter() {
         graphDumper.dumpGraph();
         try {
-            transactionHelper.runInTransaction(new Runnable() {
-                @Override
-                public void run() {
+            transactionHelper.runInTransaction(() -> {
 //                    encounter.command("file://" + TestUtilities.getPath(PROJECT_DIR.get(), "pom.xml"));
-                    String source = "file://" + TestUtilities.getPath(PROJECT_DIR.get(), "src/test/resources/data/test.txt");
-                    try {
-                        encounter.command(source);
-                    } catch (Exception exception) {
-                        logger.error(String.format("Exception while running encounter(%s)", source), exception);
-                    }
-                    Session session = createSession();
-                    InteractionContext interactionContext = session.getInteractionContext();
-                    for (Version version : interactionContext.getVersions()) {
-                        logger.debug("Version: {}", version);
-                    }
-                    Structure structure = interactionContext.getStructure();
-                    structure.logNodes();
-                    Version version = session.findOrCreateLastVersion(ModelType.COUNTED, AccessMode.READABLE);
-                    assertEquals(version, encounter.getLastVersion());
-                    assertEquals(AccessMode.READABLE, version.getAccessMode());
-                    Counted countedVersion = version.createCountedVersion();
-                    countedVersion.logCounters();
+                String source = "file://" + TestUtilities.getPath(PROJECT_DIR.get(), "src/test/resources/data/test.txt");
+                try {
+                    encounter.command(source);
+                } catch (Exception exception) {
+                    logger.error(String.format("Exception while running encounter(%s)", source), exception);
                 }
+                Session session = createSession();
+                InteractionContext interactionContext = session.getInteractionContext();
+                for (Version version : interactionContext.getVersions()) {
+                    logger.debug("Version: {}", version);
+                }
+                Structure structure = interactionContext.getStructure();
+                structure.logNodes();
+                Version version = session.findOrCreateLastVersion(ModelType.COUNTED, AccessMode.READABLE);
+                assertEquals(version, encounter.getLastVersion());
+                assertEquals(AccessMode.READABLE, version.getAccessMode());
+                Counted countedVersion = version.createCountedVersion();
+                countedVersion.logCounters();
             });
         } catch (Throwable throwable) {
             logger.error("Exception in test", throwable);

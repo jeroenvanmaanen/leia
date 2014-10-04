@@ -43,41 +43,38 @@ public class InteractionTest {
 
     @Test
     public void testFixated() {
-        transactionHelper.runInTransaction(new Runnable() {
-            @Override
-            public void run() {
-                InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test-fixated");
-                assertNotNull("Interaction context", interactionContext);
-                assertNotNull("Actions", interactionContext.getActions());
-                assertNotNull("Responses", interactionContext.getResponses());
-                assertNotNull("Structure", interactionContext.getStructure());
+        transactionHelper.runInTransaction(() -> {
+            InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test-fixated");
+            assertNotNull("Interaction context", interactionContext);
+            assertNotNull("Actions", interactionContext.getActions());
+            assertNotNull("Responses", interactionContext.getResponses());
+            assertNotNull("Structure", interactionContext.getStructure());
 
-                Alphabet actions = interactionContext.getActions();
-                logger.debug("Actions: " + actions.toString());
-                Symbol left = actions.internalize("left");
-                Symbol right = actions.internalize("right");
-                assertFalse(actions.isFixated());
-                assertEquals(1, left.descriptionLength());
-                assertEquals(3, right.descriptionLength());
+            Alphabet actions = interactionContext.getActions();
+            logger.debug("Actions: " + actions.toString());
+            Symbol left = actions.internalize("left");
+            Symbol right = actions.internalize("right");
+            assertFalse(actions.isFixated());
+            assertEquals(1, left.descriptionLength());
+            assertEquals(3, right.descriptionLength());
 
-                Alphabet responses = interactionContext.getResponses();
-                logger.debug("Responses: " + responses.toString());
-                Symbol dark = responses.internalize("dark");
-                Symbol light = responses.internalize("light");
-                Symbol dim = responses.internalize("dim");
-                responses.fixate();
-                logger.debug("Responses: " + display(responses) + ": " + System.identityHashCode(responses));
-                Alphabet darkAlphabet = dark.getAlphabet();
-                logger.debug("Dark alphabet: " + display(darkAlphabet) + ": " + System.identityHashCode(darkAlphabet));
-                assertTrue("Responses.isFixated" + responses, responses.isFixated());
-                assertTrue("Dark.alphabet.isFixated" + darkAlphabet, darkAlphabet.isFixated());
-                long responseSymbolsDescriptionLength = responses.getFixatedDescriptionLength();
-                logger.debug("Response symbols description length: " + responseSymbolsDescriptionLength);
-                assertEquals(2, responseSymbolsDescriptionLength);
-                assertEquals("Description length of 'dark'", responseSymbolsDescriptionLength, dark.descriptionLength());
-                assertEquals("Description length of 'light'", responseSymbolsDescriptionLength, light.descriptionLength());
-                assertEquals("Description length of 'dim'", responseSymbolsDescriptionLength, dim.descriptionLength());
-            }
+            Alphabet responses = interactionContext.getResponses();
+            logger.debug("Responses: " + responses.toString());
+            Symbol dark = responses.internalize("dark");
+            Symbol light = responses.internalize("light");
+            Symbol dim = responses.internalize("dim");
+            responses.fixate();
+            logger.debug("Responses: " + display(responses) + ": " + System.identityHashCode(responses));
+            Alphabet darkAlphabet = dark.getAlphabet();
+            logger.debug("Dark alphabet: " + display(darkAlphabet) + ": " + System.identityHashCode(darkAlphabet));
+            assertTrue("Responses.isFixated" + responses, responses.isFixated());
+            assertTrue("Dark.alphabet.isFixated" + darkAlphabet, darkAlphabet.isFixated());
+            long responseSymbolsDescriptionLength = responses.getFixatedDescriptionLength();
+            logger.debug("Response symbols description length: " + responseSymbolsDescriptionLength);
+            assertEquals(2, responseSymbolsDescriptionLength);
+            assertEquals("Description length of 'dark'", responseSymbolsDescriptionLength, dark.descriptionLength());
+            assertEquals("Description length of 'light'", responseSymbolsDescriptionLength, light.descriptionLength());
+            assertEquals("Description length of 'dim'", responseSymbolsDescriptionLength, dim.descriptionLength());
         });
     }
 }

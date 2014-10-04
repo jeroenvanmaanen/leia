@@ -47,21 +47,18 @@ public class StructureTest {
         logger.info("Start test");
         final boolean[] target = new boolean[] {false};
         try {
-            transactionHelper.runInTransaction(new Runnable() {
-                @Override
-                public void run() {
-                    String uri = "http://leialearns.org/test/nodes";
-                    InteractionContext interactionContext = TestUtilities.setupNodes(root, uri);
-                    assertNotNull(interactionContext);
-                    assertEquals(uri, interactionContext.getURI());
+            transactionHelper.runInTransaction(() -> {
+                String uri = "http://leialearns.org/test/nodes";
+                InteractionContext interactionContext = TestUtilities.setupNodes(root, uri);
+                assertNotNull(interactionContext);
+                assertEquals(uri, interactionContext.getURI());
 
-                    Structure structure = interactionContext.getStructure();
-                    Node darkLeftNode = structure.findOrCreateNode(interactionContext.createPath(">left", "<dark"));
-                    assertNotNull("Dark left node", darkLeftNode);
-                    Symbol left = interactionContext.getActions().internalize("left");
-                    target[0] = true;
-                    darkLeftNode.findOrCreate(left, Direction.ACTION);
-                }
+                Structure structure = interactionContext.getStructure();
+                Node darkLeftNode = structure.findOrCreateNode(interactionContext.createPath(">left", "<dark"));
+                assertNotNull("Dark left node", darkLeftNode);
+                Symbol left = interactionContext.getActions().internalize("left");
+                target[0] = true;
+                darkLeftNode.findOrCreate(left, Direction.ACTION);
             });
             assertTrue("Expected IllegalStateException", false);
         } catch (IllegalStateException exception) {
