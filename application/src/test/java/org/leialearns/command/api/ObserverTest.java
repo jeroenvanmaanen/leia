@@ -89,10 +89,10 @@ public class ObserverTest {
 
     @Test
     public void testObserver() {
-        final Setting<Session> session = new Setting<>("Session");
-        final Counted[] counted = new Counted[3];
-        final Toggled[] toggled = new Toggled[3];
-        final Collection<TypedVersionExtension> registry = new ArrayList<>();
+        Setting<Session> session = new Setting<>("Session");
+        Counted[] counted = new Counted[3];
+        Toggled[] toggled = new Toggled[3];
+        Collection<TypedVersionExtension> registry = new ArrayList<>();
         try {
             transactionHelper.runInTransaction(() -> {
                 session.set(getSession());
@@ -142,24 +142,28 @@ public class ObserverTest {
             }
             throw ExceptionWrapper.wrap(exception);
         } finally {
-            transactionHelper.runInTransaction(new Runnable() {
-                @Override
-                public void run() {
-                    Session theSession = session.get().refresh();
-                    logger.debug("Session: {}", theSession);
-                    for (TypedVersionExtension extension : registry) {
-                        Version version = extension.getVersion();
-                        logger.debug("Extension: {}: version: {}", extension, version);
-                        Version attached = theSession.findVersion(version.getOrdinal());
-                        if (attached != null) {
-                            Session owner = attached.getOwner(); // TODO: why is this different from theSession?
-                            attached.setAccessMode(AccessMode.READABLE, owner);
-                        }
-                    }
-                }
-            });
+            cleanupAfterTest(registry);
         }
         graphDumper.dumpGraph();
+    }
+
+    /*
+     * Placed this in a separate method, because the JVM would crash otherwise...!
+     */
+    protected void cleanupAfterTest(Collection<TypedVersionExtension> registry) {
+        transactionHelper.runInTransaction(() -> {
+            Session theSession = session.get().refresh();
+            logger.debug("Session: {}", theSession);
+            for (TypedVersionExtension extension : registry) {
+                Version version = extension.getVersion();
+                logger.debug("Extension: {}: version: {}", extension, version);
+                Version attached = theSession.findVersion(version.getOrdinal());
+                if (attached != null) {
+                    Session owner = attached.getOwner(); // TODO: why is this different from theSession?
+                    attached.setAccessMode(AccessMode.READABLE, owner);
+                }
+            }
+        });
     }
 
     protected void setupCounted(Counted[] counted, Collection<TypedVersionExtension> registry) {
