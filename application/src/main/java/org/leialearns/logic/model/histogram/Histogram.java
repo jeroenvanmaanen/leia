@@ -1,10 +1,11 @@
 package org.leialearns.logic.model.histogram;
 
 import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.logic.model.common.HasTypeLabel;
 import org.leialearns.logic.model.common.NodeData;
 import org.leialearns.utilities.TypedIterable;
 
-public interface Histogram extends NodeData<Histogram,Counter.Iterable>, Modifiable {
+public interface Histogram extends NodeData<Histogram,Counter.Iterable>, Modifiable, HasTypeLabel {
     TypedIterable<Counter> getCounters();
     long getValue(Symbol symbol);
     long getWeight();

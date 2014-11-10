@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 import static org.leialearns.utilities.Display.displayParts;
 import static org.leialearns.utilities.L.literal;
 
-public abstract class BaseNodeData<Type,ItemIterable> implements NodeData<Type,ItemIterable> {
+public abstract class BaseNodeData<Type extends HasTypeLabel,ItemIterable> implements NodeData<Type,ItemIterable> {
     private final Setting<Version> version = new Setting<>("Version");
     private final Setting<Node> node = new Setting<>("Node");
     private final Setting<Boolean> persistent = new Setting<>("Persistent", version::isFixated);
@@ -60,16 +60,16 @@ public abstract class BaseNodeData<Type,ItemIterable> implements NodeData<Type,I
     public void retrieve(Supplier<ItemIterable> getCounters) {
     }
 
-    protected abstract String getTypeLabel();
-
     @Override
     public String toString() {
+        Type data = getData();
+        String typeLabel = (data == null ? "?Type?" : data.getTypeLabel());
         Version version = (this.version.isFixated() ? this.version.get() : null);
         char versionLabel = (version == null ? '?' : version.getModelType().toChar());
         String versionOrdinal = (version == null ? "" : ":" + version.getOrdinal());
         Object versionLiteral = literal(versionLabel + versionOrdinal);
         Object nodeLiteral = literal(node.isFixated() ? node.get().toString() : "?");
-        return displayParts(getTypeLabel(), versionLiteral, nodeLiteral, literal(label.get()));
+        return displayParts(typeLabel, versionLiteral, nodeLiteral, literal(label.get()));
     }
 
 }

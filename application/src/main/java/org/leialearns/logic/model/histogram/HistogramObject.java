@@ -22,10 +22,12 @@ public class HistogramObject extends BaseNodeData<Histogram,Counter.Iterable> im
         origin = (logger.isTraceEnabled() ? new Throwable("Histogram origin") : null);
     }
 
+    @Override
     public HistogramTrace getTrace() {
         return trace;
     }
 
+    @Override
     public Throwable getOrigin() {
         return origin;
     }
@@ -45,6 +47,7 @@ public class HistogramObject extends BaseNodeData<Histogram,Counter.Iterable> im
         return new TypedIterable<>(histogram.values(), Counter.class);
     }
 
+    @Override
     public long getValue(Symbol symbol) {
         long result;
         if (histogram.containsKey(symbol)) {
@@ -151,6 +154,7 @@ public class HistogramObject extends BaseNodeData<Histogram,Counter.Iterable> im
         }
     }
 
+    @Override
     public HistogramObject getSnapshot(String operator) {
         HistogramObject result = new HistogramObject();
         result.setLabel("(" + operator + ")" + getLabel());

@@ -72,6 +72,7 @@ public class ExpectationObject extends BaseNodeData<Expectation,Estimate.Iterabl
         return getVersion().findEstimates(getNode());
     }
 
+    @Override
     public Fraction getFraction(Symbol symbol) {
         Fraction result = null;
         if (fractions.containsKey(symbol)) {
@@ -83,6 +84,7 @@ public class ExpectationObject extends BaseNodeData<Expectation,Estimate.Iterabl
         return result;
     }
 
+    @Override
     public String prefixEncode(Collection<Symbol> symbols) {
         int missing = 0;
         StringBuilder builder = new StringBuilder("{E|");
@@ -109,6 +111,7 @@ public class ExpectationObject extends BaseNodeData<Expectation,Estimate.Iterabl
         return builder.toString();
     }
 
+    @Override
     public long descriptionLength(Collection<Symbol> symbols) {
         long result = 0L;
         result += DescriptionLength.descriptionLength(BigInteger.valueOf(symbols.size()));
@@ -125,10 +128,12 @@ public class ExpectationObject extends BaseNodeData<Expectation,Estimate.Iterabl
         return result;
     }
 
+    @Override
     public void log() {
         log(null);
     }
 
+    @Override
     public void log(String label) {
         if (logger.isDebugEnabled()) {
             Collection<Symbol> symbols = new TreeSet<>();
@@ -143,6 +148,7 @@ public class ExpectationObject extends BaseNodeData<Expectation,Estimate.Iterabl
         }
     }
 
+    @Override
     public String getTypeLabel() {
         return "Expectation";
     }
