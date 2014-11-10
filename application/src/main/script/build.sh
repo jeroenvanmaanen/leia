@@ -6,4 +6,4 @@ SRC="$(dirname "$MAIN")"
 PROJECT="$(dirname "$SRC")"
 
 cd "$PROJECT"
-mvn clean package assembly:single
+mvn "$@" clean package assembly:single

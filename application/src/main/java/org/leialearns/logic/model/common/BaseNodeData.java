@@ -1,5 +1,6 @@
-package org.leialearns.logic.model;
+package org.leialearns.logic.model.common;
 
+import org.leialearns.logic.model.Version;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.utilities.Expression;
 import org.leialearns.utilities.Setting;
@@ -7,15 +8,10 @@ import org.leialearns.utilities.Setting;
 import static org.leialearns.utilities.Display.displayParts;
 import static org.leialearns.utilities.L.literal;
 
-public abstract class BaseDistribution implements Distribution {
+public abstract class BaseNodeData implements NodeData {
     private final Setting<Version> version = new Setting<>("Version");
     private final Setting<Node> node = new Setting<>("Node");
-    private final Setting<Boolean> persistent = new Setting<>("Persistent", new Expression<Boolean>() {
-        @Override
-        public Boolean get() {
-            return version.isFixated();
-        }
-    });
+    private final Setting<Boolean> persistent = new Setting<>("Persistent", () -> version.isFixated());
     private final Setting<String> label = new Setting<>("Label", "?");
 
     @Override

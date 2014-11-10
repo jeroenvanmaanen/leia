@@ -1,6 +1,7 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.logic.model.common.BaseNodeData;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +11,7 @@ import java.util.Map;
 
 import static org.leialearns.utilities.Static.getLoggingClass;
 
-public class HistogramObject extends BaseDistribution implements Histogram {
+public class HistogramObject extends BaseNodeData implements Histogram {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Map<Symbol, Counter> histogram = new HashMap<>();
     private final Throwable origin;

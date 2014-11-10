@@ -1,6 +1,7 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.logic.model.common.BaseNodeData;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.logic.utilities.DescriptionLength;
@@ -19,7 +20,7 @@ import java.util.TreeSet;
 
 import static org.leialearns.utilities.Static.getLoggingClass;
 
-public class ExpectationObject extends BaseDistribution implements Expectation {
+public class ExpectationObject extends BaseNodeData implements Expectation {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Setting<Fraction> zero;
     Map<Symbol,Fraction> fractions = new HashMap<>();
