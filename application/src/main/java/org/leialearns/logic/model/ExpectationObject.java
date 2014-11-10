@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 
 import static org.leialearns.utilities.Static.getLoggingClass;
 
-public class ExpectationObject extends BaseNodeData<Estimate.Iterable> implements Expectation {
+public class ExpectationObject extends BaseNodeData<Expectation,Estimate.Iterable> implements Expectation {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Setting<Fraction> zero;
     Map<Symbol,Fraction> fractions = new HashMap<>();
@@ -36,6 +36,16 @@ public class ExpectationObject extends BaseNodeData<Estimate.Iterable> implement
 
     public TypedIterable<Symbol> getSymbols() {
         return new TypedIterable<>(fractions.keySet(), Symbol.class);
+    }
+
+    @Override
+    public void setData(Expectation data) {
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+    }
+
+    @Override
+    public Expectation getData() {
+        return this;
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 import static org.leialearns.utilities.Static.getLoggingClass;
 
-public class HistogramObject extends BaseNodeData<Counter.Iterable> implements Histogram {
+public class HistogramObject extends BaseNodeData<Histogram,Counter.Iterable> implements Histogram {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Map<Symbol, Counter> histogram = new HashMap<>();
     private final Throwable origin;
@@ -28,6 +28,16 @@ public class HistogramObject extends BaseNodeData<Counter.Iterable> implements H
 
     public Throwable getOrigin() {
         return origin;
+    }
+
+    @Override
+    public void setData(Histogram data) {
+        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+    }
+
+    @Override
+    public Histogram getData() {
+        return this;
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 import static org.leialearns.utilities.Display.displayParts;
 import static org.leialearns.utilities.L.literal;
 
-public abstract class BaseNodeData<ItemIterable> implements NodeData<ItemIterable> {
+public abstract class BaseNodeData<Type,ItemIterable> implements NodeData<Type,ItemIterable> {
     private final Setting<Version> version = new Setting<>("Version");
     private final Setting<Node> node = new Setting<>("Node");
     private final Setting<Boolean> persistent = new Setting<>("Persistent", version::isFixated);
@@ -56,6 +56,7 @@ public abstract class BaseNodeData<ItemIterable> implements NodeData<ItemIterabl
         return persistent.get();
     }
 
+    @Override
     public void retrieve(Supplier<ItemIterable> getCounters) {
     }
 

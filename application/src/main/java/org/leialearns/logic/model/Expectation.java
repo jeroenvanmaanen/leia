@@ -7,7 +7,7 @@ import org.leialearns.utilities.TypedIterable;
 import java.util.Collection;
 import java.util.Map;
 
-public interface Expectation extends NodeData<Estimate.Iterable> {
+public interface Expectation extends NodeData<Expectation,Estimate.Iterable> {
     void setFractions(Map<Symbol,Fraction> fractions);
     TypedIterable<Symbol> getSymbols();
     Fraction getFraction(Symbol symbol);
