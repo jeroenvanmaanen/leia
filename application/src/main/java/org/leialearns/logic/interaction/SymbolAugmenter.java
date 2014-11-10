@@ -17,7 +17,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 public class SymbolAugmenter extends BaseBridgeFacet {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 
-    /**
+    /*
      * @see org.leialearns.logic.interaction.Symbol#descriptionLength()
      */
     @BridgeOverride

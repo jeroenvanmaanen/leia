@@ -63,7 +63,7 @@ public class ObservedHelper {
         } else {
             result = owner.getHistogram(version, node);
             if (result != null) {
-                result.retrieve();
+                result.retrieve(() -> version.findCounters(node));
             }
         }
         if (result == null) {

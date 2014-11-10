@@ -8,10 +8,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static org.leialearns.utilities.Static.getLoggingClass;
 
-public class HistogramObject extends BaseNodeData implements Histogram {
+public class HistogramObject extends BaseNodeData<Counter.Iterable> implements Histogram {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Map<Symbol, Counter> histogram = new HashMap<>();
     private final Throwable origin;
@@ -71,15 +72,20 @@ public class HistogramObject extends BaseNodeData implements Histogram {
     }
 
     @Override
-    public void retrieve() {
+    public void retrieve(Supplier<Counter.Iterable> countersSupplier) {
         histogram.clear();
-        Counter.Iterable counters = getVersion().findCounters(getNode());
+        Counter.Iterable counters = countersSupplier.get();
         for (Counter counter : counters) {
             histogram.put(counter.getSymbol(), counter.fresh());
         }
         if (logger.isTraceEnabled()) {
             trace = new HistogramTrace(this);
         }
+    }
+
+    @Override
+    public Counter.Iterable getItems() {
+        return getVersion().findCounters(getNode());
     }
 
     @Override

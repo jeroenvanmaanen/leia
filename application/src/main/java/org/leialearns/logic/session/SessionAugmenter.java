@@ -12,7 +12,7 @@ import org.leialearns.logic.structure.Node;
 public class SessionAugmenter {
     private final HistogramCache histogramCache = new HistogramCache();
 
-    /**
+    /*
      * <em>See {@link org.leialearns.logic.session.Session#putHistogram(Histogram)}.</em>
      */
     @BridgeOverride
@@ -20,7 +20,7 @@ public class SessionAugmenter {
         histogramCache.putHistogram(histogram);
     }
 
-    /**
+    /*
      * <em>See {@link org.leialearns.logic.session.Session#getHistogram(org.leialearns.logic.model.Version, org.leialearns.logic.structure.Node)}.</em>
      */
     @BridgeOverride

@@ -2,16 +2,17 @@ package org.leialearns.logic.model.common;
 
 import org.leialearns.logic.model.Version;
 import org.leialearns.logic.structure.Node;
-import org.leialearns.utilities.Expression;
 import org.leialearns.utilities.Setting;
+
+import java.util.function.Supplier;
 
 import static org.leialearns.utilities.Display.displayParts;
 import static org.leialearns.utilities.L.literal;
 
-public abstract class BaseNodeData implements NodeData {
+public abstract class BaseNodeData<ItemIterable> implements NodeData<ItemIterable> {
     private final Setting<Version> version = new Setting<>("Version");
     private final Setting<Node> node = new Setting<>("Node");
-    private final Setting<Boolean> persistent = new Setting<>("Persistent", () -> version.isFixated());
+    private final Setting<Boolean> persistent = new Setting<>("Persistent", version::isFixated);
     private final Setting<String> label = new Setting<>("Label", "?");
 
     @Override
@@ -42,8 +43,10 @@ public abstract class BaseNodeData implements NodeData {
         }
         this.version.set(version);
         this.node.set(node);
-        retrieve();
+        retrieve(this::getItems);
     }
+
+    public abstract ItemIterable getItems();
 
     public String getLabel() {
         return label.get();
@@ -53,7 +56,7 @@ public abstract class BaseNodeData implements NodeData {
         return persistent.get();
     }
 
-    public void retrieve() {
+    public void retrieve(Supplier<ItemIterable> getCounters) {
     }
 
     protected abstract String getTypeLabel();

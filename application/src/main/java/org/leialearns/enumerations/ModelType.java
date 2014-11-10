@@ -10,7 +10,7 @@ public enum ModelType {
 
     /**
      * Indicates a counted version that links {@link org.leialearns.logic.model.histogram.Counter}s to
-     * &#x3008;{@link org.leialearns.logic.structure.Node},{@link org.leialearns.logic.interaction.Symbol}&#x3009;-pairs
+     * &lt;{@link org.leialearns.logic.structure.Node},{@link org.leialearns.logic.interaction.Symbol}&gt;-pairs
      */
     COUNTED,
 
@@ -42,7 +42,7 @@ public enum ModelType {
      */
     POLICY;
 
-    private static final Map<Character,ModelType> CHARACTER_MODEL_TYPE_MAP = new HashMap<Character, ModelType>();
+    private static final Map<Character,ModelType> CHARACTER_MODEL_TYPE_MAP = new HashMap<>();
     private final char typeChar;
 
     static {

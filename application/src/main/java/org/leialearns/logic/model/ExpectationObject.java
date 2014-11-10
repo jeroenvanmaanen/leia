@@ -17,10 +17,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeSet;
+import java.util.function.Supplier;
 
 import static org.leialearns.utilities.Static.getLoggingClass;
 
-public class ExpectationObject extends BaseNodeData implements Expectation {
+public class ExpectationObject extends BaseNodeData<Estimate.Iterable> implements Expectation {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Setting<Fraction> zero;
     Map<Symbol,Fraction> fractions = new HashMap<>();
@@ -38,10 +39,10 @@ public class ExpectationObject extends BaseNodeData implements Expectation {
     }
 
     @Override
-    public void retrieve() {
+    public void retrieve(Supplier<Estimate.Iterable> getItems) {
         Node node = getNode();
         logger.debug("Retrieve estimates for: {}", node);
-        Estimate.Iterable estimates = getVersion().findEstimates(node);
+        Estimate.Iterable estimates = getItems.get();
         Fraction sum = zero.get();
         fractions.clear();
         for (Estimate estimate : estimates) {
@@ -54,6 +55,11 @@ public class ExpectationObject extends BaseNodeData implements Expectation {
         if (logger.isTraceEnabled()) {
             logger.trace("Sum: {}", sum);
         }
+    }
+
+    @Override
+    public Estimate.Iterable getItems() {
+        return getVersion().findEstimates(getNode());
     }
 
     public Fraction getFraction(Symbol symbol) {

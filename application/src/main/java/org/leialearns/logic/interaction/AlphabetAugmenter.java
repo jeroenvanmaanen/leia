@@ -17,7 +17,7 @@ public class AlphabetAugmenter extends BaseBridgeFacet {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private Setting<Long> fixatedDescriptionLength = new Setting<>("Fixated description length");
 
-    /**
+    /*
      * @see org.leialearns.logic.interaction.Alphabet#getFixatedDescriptionLength()
      */
     @BridgeOverride

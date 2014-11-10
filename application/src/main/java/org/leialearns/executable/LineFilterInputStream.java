@@ -19,13 +19,13 @@ public class LineFilterInputStream extends InputStream {
     private LineFilter lineFilter;
     private byte[] buffer = new byte[] { 10 };
     private int index = 0;
-    private final Setting<Boolean> verbose = new Setting<Boolean>("Verbose", false);
+    private final Setting<Boolean> verbose = new Setting<>("Verbose", false);
 
     /**
      * Creates a new <code>LineFilterInputStream</code> instance.
      * @param reader The reader that backs this stream
      * @param lineFilter The line filter to use
-     * @throws IOException
+     * @throws IOException In case the first line cannot be read
      */
     public LineFilterInputStream(Reader reader, LineFilter lineFilter) throws IOException {
         this(reader, lineFilter, null);
@@ -36,7 +36,7 @@ public class LineFilterInputStream extends InputStream {
      * @param reader The reader that backs this stream
      * @param lineFilter The line filter to use
      * @param verbose The verbose flag to use
-     * @throws IOException
+     * @throws IOException In case the first line cannot be read
      */
     public LineFilterInputStream(Reader reader, LineFilter lineFilter, Boolean verbose) throws IOException {
         if (verbose != null) {

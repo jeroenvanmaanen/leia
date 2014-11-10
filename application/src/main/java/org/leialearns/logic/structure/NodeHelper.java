@@ -9,7 +9,7 @@ import static org.leialearns.utilities.Static.equal;
  */
 public class NodeHelper {
 
-    /**
+    /*
      * <em>See {@link Node#isPrefixOf(Node)}.</em>
      */
     @BridgeOverride
