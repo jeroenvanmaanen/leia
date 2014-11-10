@@ -1,4 +1,4 @@
-package org.leialearns.logic.model;
+package org.leialearns.logic.model.histogram;
 
 public interface CounterUpdate {
     Counter getCounter();

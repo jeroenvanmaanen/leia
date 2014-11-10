@@ -35,7 +35,7 @@
 
     <bean id="registry" class="org.leialearns.bridge.BridgeHeadTypeRegistry" />
 
-    <bean id="counterLogger" class="org.leialearns.logic.model.CounterLogger" />
+    <bean id="counterLogger" class="org.leialearns.logic.model.histogram.CounterLogger" />
     <bean id="fractionHelper" class="org.leialearns.logic.model.FractionHelper" />
     <bean id="expectationHelper" class="org.leialearns.logic.model.ExpectationHelperImpl" />
 

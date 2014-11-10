@@ -1,5 +1,8 @@
 package org.leialearns.logic.model;
 
+import org.leialearns.logic.model.histogram.CounterUpdate;
+import org.leialearns.logic.model.histogram.DeltaDiff;
+import org.leialearns.logic.model.histogram.Histogram;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.utilities.TypedIterable;
 

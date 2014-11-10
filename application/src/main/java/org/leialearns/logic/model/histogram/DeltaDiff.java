@@ -1,5 +1,6 @@
-package org.leialearns.logic.model;
+package org.leialearns.logic.model.histogram;
 
+import org.leialearns.logic.model.Observed;
 import org.leialearns.logic.structure.Node;
 
 public class DeltaDiff implements Modifiable {

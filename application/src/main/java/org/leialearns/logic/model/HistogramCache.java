@@ -1,6 +1,7 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.bridge.BaseBridgeFacet;
+import org.leialearns.logic.model.histogram.Histogram;
 import org.leialearns.logic.structure.Node;
 
 import java.util.HashMap;

@@ -2,6 +2,7 @@ package org.leialearns.logic.model;
 
 import org.leialearns.logic.interaction.DirectedSymbol;
 import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.logic.model.histogram.Counter;
 import org.leialearns.logic.structure.Node;
 
 public interface Counted extends TypedVersionExtension {

@@ -8,7 +8,7 @@ import org.leialearns.logic.interaction.DirectedSymbol;
 import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.interaction.Symbol;
 import org.leialearns.logic.model.Counted;
-import org.leialearns.logic.model.Counter;
+import org.leialearns.logic.model.histogram.Counter;
 import org.leialearns.logic.model.Version;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.session.Session;

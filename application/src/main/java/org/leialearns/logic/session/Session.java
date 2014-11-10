@@ -4,7 +4,7 @@ import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.model.Counted;
-import org.leialearns.logic.model.Histogram;
+import org.leialearns.logic.model.histogram.Histogram;
 import org.leialearns.logic.model.Toggled;
 import org.leialearns.logic.model.Version;
 import org.leialearns.logic.structure.Node;

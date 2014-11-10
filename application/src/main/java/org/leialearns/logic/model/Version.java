@@ -5,6 +5,7 @@ import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.logic.model.histogram.Counter;
 import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.bridge.NearIterable;

@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.interaction.DirectedSymbol;
+import org.leialearns.logic.model.histogram.Counter;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.interaction.Symbol;

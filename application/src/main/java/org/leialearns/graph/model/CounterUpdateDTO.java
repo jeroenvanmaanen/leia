@@ -2,7 +2,7 @@ package org.leialearns.graph.model;
 
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.logic.model.CounterUpdate;
+import org.leialearns.logic.model.histogram.CounterUpdate;
 
 public class CounterUpdateDTO implements FarObject<CounterUpdate> {
     private final CounterDTO counter;
