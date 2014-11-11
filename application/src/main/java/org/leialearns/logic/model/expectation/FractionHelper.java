@@ -1,4 +1,4 @@
-package org.leialearns.logic.model;
+package org.leialearns.logic.model.expectation;
 
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.logic.session.Root;

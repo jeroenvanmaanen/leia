@@ -1,7 +1,7 @@
 package org.leialearns.logic.utilities;
 
-import org.leialearns.logic.model.Fraction;
-import org.leialearns.logic.model.TransientFraction;
+import org.leialearns.logic.model.expectation.Fraction;
+import org.leialearns.logic.model.expectation.TransientFraction;
 import org.leialearns.utilities.TransformingIterable;
 
 import javax.validation.constraints.NotNull;

@@ -1,6 +1,7 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.bridge.BridgeOverride;
+import org.leialearns.logic.model.expectation.Expectation;
 import org.leialearns.logic.session.NeedsRoot;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.structure.Node;

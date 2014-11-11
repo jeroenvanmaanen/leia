@@ -3,7 +3,7 @@ package org.leialearns.logic.utilities;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.leialearns.logic.model.Fraction;
+import org.leialearns.logic.model.expectation.Fraction;
 import org.leialearns.utilities.ExceptionWrapper;
 import org.leialearns.utilities.ExecutionListener;
 import org.leialearns.utilities.TransactionHelper;

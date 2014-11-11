@@ -1,7 +1,7 @@
 package org.leialearns.logic.model.histogram;
 
 import org.leialearns.bridge.NearIterable;
-import org.leialearns.logic.model.Locus;
+import org.leialearns.logic.model.common.Locus;
 
 public interface Counter extends Locus {
     long getValue();

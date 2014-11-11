@@ -1,6 +1,11 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.logic.model.expectation.Estimate;
+import org.leialearns.logic.model.expectation.Expectation;
+import org.leialearns.logic.model.expectation.ExpectationObject;
+import org.leialearns.logic.model.expectation.Fraction;
+import org.leialearns.logic.model.expectation.TransientFraction;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.structure.Node;
 import org.slf4j.Logger;

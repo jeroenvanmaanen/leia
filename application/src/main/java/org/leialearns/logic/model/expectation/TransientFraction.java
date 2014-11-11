@@ -1,5 +1,6 @@
-package org.leialearns.logic.model;
+package org.leialearns.logic.model.expectation;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 
 import static org.leialearns.utilities.Static.gcd;
@@ -44,7 +45,7 @@ public class TransientFraction implements Fraction {
         return new TransientFraction(-1, numerator, denominator);
     }
 
-    public int compareTo(Fraction other) {
+    public int compareTo(@NotNull Fraction other) {
         return Long.signum((numerator * other.getDenominator()) - (other.getNumerator() * denominator));
     }
 

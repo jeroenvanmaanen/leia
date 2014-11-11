@@ -1,4 +1,4 @@
-package org.leialearns.logic.model;
+package org.leialearns.logic.model.expectation;
 
 import org.leialearns.logic.interaction.Symbol;
 import org.leialearns.logic.model.common.NodeData;

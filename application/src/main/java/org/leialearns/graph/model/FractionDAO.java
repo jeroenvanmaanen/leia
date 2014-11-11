@@ -2,7 +2,7 @@ package org.leialearns.graph.model;
 
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.graph.session.RootDTO;
-import org.leialearns.logic.model.Fraction;
+import org.leialearns.logic.model.expectation.Fraction;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

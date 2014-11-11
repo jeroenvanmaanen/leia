@@ -3,8 +3,9 @@ package org.leialearns.graph.model;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.graph.HasId;
-import org.leialearns.logic.model.Fraction;
+import org.leialearns.logic.model.expectation.Fraction;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 import static org.leialearns.utilities.Static.gcd;
@@ -22,7 +23,7 @@ public abstract class FractionBaseDTO extends BaseBridgeFacet implements HasId, 
     public abstract Long getIndex();
     public abstract boolean getInOracle();
 
-    public int compareTo(FractionBaseDTO other) {
+    public int compareTo(@NotNull FractionBaseDTO other) {
         return Long.signum((getNumerator() * other.getDenominator()) - (other.getNumerator() * getDenominator()));
     }
 
