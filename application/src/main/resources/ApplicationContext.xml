@@ -37,6 +37,7 @@
 
     <bean id="counterLogger" class="org.leialearns.logic.model.histogram.CounterLogger" />
     <bean id="fractionHelper" class="org.leialearns.logic.model.FractionHelper" />
+    <bean id="observedHelper" class="org.leialearns.logic.model.ObservedHelper" />
     <bean id="expectationHelper" class="org.leialearns.logic.model.ExpectationHelperImpl" />
 
     <bean id="rootFactory" class="org.leialearns.bridge.BridgeFactory">
@@ -169,7 +170,8 @@
         <constructor-arg value="org.leialearns.graph.model.ObservedDTO"/>
         <constructor-arg>
             <array>
-                <bean class="org.leialearns.logic.model.ObservedHelper" />
+                <ref bean="observedHelper" />
+                <bean class="org.leialearns.logic.model.DeltaHelper" />
                 <ref bean="observedDAO"/>
                 <ref bean="counterDAO"/>
                 <ref bean="counterLogger" />
