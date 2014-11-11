@@ -1,6 +1,8 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.logic.model.common.NodeDataProxy;
+import org.leialearns.logic.model.common.NodeDataProxyImpl;
 import org.leialearns.logic.model.expectation.Estimate;
 import org.leialearns.logic.model.expectation.Expectation;
 import org.leialearns.logic.model.expectation.ExpectationObject;
@@ -47,10 +49,17 @@ public class ExpectationHelperImpl implements ExpectationHelper {
     }
 
     protected Expectation getExpectation(Version version, Node node) {
-        // Root root = version.getOwner().getRoot();
+        NodeDataProxy<Expectation> proxy = getExpectationProxy(version, node);
+        return proxy.getData();
+    }
+
+    protected NodeDataProxy<Expectation> getExpectationProxy(Version version, Node node) {
         Expectation result = createExpectation(root);
-        result.set(version, node);
-        return result;
+        NodeDataProxy<Expectation> proxy = new NodeDataProxyImpl<>();
+        proxy.setData(result);
+        result.retrieve(() -> version.findEstimates(node));
+        proxy.set(version, node);
+        return proxy;
     }
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)

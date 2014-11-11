@@ -1,9 +1,7 @@
 package org.leialearns.logic.model.expectation;
 
 import org.leialearns.logic.interaction.Symbol;
-import org.leialearns.logic.model.common.NodeDataProxyImpl;
 import org.leialearns.logic.session.Root;
-import org.leialearns.logic.structure.Node;
 import org.leialearns.logic.utilities.DescriptionLength;
 import org.leialearns.logic.utilities.PrefixFree;
 import org.leialearns.utilities.Setting;
@@ -21,10 +19,11 @@ import java.util.function.Supplier;
 
 import static org.leialearns.utilities.Static.getLoggingClass;
 
-public class ExpectationObject extends NodeDataProxyImpl<Expectation,Estimate> implements Expectation {
+public class ExpectationObject implements Expectation {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Setting<Fraction> zero;
-    Map<Symbol,Fraction> fractions = new HashMap<>();
+    private Map<Symbol,Fraction> fractions = new HashMap<>();
+    private Supplier<String> locationSupplier = null;
 
     public ExpectationObject(Root root) {
         this.zero = new Setting<>("Zero", () -> root.createTransientFraction(-1, 0, 1));
@@ -34,24 +33,19 @@ public class ExpectationObject extends NodeDataProxyImpl<Expectation,Estimate> i
         this.fractions = Collections.unmodifiableMap(fractions);
     }
 
+
+    @Override
+    public void setLocation(Supplier<String> locationSupplier) {
+        this.locationSupplier = locationSupplier;
+    }
+
     public TypedIterable<Symbol> getSymbols() {
         return new TypedIterable<>(fractions.keySet(), Symbol.class);
     }
 
     @Override
-    public void setData(Expectation data) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
-    }
-
-    @Override
-    public Expectation getData() {
-        return this;
-    }
-
-    @Override
     public void retrieve(Supplier<Iterable<Estimate>> getItems) {
-        Node node = getNode();
-        logger.debug("Retrieve estimates for: {}", node);
+        logger.debug("Retrieve estimates for: {}", locationSupplier.get());
         Iterable<Estimate> estimates = getItems.get();
         Fraction sum = zero.get();
         fractions.clear();
@@ -65,11 +59,6 @@ public class ExpectationObject extends NodeDataProxyImpl<Expectation,Estimate> i
         if (logger.isTraceEnabled()) {
             logger.trace("Sum: {}", sum);
         }
-    }
-
-    @Override
-    public Estimate.Iterable getItems() {
-        return getVersion().findEstimates(getNode());
     }
 
     @Override
