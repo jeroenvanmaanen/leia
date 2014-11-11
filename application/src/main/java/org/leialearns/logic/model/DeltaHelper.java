@@ -23,7 +23,7 @@ public class DeltaHelper {
     private static final Logger logger = LoggerFactory.getLogger(new Object(){}.getClass().getEnclosingClass());
 
     @Autowired
-    private ObservedHelper observedHelper;
+    private CheckHelper checkHelper;
 
     @BridgeOverride
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
@@ -88,7 +88,7 @@ public class DeltaHelper {
         if (owner != null) {
             owner.flush();
         }
-        observedHelper.check(CheckMode.PARTIAL, newObserved);
+        checkHelper.check(CheckMode.PARTIAL, newObserved);
     }
 
     protected void adjustPathToRoot(Observed observed, ExpectedModel expected, Node node, boolean wasIncluded, boolean willBeIncluded) {
