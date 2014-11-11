@@ -40,20 +40,20 @@ public class ObservedHelper {
 
     @BridgeOverride
     public Histogram createHistogram(Observed observed, Node node) {
-        return createHistogram(observed.getVersion(), node, "Observed").getData();
+        return createHistogramProxy(observed.getVersion(), node, "Observed").getData();
     }
 
     @BridgeOverride
     public NodeDataProxy<Histogram> createHistogramProxy(Observed observed, Node node) {
-        return createHistogram(observed.getVersion(), node, "Observed");
+        return createHistogramProxy(observed.getVersion(), node, "Observed");
     }
 
     @BridgeOverride
     public Histogram createDeltaHistogram(Observed observed, Node node) {
-        return createHistogram(observed.getDeltaVersion(), node, "Delta").getData();
+        return createHistogramProxy(observed.getDeltaVersion(), node, "Delta").getData();
     }
 
-    public NodeDataProxy<Histogram> createHistogram(Version version, Node node, String label) {
+    protected NodeDataProxy<Histogram> createHistogramProxy(Version version, Node node, String label) {
         Session owner = version.getOwner();
         NodeDataProxyImpl<Histogram,Counter> proxy = new NodeDataProxyImpl<>();
         Histogram histogram;
