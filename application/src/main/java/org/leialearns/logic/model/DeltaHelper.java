@@ -1,8 +1,10 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.bridge.BridgeOverride;
+import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.interaction.InteractionContext;
+import org.leialearns.logic.model.histogram.DeltaDiff;
 import org.leialearns.logic.model.histogram.Histogram;
 import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
@@ -12,7 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -111,12 +114,112 @@ public class DeltaHelper {
         }
     }
 
+    public void getDeltaDiff(DeltaDiff.Map deltaDiffMap, Observed observed, ExpectedModel expectedModel) {
+        Toggled oldToggled = observed.getToggled();
+        Toggled newToggled;
+        if (expectedModel instanceof Expected) {
+            newToggled = ((Expected) expectedModel).getToggled();
+        } else if (expectedModel instanceof Toggled) {
+            newToggled = (Toggled) expectedModel;
+        } else {
+            newToggled = null;
+        }
+        ExpectedModel oldExpectedModel = observed.getExpectedModel();
+        logger.debug("New toggled: " + newToggled);
+        if (newToggled != null) {
+            long oldToggledOrdinal = getVersionOrdinal("Old toggled", oldToggled);
+            long newToggledOrdinal = getVersionOrdinal("New toggled", newToggled);
+            logger.debug("Range: " + oldToggledOrdinal + "..." + newToggledOrdinal + "{");
+            InteractionContext context = observed.getVersion().getInteractionContext();
+            Version.Iterable versions = context.findVersionsInRange(oldToggledOrdinal, newToggledOrdinal, ModelType.TOGGLED, AccessMode.READABLE);
+            Map<Node,Toggled> toggledNodes = new LinkedHashMap<>(16, 0.75f, true);
+            for (Version version : versions) {
+                Toggled toggled = version.findToggledVersion();
+                if (toggled == null) {
+                    logger.warn("No toggled version extension found for version: " + version);
+                } else {
+                    toggledNodes.put(toggled.getNode(), toggled);
+                    logger.debug("  Toggled: " + toggled);
+                }
+            }
+            logger.debug("} now process {");
+            for (Toggled toggled : toggledNodes.values()) {
+                logger.debug("  Toggled: " + toggled);
+                Node node = toggled.getNode();
+                boolean wasIncluded = oldExpectedModel.isIncluded(node);
+                boolean isIncluded = expectedModel.isIncluded(node);
+                if (isIncluded != wasIncluded) {
+                    logger.debug("  " + wasIncluded + " -> " + isIncluded);
+                    DeltaDiff mutation = createDeltaDiff(node, observed, "mutation");
+                    DeltaDiff.Operator operator;
+                    mutation.add(observed.createHistogram(node));
+                    mutation.subtract(observed.createDeltaHistogram(node));
+                    operator = DeltaDiff.getOperatorAdd(isIncluded);
+                    add(deltaDiffMap, observed, node.getParent(), expectedModel, mutation, operator);
+                }
+            }
+            logger.debug("}");
+        }
+    }
+
+    public void add(DeltaDiff.Map deltaDiffMap, Observed observed, Node node) {
+        if (node != null) {
+            add(deltaDiffMap, observed, node.getParent());
+            createDeltaDiff(deltaDiffMap, node, observed);
+        }
+    }
+
+    protected void add(DeltaDiff.Map deltaDiffMap, Observed observed, Node node, ExpectedModel expectedModel, DeltaDiff mutation, DeltaDiff.Operator operator) {
+        if (node != null) {
+            if (expectedModel.isIncluded(node)) {
+                add(deltaDiffMap, observed, node.getParent());
+            } else {
+                add(deltaDiffMap, observed, node.getParent(), expectedModel, mutation, operator);
+            }
+            DeltaDiff deltaDiff = createDeltaDiff(deltaDiffMap, node, observed);
+            logger.debug("  Mutation: " + mutation);
+            mutation.modify(operator, deltaDiff);
+        }
+    }
+
+    protected DeltaDiff createDeltaDiff(DeltaDiff.Map deltaDiffMap, Node node, Observed observed) {
+        DeltaDiff result = null;
+        if (deltaDiffMap.containsKey(node)) {
+            result = deltaDiffMap.get(node);
+        }
+        if (result == null) {
+            Node parent = (node == null ? null : node.getParent());
+            if (parent != null && (!deltaDiffMap.containsKey(parent) || deltaDiffMap.get(parent) == null)) {
+                throw new IllegalArgumentException("Parent of node not in deltaDiffMap: " + node);
+            }
+            result = createDeltaDiff(node, observed, "add");
+            deltaDiffMap.put(node, result);
+            logger.debug("  New delta diff: " + result);
+        } else {
+            logger.debug("  Data diff exists: " + result);
+        }
+        return result;
+    }
+
+    public DeltaDiff createDeltaDiff(Node node, Observed observed, String label) {
+        return new DeltaDiff(node, observed, label);
+    }
+
+    public HashDeltaDiffMap createHashDeltaDiffMap() {
+        return new HashDeltaDiffMap();
+    }
+
+    public class HashDeltaDiffMap extends HashMap<Node,DeltaDiff> implements DeltaDiff.Map {}
+
     protected Map<Node, Boolean> getToggledNodes(Iterable<Version> versions) {
         return getToggledNodes(null, versions);
     }
 
     protected Map<Node, Boolean> getToggledNodes(String label, Iterable<Version> versions) {
-        Map<Node, Boolean> toggledNodes = new TreeMap<>(createShallowFirst());
+        Map<Node, Boolean> toggledNodes = new TreeMap<>((Node node, Node other) -> {
+            int result = node.getDepth() - other.getDepth();
+            return (result == 0 ? node.compareTo(other) : result);
+        });
         logger.debug((label == null || label.isEmpty() ? "Toggled" : label) + " versions: {");
         for (Version version : versions) {
             Toggled toggled = version.findToggledVersion();
@@ -125,19 +228,5 @@ public class DeltaHelper {
         }
         logger.debug("}");
         return toggledNodes;
-    }
-
-    protected ShallowFirst createShallowFirst() {
-        return new ShallowFirst();
-    }
-
-    protected class ShallowFirst implements Comparator<Node> {
-
-        @Override
-        public int compare(Node node, Node other) {
-            int result = node.getDepth() - other.getDepth();
-            return (result == 0 ? node.compareTo(other) : result);
-        }
-
     }
 }

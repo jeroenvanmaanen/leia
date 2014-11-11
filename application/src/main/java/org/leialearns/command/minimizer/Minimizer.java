@@ -2,14 +2,13 @@ package org.leialearns.command.minimizer;
 
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
-import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.logic.model.DeltaHelper;
 import org.leialearns.logic.model.common.NodeDataProxy;
 import org.leialearns.logic.model.histogram.Counter;
 import org.leialearns.logic.model.histogram.CounterLogger;
 import org.leialearns.logic.model.histogram.DeltaDiff;
 import org.leialearns.logic.model.Expectation;
-import org.leialearns.logic.model.Expected;
 import org.leialearns.logic.model.ExpectedModel;
 import org.leialearns.logic.model.Fraction;
 import org.leialearns.logic.model.histogram.Histogram;
@@ -29,12 +28,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
-import static org.leialearns.logic.utilities.Static.getVersionOrdinal;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 /**
@@ -50,6 +45,9 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
 
     @Autowired
     private Oracle oracle;
+
+    @Autowired
+    private DeltaHelper deltaHelper;
 
     @Autowired
     private CounterLogger counterLogger;
@@ -93,8 +91,8 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
         Observed observed = lastObserved.createObservedVersion();
         Structure structure = session.getInteractionContext().getStructure();
         Node.Iterable rootNodes = structure.findRootNodes();
-        DeltaDiff.Map deltaDiffMap = createHashDeltaDiffMap();
-        getDeltaDiff(deltaDiffMap, observed, expectedModel);
+        DeltaDiff.Map deltaDiffMap = deltaHelper.createHashDeltaDiffMap();
+        deltaHelper.getDeltaDiff(deltaDiffMap, observed, expectedModel);
         if (logger.isDebugEnabled()) {
             observed.check(deltaDiffMap, expectedModel);
         }
@@ -165,7 +163,7 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
                 logger.info("Toggle: " + node);
                 expectedModel = context.expectedModel;
                 context.expectedModel = toggled;
-                DeltaDiff deltaChange = createDeltaDiff(node, observed, "toggle");
+                DeltaDiff deltaChange = deltaHelper.createDeltaDiff(node, observed, "toggle");
                 deltaChange.add(observedHistogram.getData());
                 deltaChange.subtract(deltaBase);
                 if (deltaDiff != null) {
@@ -174,7 +172,7 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
 
                 DeltaDiff.Operator operator = DeltaDiff.getOperatorSubtract(nowIncluded);
 
-                add(deltaDiffMap, observed, node.getParent());
+                deltaHelper.add(deltaDiffMap, observed, node.getParent());
                 Node a = node;
                 do {
                     a = a.getParent();
@@ -222,7 +220,7 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
         long currentDescriptionLength = descriptionLength(ancestorData, ancestorExpectation, symbols);
         long newDescriptionLength = 0L;
 
-        DeltaDiff modification = createDeltaDiff(null, observed, "evaluate");
+        DeltaDiff modification = deltaHelper.createDeltaDiff(null, observed, "evaluate");
         modification.add(observedHistogramProxy.getData());
         if (deltaDiff != null) {
             deltaDiff.subtractFrom(modification);
@@ -323,97 +321,6 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
         return result;
     }
 
-    protected void getDeltaDiff(DeltaDiff.Map deltaDiffMap, Observed observed, ExpectedModel expectedModel) {
-        Toggled oldToggled = observed.getToggled();
-        Toggled newToggled;
-        if (expectedModel instanceof Expected) {
-            newToggled = ((Expected) expectedModel).getToggled();
-        } else if (expectedModel instanceof Toggled) {
-            newToggled = (Toggled) expectedModel;
-        } else {
-            newToggled = null;
-        }
-        ExpectedModel oldExpectedModel = observed.getExpectedModel();
-        logger.debug("New toggled: " + newToggled);
-        if (newToggled != null) {
-            long oldToggledOrdinal = getVersionOrdinal("Old toggled", oldToggled);
-            long newToggledOrdinal = getVersionOrdinal("New toggled", newToggled);
-            logger.debug("Range: " + oldToggledOrdinal + "..." + newToggledOrdinal + "{");
-            InteractionContext context = observed.getVersion().getInteractionContext();
-            Version.Iterable versions = context.findVersionsInRange(oldToggledOrdinal, newToggledOrdinal, ModelType.TOGGLED, AccessMode.READABLE);
-            Map<Node,Toggled> toggledNodes = new LinkedHashMap<>(16, 0.75f, true);
-            for (Version version : versions) {
-                Toggled toggled = version.findToggledVersion();
-                if (toggled == null) {
-                    logger.warn("No toggled version extension found for version: " + version);
-                } else {
-                    toggledNodes.put(toggled.getNode(), toggled);
-                    logger.debug("  Toggled: " + toggled);
-                }
-            }
-            logger.debug("} now process {");
-            for (Toggled toggled : toggledNodes.values()) {
-                logger.debug("  Toggled: " + toggled);
-                Node node = toggled.getNode();
-                boolean wasIncluded = oldExpectedModel.isIncluded(node);
-                boolean isIncluded = expectedModel.isIncluded(node);
-                if (isIncluded != wasIncluded) {
-                    logger.debug("  " + wasIncluded + " -> " + isIncluded);
-                    DeltaDiff mutation = createDeltaDiff(node, observed, "mutation");
-                    DeltaDiff.Operator operator;
-                    mutation.add(observed.createHistogram(node));
-                    mutation.subtract(observed.createDeltaHistogram(node));
-                    operator = DeltaDiff.getOperatorAdd(isIncluded);
-                    add(deltaDiffMap, observed, node.getParent(), expectedModel, mutation, operator);
-                }
-            }
-            logger.debug("}");
-        }
-    }
-
-    protected void add(DeltaDiff.Map deltaDiffMap, Observed observed, Node node) {
-        if (node != null) {
-            add(deltaDiffMap, observed, node.getParent());
-            createDeltaDiff(deltaDiffMap, node, observed);
-        }
-    }
-
-    protected void add(DeltaDiff.Map deltaDiffMap, Observed observed, Node node, ExpectedModel expectedModel, DeltaDiff mutation, DeltaDiff.Operator operator) {
-        if (node != null) {
-            if (expectedModel.isIncluded(node)) {
-                add(deltaDiffMap, observed, node.getParent());
-            } else {
-                add(deltaDiffMap, observed, node.getParent(), expectedModel, mutation, operator);
-            }
-            DeltaDiff deltaDiff = createDeltaDiff(deltaDiffMap, node, observed);
-            logger.debug("  Mutation: " + mutation);
-            mutation.modify(operator, deltaDiff);
-        }
-    }
-
-    protected DeltaDiff createDeltaDiff(DeltaDiff.Map deltaDiffMap, Node node, Observed observed) {
-        DeltaDiff result = null;
-        if (deltaDiffMap.containsKey(node)) {
-            result = deltaDiffMap.get(node);
-        }
-        if (result == null) {
-            Node parent = (node == null ? null : node.getParent());
-            if (parent != null && (!deltaDiffMap.containsKey(parent) || deltaDiffMap.get(parent) == null)) {
-                throw new IllegalArgumentException("Parent of node not in deltaDiffMap: " + node);
-            }
-            result = createDeltaDiff(node, observed, "add");
-            deltaDiffMap.put(node, result);
-            logger.debug("  New delta diff: " + result);
-        } else {
-            logger.debug("  Data diff exists: " + result);
-        }
-        return result;
-    }
-
-    protected DeltaDiff createDeltaDiff(Node node, Observed observed, String label) {
-        return new DeltaDiff(node, observed, label);
-    }
-
     protected class MinimizationContext {
         private final Runtime runtime = Runtime.getRuntime();
         private final DeltaDiff.Map deltaDiffMap;
@@ -427,11 +334,5 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
             this.session = session;
         }
     }
-
-    protected HashDeltaDiffMap createHashDeltaDiffMap() {
-        return new HashDeltaDiffMap();
-    }
-
-    protected class HashDeltaDiffMap extends HashMap<Node,DeltaDiff> implements DeltaDiff.Map {}
 
 }
