@@ -4,6 +4,7 @@ import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.logic.model.common.NodeDataProxy;
 import org.leialearns.logic.model.histogram.Counter;
 import org.leialearns.logic.model.histogram.CounterLogger;
 import org.leialearns.logic.model.histogram.DeltaDiff;
@@ -109,7 +110,7 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
     }
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-    protected void minimize(Node node, MinimizationContext context, Node includedAncestor, Histogram ancestorObserved, Histogram ancestorDeltaBase, DeltaDiff ancestorDeltaDiff) {
+    protected void minimize(Node node, MinimizationContext context, Node includedAncestor, NodeDataProxy<Histogram> ancestorObserved, Histogram ancestorDeltaBase, DeltaDiff ancestorDeltaDiff) {
         DeltaDiff.Map deltaDiffMap = context.deltaDiffMap;
         Observed observed = context.observed;
         ExpectedModel expectedModel = context.expectedModel;
@@ -123,14 +124,14 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
         }
         boolean nowIncluded = depth == 1 || expectedModel.isIncluded(node);
         Node subIncludedAncestor;
-        Histogram observedHistogram = null;
+        NodeDataProxy<Histogram> observedHistogram = null;
         Histogram deltaBase = null;
-        Histogram subAncestorObservedHistogram;
+        NodeDataProxy<Histogram> subAncestorObservedHistogram;
         Histogram subAncestorDeltaBase;
         DeltaDiff subAncestorDeltaDiff;
         if (includedAncestor == null || nowIncluded) {
             subIncludedAncestor = node;
-            observedHistogram = observed.createHistogram(node);
+            observedHistogram = observed.createHistogramProxy(node);
             subAncestorObservedHistogram = observedHistogram;
             deltaBase = observed.createDeltaHistogram(node);
             subAncestorDeltaBase = deltaBase;
@@ -148,9 +149,9 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
         logger.debug("Minimize node: true:" + includedAncestor + " <- (" + depth + ")" + nowIncluded + ":" + node);
 
         if (depth > 1) {
-            observedHistogram = (observedHistogram == null ? observed.createHistogram(node) : observedHistogram);
+            observedHistogram = (observedHistogram == null ? observed.createHistogramProxy(node) : observedHistogram);
             deltaBase = (deltaBase == null ? observed.createDeltaHistogram(node) : deltaBase);
-            logger.debug("Evaluate node: " + node + " (" + nowIncluded + "/" + observedHistogram.getWeight() + "/" + deltaBase.getWeight() + ")");
+            logger.debug("Evaluate node: " + node + " (" + nowIncluded + "/" + observedHistogram.getData().getWeight() + "/" + deltaBase.getWeight() + ")");
             if (deltaDiff == null) {
                 // Could be added while minimizing children
                 deltaDiff = deltaDiffMap.get(node);
@@ -165,7 +166,7 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
                 expectedModel = context.expectedModel;
                 context.expectedModel = toggled;
                 DeltaDiff deltaChange = createDeltaDiff(node, observed, "toggle");
-                deltaChange.add(observedHistogram);
+                deltaChange.add(observedHistogram.getData());
                 deltaChange.subtract(deltaBase);
                 if (deltaDiff != null) {
                     deltaDiff.subtractFrom(deltaChange);
@@ -198,13 +199,12 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
         }
     }
 
-    protected Toggled evaluate(boolean nowIncluded, Observed observed, Histogram observedHistogram, Histogram deltaBase, Histogram ancestorObserved, Histogram ancestorDeltaBase, DeltaDiff deltaDiff, DeltaDiff ancestorDeltaDiff, Session session) {
+    protected Toggled evaluate(boolean nowIncluded, Observed observed, NodeDataProxy<Histogram> observedHistogramProxy, Histogram deltaBase, NodeDataProxy<Histogram> ancestorObservedProxy, Histogram ancestorDeltaBase, DeltaDiff deltaDiff, DeltaDiff ancestorDeltaDiff, Session session) {
+        final Histogram ancestorObserved = ancestorObservedProxy.getData();
         Collection<Symbol> symbols = getSymbols(ancestorObserved);
 
-        Histogram ancestorData;
-        Expectation ancestorExpectation;
-        ancestorData = observed.createTransientHistogram("Ancestor data");
-        ancestorData.setNode(ancestorObserved.getNode());
+        final Histogram ancestorData = observed.createTransientHistogram("Ancestor data");
+        ancestorData.setLocation(() -> String.valueOf(ancestorObservedProxy.getNode()));
         ancestorData.add(ancestorObserved);
         if (ancestorDeltaDiff != null) {
             try {
@@ -216,12 +216,14 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
             }
         }
         ancestorData.subtract(ancestorDeltaBase);
+
+        Expectation ancestorExpectation;
         ancestorExpectation = oracle.minimize(ancestorData);
         long currentDescriptionLength = descriptionLength(ancestorData, ancestorExpectation, symbols);
         long newDescriptionLength = 0L;
 
         DeltaDiff modification = createDeltaDiff(null, observed, "evaluate");
-        modification.add(observedHistogram);
+        modification.add(observedHistogramProxy.getData());
         if (deltaDiff != null) {
             deltaDiff.subtractFrom(modification);
         }
@@ -260,8 +262,8 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
             logger.debug("New description length: " + newDescriptionLength);
 
             if (newDescriptionLength < currentDescriptionLength) {
-                Node node = observedHistogram.getNode();
-                result = createToggled(node, expectation, ancestorData.getNode(), ancestorExpectation, !nowIncluded, observed, session);
+                Node node = observedHistogramProxy.getNode();
+                result = createToggled(node, expectation, ancestorObservedProxy.getNode(), ancestorExpectation, !nowIncluded, observed, session);
             } else {
                 result = null;
             }

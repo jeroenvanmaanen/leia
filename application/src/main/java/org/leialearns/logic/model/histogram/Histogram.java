@@ -1,16 +1,22 @@
 package org.leialearns.logic.model.histogram;
 
 import org.leialearns.logic.interaction.Symbol;
-import org.leialearns.logic.model.common.HasTypeLabel;
 import org.leialearns.logic.model.common.NodeData;
 import org.leialearns.utilities.TypedIterable;
 
-public interface Histogram extends NodeData<Histogram,Counter.Iterable>, Modifiable, HasTypeLabel {
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+public interface Histogram extends Modifiable, NodeData<Counter> {
     TypedIterable<Counter> getCounters();
     long getValue(Symbol symbol);
     long getWeight();
     boolean isEmpty();
+    boolean isPersistent();
+    void markPersistent();
     void setLabel(String label);
+    void setLocation(Supplier<String> locationSupplier);
+    void setCounterCreator(Function<Symbol,Counter> counterCreator);
     Throwable getOrigin();
     HistogramTrace getTrace();
     Histogram getSnapshot(String operator);

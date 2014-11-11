@@ -1,6 +1,7 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.bridge.BaseBridgeFacet;
+import org.leialearns.logic.model.common.NodeDataProxy;
 import org.leialearns.logic.model.histogram.Histogram;
 import org.leialearns.logic.structure.Node;
 
@@ -12,12 +13,12 @@ import static org.leialearns.utilities.Static.equal;
 public class HistogramCache extends BaseBridgeFacet {
     private final Map<HistogramKey,Histogram> cache = new HashMap<>();
 
-    public void putHistogram(Histogram histogram) {
-        Version version = histogram.getVersion();
-        Node node = histogram.getNode();
+    public void putHistogram(NodeDataProxy<Histogram> histogramProxy) {
+        Version version = histogramProxy.getVersion();
+        Node node = histogramProxy.getNode();
         if (version != null && node != null) {
             HistogramKey key = createHistogramKey(version, node);
-            cache.put(key, histogram);
+            cache.put(key, histogramProxy.getData());
         }
     }
 

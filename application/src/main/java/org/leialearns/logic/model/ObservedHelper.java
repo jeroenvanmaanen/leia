@@ -5,11 +5,14 @@ import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.logic.model.common.NodeDataProxyImpl;
+import org.leialearns.logic.model.common.NodeDataProxy;
 import org.leialearns.logic.model.histogram.Counter;
 import org.leialearns.logic.model.histogram.CounterUpdate;
 import org.leialearns.logic.model.histogram.DeltaDiff;
 import org.leialearns.logic.model.histogram.Histogram;
 import org.leialearns.logic.model.histogram.HistogramObject;
+import org.leialearns.logic.model.histogram.TransientCounter;
 import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.logic.structure.Structure;
@@ -47,36 +50,51 @@ public class ObservedHelper {
 
     @BridgeOverride
     public Histogram createHistogram(Observed observed, Node node) {
+        return createHistogram(observed.getVersion(), node, "Observed").getData();
+    }
+
+    @BridgeOverride
+    public NodeDataProxy<Histogram> createHistogramProxy(Observed observed, Node node) {
         return createHistogram(observed.getVersion(), node, "Observed");
     }
 
     @BridgeOverride
     public Histogram createDeltaHistogram(Observed observed, Node node) {
-        return createHistogram(observed.getDeltaVersion(), node, "Delta");
+        return createHistogram(observed.getDeltaVersion(), node, "Delta").getData();
     }
 
-    public Histogram createHistogram(Version version, Node node, String label) {
+    public NodeDataProxy<Histogram> createHistogram(Version version, Node node, String label) {
         Session owner = version.getOwner();
-        Histogram result;
+        NodeDataProxyImpl<Histogram,Counter> proxy = new NodeDataProxyImpl<>();
+        Histogram histogram;
         if (owner == null) {
-            result = null;
+            histogram = null;
         } else {
-            result = owner.getHistogram(version, node);
-            if (result != null) {
-                result.retrieve(() -> version.findCounters(node));
+            histogram = owner.getHistogram(version, node);
+            if (histogram != null) {
+                histogram.retrieve(() -> version.findCounters(node));
             }
         }
-        if (result == null) {
-            result = createHistogram();
+        if (histogram == null) {
+            histogram = createHistogram();
             if (label != null && label.length() > 0) {
-                result.setLabel(label);
+                histogram.setLabel(label);
             }
-            result.set(version, node);
+            histogram.setLocation(() -> String.valueOf(node));
+            histogram.setCounterCreator(
+                    (Symbol symbol) ->
+                            proxy.getPersistent()
+                                    ? version.findOrCreateCounter(node, symbol)
+                                    : new TransientCounter(symbol)
+            );
+            proxy.set(version, node);
+            proxy.setItemsGetter(Version::findCounters);
+            histogram.markPersistent();
         }
         if (owner != null) {
-            owner.putHistogram(result);
+            owner.putHistogram(proxy);
         }
-        return result;
+        return proxy;
     }
 
     @Bean
@@ -319,7 +337,7 @@ public class ObservedHelper {
         DeltaDiff deltaDiff;
         if (deltaDiffMap != null && deltaDiffMap.containsKey(node) && (deltaDiff = deltaDiffMap.get(node)) != null) {
             deltaHistogram = observed.createTransientHistogram("Updated delta histogram");
-            deltaHistogram.setNode(node);
+            deltaHistogram.setLocation(() -> String.valueOf(node));
             deltaHistogram.add(observed.createDeltaHistogram(node));
             deltaHistogram.add(deltaDiff.getDeltaAdditions());
             deltaHistogram.subtract(deltaDiff.getDeltaSubtractions());
@@ -350,7 +368,7 @@ public class ObservedHelper {
 
     protected void checkIncluded(Observed observed, Node node, Histogram smallHistogram, Histogram bigHistogram) {
         Histogram difference = observed.createTransientHistogram("included difference");
-        difference.setNode(node);
+        difference.setLocation(() -> String.valueOf(node));
         difference.add(bigHistogram);
         try {
             difference.subtract(smallHistogram); // Raises exception on underflow

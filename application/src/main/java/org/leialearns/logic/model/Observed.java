@@ -1,5 +1,6 @@
 package org.leialearns.logic.model;
 
+import org.leialearns.logic.model.common.NodeDataProxy;
 import org.leialearns.logic.model.histogram.CounterUpdate;
 import org.leialearns.logic.model.histogram.DeltaDiff;
 import org.leialearns.logic.model.histogram.Histogram;
@@ -25,6 +26,7 @@ public interface Observed extends TypedVersionExtension {
 
     Histogram createTransientHistogram(String label);
     Histogram createHistogram(Node node);
+    NodeDataProxy<Histogram> createHistogramProxy(Node node);
     Histogram createDeltaHistogram(Node node);
     void attachCounted(Observed oldObserved);
     void attachToggled();

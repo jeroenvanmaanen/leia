@@ -26,7 +26,7 @@ public class HistogramTrace {
 
     public HistogramTrace(final Histogram left, String operator, Histogram right) {
         name = left.toString();
-        isTransient = new Setting<>("Is transient?", () -> left.getVersion() == null);
+        isTransient = new Setting<>("Is transient?", () -> !left.isPersistent());
         origin = left.getOrigin();
         leftTrace = left.getTrace();
         this.operator = operator;

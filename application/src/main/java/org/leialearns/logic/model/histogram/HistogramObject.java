@@ -1,21 +1,26 @@
 package org.leialearns.logic.model.histogram;
 
 import org.leialearns.logic.interaction.Symbol;
-import org.leialearns.logic.model.common.BaseNodeData;
+import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static org.leialearns.utilities.Static.getLoggingClass;
 
-public class HistogramObject extends BaseNodeData<Histogram,Counter.Iterable> implements Histogram {
+public class HistogramObject implements Histogram {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Map<Symbol, Counter> histogram = new HashMap<>();
     private final Throwable origin;
+    private final Setting<String> label = new Setting<>("Label", "?");
+    private final Setting<Boolean> persistent = new Setting<>("Persistent", false);
+    private Supplier<String> locationSupplier = null;
+    private Function<Symbol,Counter> counterCreator;
     private HistogramTrace trace = null;
 
     public HistogramObject() {
@@ -33,13 +38,32 @@ public class HistogramObject extends BaseNodeData<Histogram,Counter.Iterable> im
     }
 
     @Override
-    public void setData(Histogram data) {
-        throw new UnsupportedOperationException("TODO: implement"); // TODO: implement
+    public boolean isPersistent() {
+        return persistent.get();
     }
 
     @Override
-    public Histogram getData() {
-        return this;
+    public void markPersistent() {
+        persistent.set(true);
+    }
+
+    @Override
+    public void setLabel(String label) {
+        this.label.set(label);
+    }
+
+    public String getLabel() {
+        return label.get();
+    }
+
+    @Override
+    public void setLocation(Supplier<String> locationSupplier) {
+        this.locationSupplier = locationSupplier;
+    }
+
+    @Override
+    public void setCounterCreator(Function<Symbol,Counter> counterCreator) {
+        this.counterCreator = counterCreator;
     }
 
     @Override
@@ -85,9 +109,9 @@ public class HistogramObject extends BaseNodeData<Histogram,Counter.Iterable> im
     }
 
     @Override
-    public void retrieve(Supplier<Counter.Iterable> countersSupplier) {
+    public void retrieve(Supplier<Iterable<Counter>> countersSupplier) {
         histogram.clear();
-        Counter.Iterable counters = countersSupplier.get();
+        Iterable<Counter> counters = countersSupplier.get();
         for (Counter counter : counters) {
             histogram.put(counter.getSymbol(), counter.fresh());
         }
@@ -97,18 +121,13 @@ public class HistogramObject extends BaseNodeData<Histogram,Counter.Iterable> im
     }
 
     @Override
-    public Counter.Iterable getItems() {
-        return getVersion().findCounters(getNode());
-    }
-
-    @Override
     public void add(Histogram other) {
         if (!other.isEmpty()) {
             try {
                 addInternal(other);
                 addTrace("+", other);
             } catch (RuntimeException exception) {
-                logger.error("Histogram add failed: " + getNode());
+                logger.error("Histogram add failed: " + locationSupplier.get());
                 if (logger.isTraceEnabled()) {
                     log();
                     other.log("other");
@@ -129,7 +148,7 @@ public class HistogramObject extends BaseNodeData<Histogram,Counter.Iterable> im
                     if (value > 0) {
                         Counter newCounter = histogram.get(symbol);
                         if (newCounter == null) {
-                            String message = "Missing counter: " + getNode() + ": " + symbol + " -= " + counter;
+                            String message = "Missing counter: " + locationSupplier.get() + ": " + symbol + " -= " + counter;
                             logger.warn(message);
                             throw new IllegalStateException(message);
                         }
@@ -138,7 +157,7 @@ public class HistogramObject extends BaseNodeData<Histogram,Counter.Iterable> im
                 }
                 addTrace("-", other);
             } catch (RuntimeException exception) {
-                logger.error("Histogram subtract failed: " + getNode() + ": " + symbol);
+                logger.error("Histogram subtract failed: " + locationSupplier.get() + ": " + symbol);
                 if (logger.isTraceEnabled()) {
                     log();
                     other.log("other");
@@ -169,15 +188,10 @@ public class HistogramObject extends BaseNodeData<Histogram,Counter.Iterable> im
             if (histogram.containsKey(symbol)) {
                 newCounter = histogram.get(symbol);
             } else {
-                if (getPersistent()) {
-                    newCounter = getVersion().findOrCreateCounter(getNode(), symbol);
-                } else {
-                    newCounter = new TransientCounter(symbol);
-                }
+                newCounter = counterCreator.apply(symbol);
                 histogram.put(symbol, newCounter);
             }
             newCounter.increment(counter.getValue());
-            // counterDAO.save(counter);
         }
     }
 

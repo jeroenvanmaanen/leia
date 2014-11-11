@@ -4,6 +4,7 @@ import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.interaction.InteractionContext;
 import org.leialearns.logic.model.Counted;
+import org.leialearns.logic.model.common.NodeDataProxy;
 import org.leialearns.logic.model.histogram.Histogram;
 import org.leialearns.logic.model.Toggled;
 import org.leialearns.logic.model.Version;
@@ -98,7 +99,7 @@ public interface Session {
      * Stores the given histogram in the cache
      * @param histogram The histogram to store
      */
-    void putHistogram(Histogram histogram);
+    void putHistogram(NodeDataProxy<Histogram> histogram);
 
     /**
      * Returns a fresh copy of the session that is (re)attached to the ORM framework.

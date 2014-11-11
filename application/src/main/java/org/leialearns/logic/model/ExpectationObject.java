@@ -1,7 +1,7 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.logic.interaction.Symbol;
-import org.leialearns.logic.model.common.BaseNodeData;
+import org.leialearns.logic.model.common.NodeDataProxyImpl;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.logic.utilities.DescriptionLength;
@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 
 import static org.leialearns.utilities.Static.getLoggingClass;
 
-public class ExpectationObject extends BaseNodeData<Expectation,Estimate.Iterable> implements Expectation {
+public class ExpectationObject extends NodeDataProxyImpl<Expectation,Estimate> implements Expectation {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Setting<Fraction> zero;
     Map<Symbol,Fraction> fractions = new HashMap<>();
@@ -49,10 +49,10 @@ public class ExpectationObject extends BaseNodeData<Expectation,Estimate.Iterabl
     }
 
     @Override
-    public void retrieve(Supplier<Estimate.Iterable> getItems) {
+    public void retrieve(Supplier<Iterable<Estimate>> getItems) {
         Node node = getNode();
         logger.debug("Retrieve estimates for: {}", node);
-        Estimate.Iterable estimates = getItems.get();
+        Iterable<Estimate> estimates = getItems.get();
         Fraction sum = zero.get();
         fractions.clear();
         for (Estimate estimate : estimates) {

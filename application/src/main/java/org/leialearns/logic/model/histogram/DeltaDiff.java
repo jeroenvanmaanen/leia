@@ -12,9 +12,9 @@ public class DeltaDiff implements Modifiable {
         this.node = node;
         String suffix = (label != null && label.length() > 0 ? ": " + label : "");
         deltaAdditions = observed.createTransientHistogram("Delta additions" + suffix);
-        deltaAdditions.setNode(node);
+        deltaAdditions.setLocation(() -> String.valueOf(node));
         deltaSubtractions = observed.createTransientHistogram("Delta subtractions" + suffix);
-        deltaSubtractions.setNode(node);
+        deltaSubtractions.setLocation(() -> String.valueOf(node));
     }
 
     public Node getNode() {
