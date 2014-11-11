@@ -13,6 +13,10 @@ import java.util.List;
 import static org.leialearns.utilities.Static.getLoggingClass;
 import static org.leialearns.utilities.Static.toList;
 
+/**
+ * Helper for the {@link Expectation} near type. The interface {@link ExpectationHelper} is necessary, because the
+ * proxy created as a result of the @{@link Transactional} annotation hides the superclass (but exposes the interface).
+ */
 public class ExpectationHelperImpl implements ExpectationHelper {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private Root root;
