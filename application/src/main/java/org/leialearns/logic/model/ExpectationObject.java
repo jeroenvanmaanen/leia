@@ -112,10 +112,11 @@ public class ExpectationObject extends NodeDataProxyImpl<Expectation,Estimate> i
     }
 
     @Override
-    public long descriptionLength(Collection<Symbol> symbols) {
+    public long descriptionLength(Iterable<Symbol> symbols) {
         long result = 0L;
-        result += DescriptionLength.descriptionLength(BigInteger.valueOf(symbols.size()));
+        int size = 0;
         for (Symbol symbol : symbols) {
+            size++;
             if (fractions.containsKey(symbol)) {
                 Fraction fraction = fractions.get(symbol);
                 long index = fraction.getIndex();
@@ -125,6 +126,7 @@ public class ExpectationObject extends NodeDataProxyImpl<Expectation,Estimate> i
                 result++;
             }
         }
+        result += DescriptionLength.descriptionLength(BigInteger.valueOf(size));
         return result;
     }
 

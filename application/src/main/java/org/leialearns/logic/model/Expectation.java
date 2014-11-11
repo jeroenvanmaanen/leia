@@ -13,5 +13,5 @@ public interface Expectation extends NodeDataProxy<Expectation>, NodeData<Estima
     TypedIterable<Symbol> getSymbols();
     Fraction getFraction(Symbol symbol);
     String prefixEncode(Collection<Symbol> symbols);
-    long descriptionLength(Collection<Symbol> symbols);
+    long descriptionLength(Iterable<Symbol> symbols);
 }

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static org.leialearns.utilities.Static.getLoggingClass;
 
@@ -69,6 +70,12 @@ public class HistogramObject implements Histogram {
     @Override
     public TypedIterable<Counter> getCounters() {
         return new TypedIterable<>(histogram.values(), Counter.class);
+    }
+
+    @Override
+    public TypedIterable<Symbol> getSymbols() {
+        Stream<Symbol> symbols = getCounters().stream().map(Counter::getSymbol);
+        return new TypedIterable<>(symbols::iterator, Symbol.class);
     }
 
     @Override

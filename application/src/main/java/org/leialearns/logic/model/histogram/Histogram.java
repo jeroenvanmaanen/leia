@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 
 public interface Histogram extends Modifiable, NodeData<Counter> {
     TypedIterable<Counter> getCounters();
+    TypedIterable<Symbol> getSymbols();
     long getValue(Symbol symbol);
     long getWeight();
     boolean isEmpty();

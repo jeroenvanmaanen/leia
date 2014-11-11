@@ -27,9 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 /**
@@ -199,7 +196,7 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
 
     protected Toggled evaluate(boolean nowIncluded, Observed observed, NodeDataProxy<Histogram> observedHistogramProxy, Histogram deltaBase, NodeDataProxy<Histogram> ancestorObservedProxy, Histogram ancestorDeltaBase, DeltaDiff deltaDiff, DeltaDiff ancestorDeltaDiff, Session session) {
         final Histogram ancestorObserved = ancestorObservedProxy.getData();
-        Collection<Symbol> symbols = getSymbols(ancestorObserved);
+        Iterable<Symbol> symbols = ancestorObserved.getSymbols();
 
         final Histogram ancestorData = observed.createTransientHistogram("Ancestor data");
         ancestorData.setLocation(() -> String.valueOf(ancestorObservedProxy.getNode()));
@@ -290,7 +287,7 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
         return version == null ? 0 : version.getOrdinal();
     }
 
-    protected long descriptionLength(Histogram data, Expectation expectation, Collection<Symbol> symbols) {
+    protected long descriptionLength(Histogram data, Expectation expectation, Iterable<Symbol> symbols) {
         long result = expectation.descriptionLength(symbols);
         double dataLength = 0.0;
         for (Counter counter : data.getCounters()) {
@@ -311,14 +308,6 @@ public class Minimizer implements org.leialearns.command.api.Minimizer {
 
     protected static double log2(double x) {
         return Math.log(x)/LOG_2;
-    }
-
-    protected Collection<Symbol> getSymbols(Histogram histogram) {
-        Collection<Symbol> result = new HashSet<>();
-        for (Counter counter : histogram.getCounters()) {
-            result.add(counter.getSymbol());
-        }
-        return result;
     }
 
     protected class MinimizationContext {

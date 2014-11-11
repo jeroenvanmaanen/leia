@@ -13,12 +13,12 @@
     <properties>
         <java.version>1.8</java.version>
         <leialearns.version>1.0-SNAPSHOT</leialearns.version>
+        <bridge-pattern.version>0.3-SNAPSHOT</bridge-pattern.version>
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven-scala-plugin.version>2.15.2</maven-scala-plugin.version>
         <scala.version>2.10.4</scala.version>
         <scalatest.version>2.2.1</scalatest.version>
-        <bridge-pattern.version>0.2</bridge-pattern.version>
         <slf4j.version>1.6.6</slf4j.version>
         <commons-cli.version>1.1</commons-cli.version>
         <commons-lang.version>2.3</commons-lang.version>
