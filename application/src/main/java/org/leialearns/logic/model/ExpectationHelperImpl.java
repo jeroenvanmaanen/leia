@@ -17,22 +17,22 @@ public class ExpectationHelperImpl implements ExpectationHelper {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private Root root;
 
+    @Override
     public void setRoot(Root root) {
         this.root = root;
     }
 
+    @Override
     public Expectation createExpectation(Root root) {
         return new ExpectationObject(root);
     }
 
+    @Override
     public Expectation getExpectation(ExpectedModel expectedModel, Node node) {
         return getExpectation(expectedModel.getVersion(), node);
     }
 
-    public Expectation getExpectation(Expected expected, Node node) {
-        return getExpectation(expected.getVersion(), node);
-    }
-
+    @Override
     public Expectation getExpectation(Toggled toggled, Node node) {
         return getExpectation(toggled.getVersion(), node);
     }
@@ -45,6 +45,7 @@ public class ExpectationHelperImpl implements ExpectationHelper {
     }
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    @Override
     public void attach(Toggled toggled, Root root, Node node, Expectation expectation) {
         if (node == null) {
             throw new IllegalArgumentException("The node should not be null");
