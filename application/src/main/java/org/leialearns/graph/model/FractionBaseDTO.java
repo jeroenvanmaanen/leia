@@ -3,7 +3,7 @@ package org.leialearns.graph.model;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.graph.HasId;
-import org.leialearns.logic.model.expectation.Fraction;
+import org.leialearns.api.model.expectation.Fraction;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;

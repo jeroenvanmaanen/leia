@@ -2,8 +2,8 @@ package org.leialearns.logic.utilities;
 
 import org.leialearns.api.interaction.Symbol;
 import org.leialearns.api.model.histogram.Counter;
-import org.leialearns.logic.model.expectation.Expectation;
-import org.leialearns.logic.model.expectation.Fraction;
+import org.leialearns.api.model.expectation.Expectation;
+import org.leialearns.api.model.expectation.Fraction;
 import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.session.Session;

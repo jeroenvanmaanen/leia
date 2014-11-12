@@ -1,5 +1,7 @@
 package org.leialearns.logic.model.expectation;
 
+import org.leialearns.api.model.expectation.Fraction;
+
 import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 

@@ -1,7 +1,7 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.enumerations.ModelType;
-import org.leialearns.logic.model.expectation.Expectation;
+import org.leialearns.api.model.expectation.Expectation;
 import org.leialearns.logic.structure.Node;
 
 public interface ExpectedModel extends TypedVersionExtension {

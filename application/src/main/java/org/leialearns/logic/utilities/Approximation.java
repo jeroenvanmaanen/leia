@@ -1,6 +1,6 @@
 package org.leialearns.logic.utilities;
 
-import org.leialearns.logic.model.expectation.Fraction;
+import org.leialearns.api.model.expectation.Fraction;
 import org.leialearns.logic.model.expectation.TransientFraction;
 import org.leialearns.utilities.TransformingIterable;
 

@@ -2,8 +2,8 @@ package org.leialearns.logic.model;
 
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.api.interaction.Symbol;
-import org.leialearns.logic.model.expectation.Expectation;
-import org.leialearns.logic.model.expectation.Fraction;
+import org.leialearns.api.model.expectation.Expectation;
+import org.leialearns.api.model.expectation.Fraction;
 import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.utilities.Pair;

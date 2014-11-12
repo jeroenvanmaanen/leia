@@ -3,6 +3,7 @@ package org.leialearns.logic.model.histogram;
 import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.api.interaction.Symbol;
+import org.leialearns.api.model.histogram.HistogramTrace;
 import org.leialearns.utilities.Setting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,7 @@ import java.util.TreeSet;
 
 import static org.leialearns.utilities.Static.getLoggingClass;
 
-public class HistogramTrace {
+public class HistogramTraceImpl implements HistogramTrace {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final String name;
     private final Setting<Boolean> isTransient;
@@ -22,11 +23,11 @@ public class HistogramTrace {
     private final HistogramTrace rightTrace;
     private final Histogram snapshot;
 
-    public HistogramTrace(Histogram histogram) {
+    public HistogramTraceImpl(Histogram histogram) {
         this(histogram, "=", null);
     }
 
-    public HistogramTrace(final Histogram left, String operator, Histogram right) {
+    public HistogramTraceImpl(final Histogram left, String operator, Histogram right) {
         name = left.toString();
         isTransient = new Setting<>("Is transient?", () -> !left.isPersistent());
         origin = left.getOrigin();
@@ -34,6 +35,18 @@ public class HistogramTrace {
         this.operator = operator;
         rightTrace = right == null ? null : right.getTrace();
         snapshot = left.getSnapshot("=");
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isTransient() {
+        return isTransient.get();
+    }
+
+    public Throwable getOrigin() {
+        return origin;
     }
 
     public void log(String label) {
@@ -56,11 +69,11 @@ public class HistogramTrace {
         if (logger.isTraceEnabled()) {
             HistogramTrace originTrace = findNonTransient();
             originTrace = (originTrace == null ? this : originTrace);
-            logger.trace("Origin: " + originTrace.name + " (transient: " + originTrace.isTransient.get() + ")", originTrace.origin);
+            logger.trace("Origin: " + originTrace.getName() + " (transient: " + originTrace.isTransient() + ")", originTrace.getOrigin());
         }
     }
 
-    protected HistogramTrace findNonTransient() {
+    public HistogramTrace findNonTransient() {
         HistogramTrace result = null;
         if (isTransient.get()) {
             if (leftTrace != null) {
@@ -73,7 +86,7 @@ public class HistogramTrace {
         return result;
     }
 
-    protected void collectSymbols(Collection<Symbol> symbols) {
+    public void collectSymbols(Collection<Symbol> symbols) {
         addSymbols(snapshot, symbols);
         if (leftTrace != null) {
             leftTrace.collectSymbols(symbols);
@@ -83,7 +96,7 @@ public class HistogramTrace {
         }
     }
 
-    protected void logParts(String indent) {
+    public void logParts(String indent) {
         if (leftTrace != null) {
             leftTrace.logParts(indent);
         }
@@ -93,7 +106,7 @@ public class HistogramTrace {
         logger.debug(indent + operator + " " + name);
     }
 
-    protected void addValues(StringBuilder builder, Symbol symbol) {
+    public void addValues(StringBuilder builder, Symbol symbol) {
         if (leftTrace != null) {
             leftTrace.addValues(builder, symbol);
             builder.append(", ");

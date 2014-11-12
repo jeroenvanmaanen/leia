@@ -2,8 +2,8 @@ package org.leialearns.logic.session;
 
 import org.leialearns.api.interaction.Alphabet;
 import org.leialearns.api.interaction.InteractionContext;
-import org.leialearns.logic.model.expectation.Expectation;
-import org.leialearns.logic.model.expectation.Fraction;
+import org.leialearns.api.model.expectation.Expectation;
+import org.leialearns.api.model.expectation.Fraction;
 
 /**
  * Defines the singleton that contains the objects that are at least partially persisted through the ORM framework,

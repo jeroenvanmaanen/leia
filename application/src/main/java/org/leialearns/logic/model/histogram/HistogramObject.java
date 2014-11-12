@@ -24,14 +24,14 @@ public class HistogramObject implements Histogram {
     private final Setting<Boolean> persistent = new Setting<>("Persistent", false);
     private Supplier<String> locationSupplier = null;
     private Function<Symbol,Counter> counterCreator;
-    private HistogramTrace trace = null;
+    private HistogramTraceImpl trace = null;
 
     public HistogramObject() {
         origin = (logger.isTraceEnabled() ? new Throwable("Histogram origin") : null);
     }
 
     @Override
-    public HistogramTrace getTrace() {
+    public HistogramTraceImpl getTrace() {
         return trace;
     }
 
@@ -125,7 +125,7 @@ public class HistogramObject implements Histogram {
             histogram.put(counter.getSymbol(), counter.fresh());
         }
         if (logger.isTraceEnabled()) {
-            trace = new HistogramTrace(this);
+            trace = new HistogramTraceImpl(this);
         }
     }
 
@@ -178,7 +178,7 @@ public class HistogramObject implements Histogram {
 
     protected void addTrace(String operator, Histogram operand) {
         if (logger.isTraceEnabled()) {
-            trace = new HistogramTrace(this, operator, operand);
+            trace = new HistogramTraceImpl(this, operator, operand);
         }
     }
 
@@ -211,9 +211,9 @@ public class HistogramObject implements Histogram {
 
     @Override
     public void log(String label) {
-        HistogramTrace trace = this.trace;
+        HistogramTraceImpl trace = this.trace;
         if (trace == null) {
-            trace = new HistogramTrace(this);
+            trace = new HistogramTraceImpl(this);
         }
         trace.log(label);
     }

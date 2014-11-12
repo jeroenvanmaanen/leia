@@ -5,7 +5,7 @@ import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.api.interaction.Symbol;
-import org.leialearns.logic.model.expectation.Estimate;
+import org.leialearns.api.model.expectation.Estimate;
 import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;

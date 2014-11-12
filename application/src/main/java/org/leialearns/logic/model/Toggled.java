@@ -1,9 +1,9 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.api.interaction.Symbol;
-import org.leialearns.logic.model.expectation.Estimate;
-import org.leialearns.logic.model.expectation.Expectation;
-import org.leialearns.logic.model.expectation.Fraction;
+import org.leialearns.api.model.expectation.Estimate;
+import org.leialearns.api.model.expectation.Expectation;
+import org.leialearns.api.model.expectation.Fraction;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.structure.Node;
 
