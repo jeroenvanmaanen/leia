@@ -5,11 +5,10 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
-import org.leialearns.command.Command;
+import org.leialearns.api.command.Command;
 import org.leialearns.utilities.Setting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
@@ -17,6 +16,8 @@ import org.springframework.context.support.GenericApplicationContext;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Arrays;
+
+// import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
 /**
  * Provides the <code>main</code> method for the LEIA executable.
@@ -77,12 +78,12 @@ public class App {
 
     /**
      * Initializes logging, finds the command bean that corresponds to the first command line argument
-     * and passes the remaining command line arguments to its {@link org.leialearns.command.Command#command(String[])} method.
+     * and passes the remaining command line arguments to its {@link org.leialearns.api.command.Command#command(String[])} method.
      * @param args The command line arguments
      * @throws Exception In case of an exception
      */
     public void execute(String[] args) throws Exception {
-        final Setting<Boolean> verbose = new Setting<Boolean>("Verbose", Boolean.FALSE);
+        final Setting<Boolean> verbose = new Setting<>("Verbose", Boolean.FALSE);
         Options options = new Options();
         options.addOption("v", "verbose", false, "Produce additional output for debugging purposes");
         options.addOption("l", "log-directory", true, "The directory used to store the log files");
@@ -141,7 +142,7 @@ public class App {
             }
             logger.debug("Run [" + sub_command + "]: " + subArgs.length);
             GenericApplicationContext environment = new GenericApplicationContext();
-            DefaultListableBeanFactory beanFactory = environment.getDefaultListableBeanFactory();
+            // DefaultListableBeanFactory beanFactory = environment.getDefaultListableBeanFactory();
             environment.refresh();
             String[] configLocations = new String[] {"ApplicationContext.xml", "MainApplicationContext.xml"};
             ApplicationContext context = new ClassPathXmlApplicationContext(configLocations, environment);

@@ -1,4 +1,4 @@
-package org.leialearns.command;
+package org.leialearns.api.command;
 
 /**
  * Provides the uniform {@link Command#command(String[])} method for all sub-commands of the LEIA application.
