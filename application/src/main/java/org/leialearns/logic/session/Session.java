@@ -1,17 +1,17 @@
 package org.leialearns.logic.session;
 
-import org.leialearns.enumerations.AccessMode;
-import org.leialearns.enumerations.ModelType;
+import org.leialearns.api.enumerations.AccessMode;
+import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.api.interaction.InteractionContext;
-import org.leialearns.logic.model.Counted;
+import org.leialearns.api.model.Counted;
+import org.leialearns.api.model.Toggled;
+import org.leialearns.api.model.Version;
 import org.leialearns.api.model.common.NodeDataProxy;
 import org.leialearns.api.model.histogram.Histogram;
-import org.leialearns.logic.model.Toggled;
-import org.leialearns.logic.model.Version;
 import org.leialearns.api.structure.Node;
 
 /**
- * Defines an object that can be used to create and/or obtain {@link org.leialearns.logic.model.Version}s of
+ * Defines an object that can be used to create and/or obtain {@link org.leialearns.api.model.Version}s of
  * various types of models. A session is assumed to be associated with a single thread of execution.
  */
 public interface Session {

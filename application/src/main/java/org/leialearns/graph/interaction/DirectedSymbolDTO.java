@@ -1,8 +1,8 @@
 package org.leialearns.graph.interaction;
 
-import org.leialearns.bridge.FarObject;
-import org.leialearns.enumerations.Direction;
+import org.leialearns.api.enumerations.Direction;
 import org.leialearns.api.interaction.DirectedSymbol;
+import org.leialearns.bridge.FarObject;
 
 public class DirectedSymbolDTO implements FarObject<DirectedSymbol> {
     private Direction direction;

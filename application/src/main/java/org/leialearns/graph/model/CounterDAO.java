@@ -1,20 +1,20 @@
 package org.leialearns.graph.model;
 
+import org.leialearns.api.enumerations.ModelType;
+import org.leialearns.api.model.Version;
+import org.leialearns.api.structure.Node;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.bridge.FactoryAccessor;
-import org.leialearns.enumerations.ModelType;
+import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.interaction.SymbolDTO;
 import org.leialearns.graph.interaction.SymbolRepository;
 import org.leialearns.graph.structure.NodeDAO;
 import org.leialearns.graph.structure.NodeDTO;
-import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.structure.NodeRepository;
 import org.leialearns.graph.structure.StructureDTO;
 import org.leialearns.logic.model.CounterLogger;
-import org.leialearns.logic.model.Version;
-import org.leialearns.api.structure.Node;
 import org.leialearns.logic.utilities.Static;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;

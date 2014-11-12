@@ -1,10 +1,12 @@
 package org.leialearns.logic.model;
 
-import org.leialearns.bridge.BridgeOverride;
+import org.leialearns.api.model.ExpectedModel;
+import org.leialearns.api.model.Toggled;
 import org.leialearns.api.model.expectation.Expectation;
+import org.leialearns.api.structure.Node;
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.logic.session.NeedsRoot;
 import org.leialearns.logic.session.Root;
-import org.leialearns.api.structure.Node;
 
 public interface ExpectationHelper extends NeedsRoot {
     @BridgeOverride

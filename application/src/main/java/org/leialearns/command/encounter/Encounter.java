@@ -1,19 +1,19 @@
 package org.leialearns.command.encounter;
 
-import org.leialearns.enumerations.AccessMode;
-import org.leialearns.enumerations.Direction;
-import org.leialearns.enumerations.ModelType;
+import org.leialearns.api.enumerations.AccessMode;
+import org.leialearns.api.enumerations.Direction;
+import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.api.interaction.Alphabet;
 import org.leialearns.api.interaction.DirectedSymbol;
 import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.api.interaction.Symbol;
-import org.leialearns.logic.model.Counted;
+import org.leialearns.api.model.Counted;
+import org.leialearns.api.model.Version;
 import org.leialearns.api.model.histogram.Counter;
-import org.leialearns.logic.model.Version;
-import org.leialearns.logic.session.Root;
-import org.leialearns.logic.session.Session;
 import org.leialearns.api.structure.Node;
 import org.leialearns.api.structure.Structure;
+import org.leialearns.logic.session.Root;
+import org.leialearns.logic.session.Session;
 import org.leialearns.utilities.ExceptionWrapper;
 import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TypedIterable;
@@ -93,7 +93,7 @@ public class Encounter implements org.leialearns.api.command.Encounter {
     }
 
     /**
-     * Returns the last {@link org.leialearns.enumerations.ModelType#COUNTED} version that was created by this encounter.
+     * Returns the last {@link org.leialearns.api.enumerations.ModelType#COUNTED} version that was created by this encounter.
      * @return the last version that was created by this encounter
      */
     @Override

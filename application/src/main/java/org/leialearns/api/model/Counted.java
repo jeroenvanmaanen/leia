@@ -1,4 +1,4 @@
-package org.leialearns.logic.model;
+package org.leialearns.api.model;
 
 import org.leialearns.api.interaction.DirectedSymbol;
 import org.leialearns.api.interaction.Symbol;

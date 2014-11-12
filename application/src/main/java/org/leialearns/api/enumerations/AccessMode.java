@@ -1,10 +1,10 @@
-package org.leialearns.enumerations;
+package org.leialearns.api.enumerations;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Defines the possible values of the <code>accessMode</code> property of a {@link org.leialearns.logic.model.Version}.
+ * Defines the possible values of the <code>accessMode</code> property of a {@link org.leialearns.api.model.Version}.
  */
 public enum AccessMode {
 
@@ -33,7 +33,7 @@ public enum AccessMode {
      */
     EXCLUDE('X');
 
-    private static final Map<Character,AccessMode> CHARACTER_ACCESS_MODE_MAP = new HashMap<Character, AccessMode>();
+    private static final Map<Character,AccessMode> CHARACTER_ACCESS_MODE_MAP = new HashMap<>();
     private final char typeChar;
 
     static {
@@ -53,6 +53,7 @@ public enum AccessMode {
      * Returns the single character representation of this access mode.
      * @return The single character representation of this access mode
      */
+    @SuppressWarnings("unused")
     public char toChar() {
         return typeChar;
     }

@@ -1,12 +1,12 @@
 package org.leialearns.command.consolidator;
 
-import org.leialearns.enumerations.AccessMode;
-import org.leialearns.enumerations.ModelType;
+import org.leialearns.api.enumerations.AccessMode;
+import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.api.interaction.InteractionContext;
-import org.leialearns.logic.model.Expected;
-import org.leialearns.logic.model.Observed;
-import org.leialearns.logic.model.Toggled;
-import org.leialearns.logic.model.Version;
+import org.leialearns.api.model.Expected;
+import org.leialearns.api.model.Observed;
+import org.leialearns.api.model.Toggled;
+import org.leialearns.api.model.Version;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.session.Session;
 import org.leialearns.utilities.Setting;

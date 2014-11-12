@@ -1,6 +1,6 @@
 package org.leialearns.api.model.histogram;
 
-import org.leialearns.enumerations.HistogramOperator;
+import org.leialearns.api.enumerations.HistogramOperator;
 
 public interface DeltaDiff extends Modifiable {
     Histogram getDeltaAdditions();

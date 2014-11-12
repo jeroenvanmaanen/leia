@@ -1,8 +1,8 @@
 package org.leialearns.graph.interaction;
 
 import com.google.common.base.Joiner;
+import org.leialearns.api.enumerations.Direction;
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.model.VersionDTO;
 import org.leialearns.graph.structure.StructureDAO;

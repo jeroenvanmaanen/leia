@@ -30,7 +30,7 @@ public interface Root {
     InteractionContext createInteractionContext(String interactionContextURI, String actionsURI, String responsesURI, String structureURI);
 
     /**
-     * Creates a session that can be used to create and/or obtain {@link org.leialearns.logic.model.Version}s of
+     * Creates a session that can be used to create and/or obtain {@link org.leialearns.api.model.Version}s of
      * various types of models.
      * @param interactionContextURI The URI that identifies the interaction context
      * @return A new session instance
@@ -38,7 +38,7 @@ public interface Root {
     Session createSession(String interactionContextURI);
 
     /**
-     * Creates a session that can be used to create and/or obtain {@link org.leialearns.logic.model.Version}s of
+     * Creates a session that can be used to create and/or obtain {@link org.leialearns.api.model.Version}s of
      * various types of models.
      * @param interactionContext The interaction context for the new session
      * @return A new session instance

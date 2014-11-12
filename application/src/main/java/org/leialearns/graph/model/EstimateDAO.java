@@ -1,7 +1,7 @@
 package org.leialearns.graph.model;
 
+import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.interaction.SymbolDTO;
 import org.leialearns.graph.structure.NodeDTO;

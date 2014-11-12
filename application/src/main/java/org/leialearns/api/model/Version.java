@@ -1,18 +1,18 @@
-package org.leialearns.logic.model;
+package org.leialearns.api.model;
 
-import org.leialearns.enumerations.AccessMode;
-// import org.leialearns.enumerations.AgentMode;
-import org.leialearns.enumerations.ModelType;
+import org.leialearns.api.enumerations.AccessMode;
+import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.api.interaction.Symbol;
 import org.leialearns.api.model.expectation.Estimate;
 import org.leialearns.api.model.histogram.Counter;
-import org.leialearns.logic.session.Session;
 import org.leialearns.api.structure.Node;
 import org.leialearns.bridge.NearIterable;
+import org.leialearns.logic.session.Session;
 
 import java.util.function.Function;
 
+// import org.leialearns.api.enumerations.AgentMode;
 // import java.util.Collection;
 
 public interface Version extends Comparable<Version> {

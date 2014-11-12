@@ -1,10 +1,10 @@
 package org.leialearns.graph.model;
 
+import org.leialearns.api.enumerations.ModelType;
+import org.leialearns.api.model.Toggled;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.enumerations.ModelType;
 import org.leialearns.graph.HasId;
-import org.leialearns.logic.model.Toggled;
 import org.leialearns.graph.structure.NodeDTO;
 import org.neo4j.graphdb.Direction;
 import org.springframework.data.neo4j.annotation.Fetch;

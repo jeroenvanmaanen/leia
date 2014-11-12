@@ -1,7 +1,7 @@
 package org.leialearns.logic.utilities;
 
-import org.leialearns.logic.model.TypedVersionExtension;
-import org.leialearns.logic.model.Version;
+import org.leialearns.api.model.TypedVersionExtension;
+import org.leialearns.api.model.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

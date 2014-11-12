@@ -1,27 +1,27 @@
 package org.leialearns.command.minimizer;
 
-import org.leialearns.api.model.histogram.HistogramFactory;
-import org.leialearns.enumerations.AccessMode;
-import org.leialearns.enumerations.ModelType;
+import org.leialearns.api.enumerations.AccessMode;
+import org.leialearns.api.enumerations.HistogramOperator;
+import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.api.interaction.Symbol;
-import org.leialearns.logic.model.DeltaHelper;
+import org.leialearns.api.model.ExpectedModel;
+import org.leialearns.api.model.Observed;
+import org.leialearns.api.model.Toggled;
+import org.leialearns.api.model.Version;
 import org.leialearns.api.model.common.NodeDataProxy;
-import org.leialearns.api.model.histogram.Counter;
-import org.leialearns.logic.model.CounterLogger;
-import org.leialearns.api.model.histogram.DeltaDiff;
 import org.leialearns.api.model.expectation.Expectation;
-import org.leialearns.logic.model.ExpectedModel;
 import org.leialearns.api.model.expectation.Fraction;
-import org.leialearns.api.model.histogram.Histogram;
-import org.leialearns.logic.model.Observed;
-import org.leialearns.logic.model.Toggled;
-import org.leialearns.logic.model.Version;
+import org.leialearns.api.model.histogram.Counter;
+import org.leialearns.api.model.histogram.DeltaDiff;
 import org.leialearns.api.model.histogram.DeltaDiffMap;
-import org.leialearns.enumerations.HistogramOperator;
-import org.leialearns.logic.session.Root;
-import org.leialearns.logic.session.Session;
+import org.leialearns.api.model.histogram.Histogram;
+import org.leialearns.api.model.histogram.HistogramFactory;
 import org.leialearns.api.structure.Node;
 import org.leialearns.api.structure.Structure;
+import org.leialearns.logic.model.CounterLogger;
+import org.leialearns.logic.model.DeltaHelper;
+import org.leialearns.logic.session.Root;
+import org.leialearns.logic.session.Session;
 import org.leialearns.logic.utilities.Oracle;
 import org.leialearns.utilities.Setting;
 import org.slf4j.Logger;
@@ -30,8 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.leialearns.enumerations.HistogramOperator.ADD_TO;
-import static org.leialearns.enumerations.HistogramOperator.SUBTRACT_FROM;
+import static org.leialearns.api.enumerations.HistogramOperator.ADD_TO;
+import static org.leialearns.api.enumerations.HistogramOperator.SUBTRACT_FROM;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 /**

@@ -1,8 +1,8 @@
 package org.leialearns.api.interaction;
 
-import org.leialearns.enumerations.AccessMode;
-import org.leialearns.enumerations.ModelType;
-import org.leialearns.logic.model.Version;
+import org.leialearns.api.enumerations.AccessMode;
+import org.leialearns.api.enumerations.ModelType;
+import org.leialearns.api.model.Version;
 import org.leialearns.api.structure.Structure;
 
 /**
@@ -19,14 +19,14 @@ public interface InteractionContext extends Comparable<InteractionContext> {
     /**
      * Returns the collection of actions for this interaction context.
      * @return The collection of actions
-     * @see org.leialearns.enumerations.Direction
+     * @see org.leialearns.api.enumerations.Direction
      */
     Alphabet getActions();
 
     /**
      * Returns the collection of responses for this interaction context.
      * @return The collection of responses
-     * @see org.leialearns.enumerations.Direction
+     * @see org.leialearns.api.enumerations.Direction
      */
     Alphabet getResponses();
 

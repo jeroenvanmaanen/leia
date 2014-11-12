@@ -1,7 +1,7 @@
 package org.leialearns.api.interaction;
 
+import org.leialearns.api.enumerations.Direction;
 import org.leialearns.bridge.NearIterable;
-import org.leialearns.enumerations.Direction;
 
 /**
  * Defines a symbol with the additional direction property.

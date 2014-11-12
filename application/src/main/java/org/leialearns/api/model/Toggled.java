@@ -1,11 +1,11 @@
-package org.leialearns.logic.model;
+package org.leialearns.api.model;
 
 import org.leialearns.api.interaction.Symbol;
 import org.leialearns.api.model.expectation.Estimate;
 import org.leialearns.api.model.expectation.Expectation;
 import org.leialearns.api.model.expectation.Fraction;
-import org.leialearns.logic.session.Root;
 import org.leialearns.api.structure.Node;
+import org.leialearns.logic.session.Root;
 
 public interface Toggled extends ExpectedModel {
     Node getNode();

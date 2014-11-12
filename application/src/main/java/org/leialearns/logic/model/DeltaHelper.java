@@ -1,16 +1,21 @@
 package org.leialearns.logic.model;
 
-import org.leialearns.api.model.histogram.HistogramFactory;
-import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.enumerations.AccessMode;
-import org.leialearns.enumerations.ModelType;
+import org.leialearns.api.enumerations.AccessMode;
+import org.leialearns.api.enumerations.HistogramOperator;
+import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.api.interaction.InteractionContext;
+import org.leialearns.api.model.Expected;
+import org.leialearns.api.model.ExpectedModel;
+import org.leialearns.api.model.Observed;
+import org.leialearns.api.model.Toggled;
+import org.leialearns.api.model.Version;
 import org.leialearns.api.model.histogram.DeltaDiff;
-import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.api.model.histogram.DeltaDiffMap;
-import org.leialearns.enumerations.HistogramOperator;
-import org.leialearns.logic.session.Session;
+import org.leialearns.api.model.histogram.Histogram;
+import org.leialearns.api.model.histogram.HistogramFactory;
 import org.leialearns.api.structure.Node;
+import org.leialearns.bridge.BridgeOverride;
+import org.leialearns.logic.session.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +27,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static org.leialearns.enumerations.HistogramOperator.ADD_TO;
+import static org.leialearns.api.enumerations.HistogramOperator.ADD_TO;
 import static org.leialearns.logic.utilities.Static.getVersionOrdinal;
 import static org.leialearns.utilities.Display.display;
 

@@ -1,11 +1,11 @@
 package org.leialearns.graph.structure;
 
+import org.leialearns.api.enumerations.Direction;
+import org.leialearns.api.structure.Node;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.HasId;
 import org.leialearns.graph.interaction.SymbolDTO;
-import org.leialearns.api.structure.Node;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;

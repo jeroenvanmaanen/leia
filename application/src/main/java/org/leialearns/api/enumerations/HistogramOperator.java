@@ -1,4 +1,4 @@
-package org.leialearns.enumerations;
+package org.leialearns.api.enumerations;
 
 import java.util.HashMap;
 import java.util.Map;

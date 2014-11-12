@@ -1,8 +1,8 @@
 package org.leialearns.graph.model;
 
+import org.leialearns.api.enumerations.ModelType;
+import org.leialearns.api.model.Counted;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.logic.model.Counted;
-import org.leialearns.enumerations.ModelType;
 import org.leialearns.utilities.Setting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

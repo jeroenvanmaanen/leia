@@ -1,10 +1,10 @@
 package org.leialearns.logic.model.histogram;
 
+import org.leialearns.api.enumerations.HistogramOperator;
 import org.leialearns.api.model.histogram.DeltaDiff;
 import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.api.model.histogram.HistogramFactory;
 import org.leialearns.api.model.histogram.Modifiable;
-import org.leialearns.enumerations.HistogramOperator;
 import org.leialearns.api.structure.Node;
 
 public class DeltaDiffImpl implements DeltaDiff {

@@ -1,7 +1,7 @@
 package org.leialearns.api.structure;
 
+import org.leialearns.api.enumerations.Direction;
 import org.leialearns.api.interaction.DirectedSymbol;
-import org.leialearns.enumerations.Direction;
 import org.leialearns.api.interaction.Symbol;
 import org.leialearns.utilities.TypedIterable;
 

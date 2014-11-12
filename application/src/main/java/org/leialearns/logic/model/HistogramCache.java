@@ -1,9 +1,10 @@
 package org.leialearns.logic.model;
 
-import org.leialearns.bridge.BaseBridgeFacet;
+import org.leialearns.api.model.Version;
 import org.leialearns.api.model.common.NodeDataProxy;
 import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.api.structure.Node;
+import org.leialearns.bridge.BaseBridgeFacet;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +46,7 @@ public class HistogramCache extends BaseBridgeFacet {
             this.node = node;
         }
 
+        @Override
         public boolean equals(Object otherObject) {
             boolean result;
             if (otherObject instanceof HistogramKey) {
@@ -56,6 +58,7 @@ public class HistogramCache extends BaseBridgeFacet {
             return result;
         }
 
+        @Override
         public int hashCode() {
             return version.hashCode() + node.hashCode();
         }

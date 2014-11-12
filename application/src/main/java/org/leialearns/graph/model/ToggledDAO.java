@@ -1,10 +1,10 @@
 package org.leialearns.graph.model;
 
-import org.leialearns.enumerations.ModelType;
+import org.leialearns.api.enumerations.ModelType;
+import org.leialearns.api.model.Toggled;
+import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.session.SessionDTO;
 import org.leialearns.graph.structure.NodeDTO;
-import org.leialearns.graph.IdDaoSupport;
-import org.leialearns.logic.model.Toggled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

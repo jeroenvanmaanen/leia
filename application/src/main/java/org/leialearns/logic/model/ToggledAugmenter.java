@@ -1,11 +1,14 @@
 package org.leialearns.logic.model;
 
+import org.leialearns.api.enumerations.AccessMode;
+import org.leialearns.api.enumerations.ModelType;
+import org.leialearns.api.interaction.InteractionContext;
+import org.leialearns.api.model.Expected;
+import org.leialearns.api.model.Toggled;
+import org.leialearns.api.model.Version;
+import org.leialearns.api.structure.Node;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.enumerations.AccessMode;
-import org.leialearns.enumerations.ModelType;
-import org.leialearns.api.interaction.InteractionContext;
-import org.leialearns.api.structure.Node;
 import org.leialearns.utilities.Setting;
 
 import java.util.Collections;

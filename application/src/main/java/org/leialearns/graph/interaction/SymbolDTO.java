@@ -1,11 +1,11 @@
 package org.leialearns.graph.interaction;
 
+import org.leialearns.api.enumerations.Direction;
+import org.leialearns.api.interaction.Symbol;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.HasId;
-import org.leialearns.api.interaction.Symbol;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -17,7 +17,8 @@ import static org.leialearns.utilities.Display.displayParts;
 import static org.leialearns.utilities.Display.show;
 import static org.leialearns.utilities.L.literal;
 import static org.leialearns.utilities.Static.equal;
-import static org.neo4j.graphdb.Direction.*;
+import static org.neo4j.graphdb.Direction.INCOMING;
+import static org.neo4j.graphdb.Direction.OUTGOING;
 
 @NodeEntity
 public class SymbolDTO extends BaseBridgeFacet implements HasId, FarObject<Symbol>, Comparable<SymbolDTO> {

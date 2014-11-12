@@ -1,6 +1,6 @@
-package org.leialearns.logic.model;
+package org.leialearns.api.model;
 
-import org.leialearns.enumerations.ModelType;
+import org.leialearns.api.enumerations.ModelType;
 
 public interface TypedVersionExtension {
     Version getVersion();

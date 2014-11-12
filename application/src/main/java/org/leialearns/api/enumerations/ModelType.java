@@ -1,10 +1,10 @@
-package org.leialearns.enumerations;
+package org.leialearns.api.enumerations;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Defines the possible values of the <code>modelType</code> property of a {@link org.leialearns.logic.model.Version}
+ * Defines the possible values of the <code>modelType</code> property of a {@link org.leialearns.api.model.Version}
  */
 public enum ModelType {
 
