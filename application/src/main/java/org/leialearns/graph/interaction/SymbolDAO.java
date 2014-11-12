@@ -1,7 +1,7 @@
 package org.leialearns.graph.interaction;
 
 import org.leialearns.graph.IdDaoSupport;
-import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.api.interaction.Symbol;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.leialearns.bridge.Static.getFarObject;

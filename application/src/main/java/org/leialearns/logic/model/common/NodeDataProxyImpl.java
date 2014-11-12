@@ -1,5 +1,7 @@
 package org.leialearns.logic.model.common;
 
+import org.leialearns.api.model.common.NodeData;
+import org.leialearns.api.model.common.NodeDataProxy;
 import org.leialearns.logic.model.Version;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.utilities.Setting;

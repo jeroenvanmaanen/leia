@@ -2,16 +2,16 @@ package org.leialearns.command.minimizer;
 
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
-import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.api.interaction.Symbol;
 import org.leialearns.logic.model.DeltaHelper;
-import org.leialearns.logic.model.common.NodeDataProxy;
-import org.leialearns.logic.model.histogram.Counter;
-import org.leialearns.logic.model.histogram.CounterLogger;
+import org.leialearns.api.model.common.NodeDataProxy;
+import org.leialearns.api.model.histogram.Counter;
+import org.leialearns.logic.model.CounterLogger;
 import org.leialearns.logic.model.histogram.DeltaDiff;
 import org.leialearns.logic.model.expectation.Expectation;
 import org.leialearns.logic.model.ExpectedModel;
 import org.leialearns.logic.model.expectation.Fraction;
-import org.leialearns.logic.model.histogram.Histogram;
+import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.logic.model.Observed;
 import org.leialearns.logic.model.Toggled;
 import org.leialearns.logic.model.Version;
@@ -32,7 +32,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 /**
  * Minimizes that total description length by optimizing the model of expected behavior.
  */
-public class Minimizer implements org.leialearns.command.api.Minimizer {
+public class Minimizer implements org.leialearns.api.command.Minimizer {
     public static final double LOG_2 = Math.log(2.0);
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Setting<String> interactionContextUri = new Setting<>("Interaction context URI");

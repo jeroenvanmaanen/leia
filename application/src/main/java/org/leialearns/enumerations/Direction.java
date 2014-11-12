@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Defines the possible values for the <code>direction</code> property of a {@link org.leialearns.logic.interaction.DirectedSymbol}.
+ * Defines the possible values for the <code>direction</code> property of a {@link org.leialearns.api.interaction.DirectedSymbol}.
  */
 public enum Direction {
 
@@ -19,7 +19,7 @@ public enum Direction {
     RESPONSE('<');
 
     private final char character;
-    private static final Map<Character,Direction> CHARACTER_DIRECTION_MAP = new HashMap<Character, Direction>();
+    private static final Map<Character,Direction> CHARACTER_DIRECTION_MAP = new HashMap<>();
 
     static {
         for (Direction direction : Direction.values()) {

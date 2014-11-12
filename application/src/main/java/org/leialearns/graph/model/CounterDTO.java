@@ -6,7 +6,7 @@ import org.leialearns.bridge.FarObject;
 import org.leialearns.graph.HasId;
 import org.leialearns.graph.interaction.SymbolDTO;
 import org.leialearns.graph.structure.NodeDTO;
-import org.leialearns.logic.model.histogram.Counter;
+import org.leialearns.api.model.histogram.Counter;
 import org.neo4j.graphdb.Direction;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;

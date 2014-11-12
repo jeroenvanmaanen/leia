@@ -1,4 +1,4 @@
-package org.leialearns.command.api;
+package org.leialearns.api.command;
 
 import org.leialearns.command.Command;
 import org.leialearns.logic.model.Expected;

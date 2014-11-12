@@ -9,13 +9,13 @@ import java.util.Map;
 public enum ModelType {
 
     /**
-     * Indicates a counted version that links {@link org.leialearns.logic.model.histogram.Counter}s to
-     * &lt;{@link org.leialearns.logic.structure.Node},{@link org.leialearns.logic.interaction.Symbol}&gt;-pairs
+     * Indicates a counted version that links {@link org.leialearns.api.model.histogram.Counter}s to
+     * &lt;{@link org.leialearns.logic.structure.Node},{@link org.leialearns.api.interaction.Symbol}&gt;-pairs
      */
     COUNTED,
 
     /**
-     * Indicates a version of the model of observed behavior that links {@link org.leialearns.logic.model.histogram.Histogram}s to
+     * Indicates a version of the model of observed behavior that links {@link org.leialearns.api.model.histogram.Histogram}s to
      * {@link org.leialearns.logic.structure.Node}s and has an associated delta version as well.
      */
     OBSERVED,

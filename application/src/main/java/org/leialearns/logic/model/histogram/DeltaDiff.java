@@ -1,5 +1,7 @@
 package org.leialearns.logic.model.histogram;
 
+import org.leialearns.api.model.histogram.Histogram;
+import org.leialearns.api.model.histogram.Modifiable;
 import org.leialearns.logic.model.Observed;
 import org.leialearns.logic.structure.Node;
 

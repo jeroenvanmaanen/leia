@@ -5,11 +5,13 @@ import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.HasId;
-import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.api.interaction.Symbol;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
+
+import javax.validation.constraints.NotNull;
 
 import static org.leialearns.utilities.Display.displayParts;
 import static org.leialearns.utilities.Display.show;
@@ -51,6 +53,7 @@ public class SymbolDTO extends BaseBridgeFacet implements HasId, FarObject<Symbo
         this.alphabet = alphabet;
     }
 
+    @SuppressWarnings("unused")
     public SymbolDTO getNextSymbol() {
         return nextSymbol;
     }
@@ -102,7 +105,7 @@ public class SymbolDTO extends BaseBridgeFacet implements HasId, FarObject<Symbo
     }
 
     @Override
-    public int compareTo(SymbolDTO symbol) {
+    public int compareTo(@NotNull SymbolDTO symbol) {
         int result = this.alphabet.compareTo(symbol.getAlphabet());
         if (result == 0) {
             result = this.denotation.compareTo(symbol.getDenotation());

@@ -1,4 +1,4 @@
-package org.leialearns.logic.interaction;
+package org.leialearns.api.interaction;
 
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;

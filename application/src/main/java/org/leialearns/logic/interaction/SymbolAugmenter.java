@@ -1,5 +1,7 @@
 package org.leialearns.logic.interaction;
 
+import org.leialearns.api.interaction.Alphabet;
+import org.leialearns.api.interaction.Symbol;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.logic.utilities.DescriptionLength;
@@ -18,7 +20,7 @@ public class SymbolAugmenter extends BaseBridgeFacet {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 
     /*
-     * @see org.leialearns.logic.interaction.Symbol#descriptionLength()
+     * @see org.leialearns.api.interaction.Symbol#descriptionLength()
      */
     @BridgeOverride
     public long descriptionLength() {

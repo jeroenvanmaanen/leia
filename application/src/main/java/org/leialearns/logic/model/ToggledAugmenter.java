@@ -4,7 +4,7 @@ import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
-import org.leialearns.logic.interaction.InteractionContext;
+import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.utilities.Setting;
 

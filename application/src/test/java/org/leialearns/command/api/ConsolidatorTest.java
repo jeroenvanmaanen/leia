@@ -3,6 +3,7 @@ package org.leialearns.command.api;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.leialearns.api.command.Consolidator;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.session.Session;
 import org.leialearns.utilities.ExecutionListener;

@@ -12,7 +12,7 @@ import org.leialearns.graph.structure.NodeDTO;
 import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.graph.structure.NodeRepository;
 import org.leialearns.graph.structure.StructureDTO;
-import org.leialearns.logic.model.histogram.CounterLogger;
+import org.leialearns.logic.model.CounterLogger;
 import org.leialearns.logic.model.Version;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.logic.utilities.Static;

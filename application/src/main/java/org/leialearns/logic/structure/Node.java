@@ -1,8 +1,10 @@
 package org.leialearns.logic.structure;
 
 import org.leialearns.enumerations.Direction;
-import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.api.interaction.Symbol;
 import org.leialearns.bridge.NearIterable;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * Defines the objects that represent nodes in the interaction history tree.
@@ -86,7 +88,7 @@ public interface Node extends Comparable<Node> {
      */
     void showPathReverse(StringBuilder builder);
 
-    int compareTo(Node other);
+    int compareTo(@NotNull Node other);
 
     /**
      * Represents a <code>NearIterable</code> that returns node items.

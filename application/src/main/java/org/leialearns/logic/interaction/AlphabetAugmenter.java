@@ -1,5 +1,6 @@
 package org.leialearns.logic.interaction;
 
+import org.leialearns.api.interaction.Alphabet;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.utilities.Setting;
@@ -18,7 +19,7 @@ public class AlphabetAugmenter extends BaseBridgeFacet {
     private Setting<Long> fixatedDescriptionLength = new Setting<>("Fixated description length");
 
     /*
-     * @see org.leialearns.logic.interaction.Alphabet#getFixatedDescriptionLength()
+     * @see org.leialearns.api.interaction.Alphabet#getFixatedDescriptionLength()
      */
     @BridgeOverride
     public long getFixatedDescriptionLength() {

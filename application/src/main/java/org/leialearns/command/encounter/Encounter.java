@@ -3,12 +3,12 @@ package org.leialearns.command.encounter;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.enumerations.ModelType;
-import org.leialearns.logic.interaction.Alphabet;
-import org.leialearns.logic.interaction.DirectedSymbol;
-import org.leialearns.logic.interaction.InteractionContext;
-import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.api.interaction.Alphabet;
+import org.leialearns.api.interaction.DirectedSymbol;
+import org.leialearns.api.interaction.InteractionContext;
+import org.leialearns.api.interaction.Symbol;
 import org.leialearns.logic.model.Counted;
-import org.leialearns.logic.model.histogram.Counter;
+import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.logic.model.Version;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.session.Session;
@@ -38,7 +38,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
  * uses a trivial implementation of the active part of <b>LEIA</b> with a single symbol: '.', that means
  * 'no action'.
  */
-public class Encounter implements org.leialearns.command.api.Encounter {
+public class Encounter implements org.leialearns.api.command.Encounter {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Setting<Boolean> limitFlag = new Setting<>("Limit flag", false);
     private final Setting<StreamAdapter> streamAdapter = new Setting<>("Stream adapter");

@@ -1,7 +1,8 @@
-package org.leialearns.logic.model.histogram;
+package org.leialearns.api.model.histogram;
 
-import org.leialearns.logic.interaction.Symbol;
-import org.leialearns.logic.model.common.NodeData;
+import org.leialearns.api.interaction.Symbol;
+import org.leialearns.api.model.common.NodeData;
+import org.leialearns.logic.model.histogram.HistogramTrace;
 import org.leialearns.utilities.TypedIterable;
 
 import java.util.function.Function;

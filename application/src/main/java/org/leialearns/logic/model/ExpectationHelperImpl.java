@@ -1,7 +1,7 @@
 package org.leialearns.logic.model;
 
-import org.leialearns.logic.interaction.Symbol;
-import org.leialearns.logic.model.common.NodeDataProxy;
+import org.leialearns.api.interaction.Symbol;
+import org.leialearns.api.model.common.NodeDataProxy;
 import org.leialearns.logic.model.common.NodeDataProxyImpl;
 import org.leialearns.logic.model.expectation.Estimate;
 import org.leialearns.logic.model.expectation.Expectation;

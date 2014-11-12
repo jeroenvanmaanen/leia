@@ -1,7 +1,7 @@
 package org.leialearns.logic.session;
 
-import org.leialearns.logic.interaction.Alphabet;
-import org.leialearns.logic.interaction.InteractionContext;
+import org.leialearns.api.interaction.Alphabet;
+import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.logic.model.expectation.Expectation;
 import org.leialearns.logic.model.expectation.Fraction;
 

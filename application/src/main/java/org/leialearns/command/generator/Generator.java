@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 import static org.leialearns.utilities.Static.getLoggingClass;
 
-public class Generator implements org.leialearns.command.api.Generator {
+public class Generator implements org.leialearns.api.command.Generator {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private static final long DEFAULT_LENGTH = 1000L;
 

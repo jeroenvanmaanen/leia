@@ -2,7 +2,7 @@ package org.leialearns.command.observer;
 
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
-import org.leialearns.logic.interaction.InteractionContext;
+import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.logic.model.Counted;
 import org.leialearns.logic.model.Observed;
 import org.leialearns.logic.model.Version;
@@ -21,7 +21,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 /**
  * Creates a new version of the model of observed behavior.
  */
-public class Observer implements org.leialearns.command.api.Observer {
+public class Observer implements org.leialearns.api.command.Observer {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private Observed lastCreated = null;
     private final Setting<String> interactionContextUri = new Setting<>("Interaction context URI");

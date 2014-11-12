@@ -3,7 +3,7 @@ package org.leialearns.graph.interaction;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.graph.HasId;
-import org.leialearns.logic.interaction.Alphabet;
+import org.leialearns.api.interaction.Alphabet;
 import org.neo4j.graphdb.Direction;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -11,6 +11,7 @@ import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -81,7 +82,7 @@ public class AlphabetDTO extends BaseBridgeFacet implements HasId, Serializable,
     }
 
     @Override
-    public int compareTo(AlphabetDTO alphabet) {
+    public int compareTo(@NotNull AlphabetDTO alphabet) {
         return this.uri.compareTo(alphabet.getURI());
     }
 

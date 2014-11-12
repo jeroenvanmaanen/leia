@@ -3,6 +3,7 @@ package org.leialearns.command.api;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.leialearns.api.command.Observer;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.logic.model.Counted;
 import org.leialearns.logic.model.ExpectedModel;

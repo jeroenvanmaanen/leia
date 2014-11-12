@@ -1,6 +1,8 @@
 package org.leialearns.logic.model.histogram;
 
-import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.api.model.histogram.Counter;
+import org.leialearns.api.model.histogram.Histogram;
+import org.leialearns.api.interaction.Symbol;
 import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;

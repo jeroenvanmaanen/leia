@@ -2,10 +2,10 @@ package org.leialearns.logic.session;
 
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
-import org.leialearns.logic.interaction.InteractionContext;
+import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.logic.model.Counted;
-import org.leialearns.logic.model.common.NodeDataProxy;
-import org.leialearns.logic.model.histogram.Histogram;
+import org.leialearns.api.model.common.NodeDataProxy;
+import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.logic.model.Toggled;
 import org.leialearns.logic.model.Version;
 import org.leialearns.logic.structure.Node;

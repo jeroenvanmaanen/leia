@@ -1,14 +1,10 @@
-package org.leialearns.logic.model.histogram;
+package org.leialearns.logic.model;
 
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.logic.interaction.Symbol;
-import org.leialearns.logic.model.Counted;
+import org.leialearns.api.interaction.Symbol;
 import org.leialearns.logic.model.expectation.Expectation;
-import org.leialearns.logic.model.Expected;
-import org.leialearns.logic.model.ExpectedModel;
 import org.leialearns.logic.model.expectation.Fraction;
-import org.leialearns.logic.model.Observed;
-import org.leialearns.logic.model.Version;
+import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.utilities.Pair;
 import org.slf4j.Logger;

@@ -1,6 +1,6 @@
 package org.leialearns.logic.model.expectation;
 
-import org.leialearns.logic.interaction.Symbol;
+import org.leialearns.api.interaction.Symbol;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.utilities.DescriptionLength;
 import org.leialearns.logic.utilities.PrefixFree;

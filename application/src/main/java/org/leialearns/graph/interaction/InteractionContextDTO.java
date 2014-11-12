@@ -4,7 +4,7 @@ import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.graph.HasId;
 import org.leialearns.graph.model.VersionDTO;
-import org.leialearns.logic.interaction.InteractionContext;
+import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.graph.structure.StructureDTO;
 import org.neo4j.graphdb.Direction;
 import org.slf4j.Logger;
@@ -16,6 +16,7 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 import static org.leialearns.utilities.Display.displayParts;
@@ -98,7 +99,7 @@ public class InteractionContextDTO extends BaseBridgeFacet implements HasId, Ser
         this.latestVersion = latestVersion;
     }
 
-    public int compareTo(InteractionContextDTO interactionContext) {
+    public int compareTo(@NotNull InteractionContextDTO interactionContext) {
         return this.uri.compareTo(interactionContext.getURI());
     }
 

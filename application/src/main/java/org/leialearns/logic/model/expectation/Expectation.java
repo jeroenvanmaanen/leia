@@ -1,7 +1,7 @@
 package org.leialearns.logic.model.expectation;
 
-import org.leialearns.logic.interaction.Symbol;
-import org.leialearns.logic.model.common.NodeData;
+import org.leialearns.api.interaction.Symbol;
+import org.leialearns.api.model.common.NodeData;
 import org.leialearns.utilities.TypedIterable;
 
 import java.util.Collection;

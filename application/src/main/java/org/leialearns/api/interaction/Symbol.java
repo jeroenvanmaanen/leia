@@ -1,4 +1,4 @@
-package org.leialearns.logic.interaction;
+package org.leialearns.api.interaction;
 
 import org.leialearns.bridge.NearIterable;
 import org.leialearns.enumerations.Direction;

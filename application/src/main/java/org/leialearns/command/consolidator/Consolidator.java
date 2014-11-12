@@ -2,7 +2,7 @@ package org.leialearns.command.consolidator;
 
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
-import org.leialearns.logic.interaction.InteractionContext;
+import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.logic.model.Expected;
 import org.leialearns.logic.model.Observed;
 import org.leialearns.logic.model.Toggled;
@@ -21,7 +21,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
 /**
  * Consolidates toggled versions into a version of the model of expected behavior that can be queried efficiently.
  */
-public class Consolidator implements org.leialearns.command.api.Consolidator {
+public class Consolidator implements org.leialearns.api.command.Consolidator {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
     private final Setting<String> interactionContextUri = new Setting<>("Interaction context URI");
     private final Expected lastExpected = null;
