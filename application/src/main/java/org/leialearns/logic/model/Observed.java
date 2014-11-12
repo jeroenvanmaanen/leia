@@ -2,8 +2,8 @@ package org.leialearns.logic.model;
 
 import org.leialearns.api.model.common.NodeDataProxy;
 import org.leialearns.api.model.histogram.CounterUpdate;
-import org.leialearns.logic.model.histogram.DeltaDiff;
 import org.leialearns.api.model.histogram.Histogram;
+import org.leialearns.logic.model.histogram.DeltaDiffMap;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.utilities.TypedIterable;
 
@@ -39,5 +39,5 @@ public interface Observed extends TypedVersionExtension {
     void logCounters();
     void logCounters(Node node);
     void check();
-    void check(DeltaDiff.Map deltaDiffMap, ExpectedModel expectedModel);
+    void check(DeltaDiffMap deltaDiffMap, ExpectedModel expectedModel);
 }

@@ -3,6 +3,7 @@ package org.leialearns.logic.model;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.logic.model.histogram.DeltaDiff;
 import org.leialearns.api.model.histogram.Histogram;
+import org.leialearns.logic.model.histogram.DeltaDiffMap;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.logic.structure.Structure;
 import org.slf4j.Logger;
@@ -25,11 +26,11 @@ public class CheckHelper {
     }
 
     @BridgeOverride
-    public void check(Observed observed, DeltaDiff.Map deltaDiffMap, ExpectedModel expectedModel) {
+    public void check(Observed observed, DeltaDiffMap deltaDiffMap, ExpectedModel expectedModel) {
         check(CheckMode.FULL, observed, deltaDiffMap, expectedModel);
     }
 
-    public void check(CheckMode mode, Observed observed, DeltaDiff.Map deltaDiffMap, ExpectedModel expectedModel) {
+    public void check(CheckMode mode, Observed observed, DeltaDiffMap deltaDiffMap, ExpectedModel expectedModel) {
         Structure structure = observed.getVersion().getInteractionContext().getStructure();
         for (Node root : structure.findRootNodes()) {
             check(mode, root, observed, deltaDiffMap, expectedModel);
@@ -53,13 +54,13 @@ public class CheckHelper {
         check(mode, node, observed, null, expectedModel);
     }
 
-    protected void check(CheckMode mode, Node node, Observed observed, DeltaDiff.Map deltaDiffMap, ExpectedModel expectedModel) {
+    protected void check(CheckMode mode, Node node, Observed observed, DeltaDiffMap deltaDiffMap, ExpectedModel expectedModel) {
         Histogram sumObserved = observed.createTransientHistogram("sum observed");
         Histogram sumDelta = observed.createTransientHistogram("sum delta");
         check(mode, node, observed, deltaDiffMap, expectedModel, sumObserved, sumDelta);
     }
 
-    protected void check(CheckMode mode, Node node, Observed observed, DeltaDiff.Map deltaDiffMap, ExpectedModel expectedModel, Histogram parentObserved, Histogram parentDelta) {
+    protected void check(CheckMode mode, Node node, Observed observed, DeltaDiffMap deltaDiffMap, ExpectedModel expectedModel, Histogram parentObserved, Histogram parentDelta) {
         boolean isIncluded = expectedModel.isIncluded(node);
         String context = displayParts(node,observed);
 

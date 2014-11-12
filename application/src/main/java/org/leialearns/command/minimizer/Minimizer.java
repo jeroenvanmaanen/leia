@@ -15,6 +15,8 @@ import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.logic.model.Observed;
 import org.leialearns.logic.model.Toggled;
 import org.leialearns.logic.model.Version;
+import org.leialearns.logic.model.histogram.DeltaDiffMap;
+import org.leialearns.logic.model.histogram.HistogramOperator;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
@@ -27,6 +29,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.leialearns.logic.model.histogram.HistogramOperator.ADD_TO;
+import static org.leialearns.logic.model.histogram.HistogramOperator.SUBTRACT_FROM;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 /**
@@ -88,7 +92,7 @@ public class Minimizer implements org.leialearns.api.command.Minimizer {
         Observed observed = lastObserved.createObservedVersion();
         Structure structure = session.getInteractionContext().getStructure();
         Node.Iterable rootNodes = structure.findRootNodes();
-        DeltaDiff.Map deltaDiffMap = deltaHelper.createHashDeltaDiffMap();
+        DeltaDiffMap deltaDiffMap = deltaHelper.createHashDeltaDiffMap();
         deltaHelper.getDeltaDiff(deltaDiffMap, observed, expectedModel);
         if (logger.isDebugEnabled()) {
             observed.check(deltaDiffMap, expectedModel);
@@ -106,7 +110,7 @@ public class Minimizer implements org.leialearns.api.command.Minimizer {
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     protected void minimize(Node node, MinimizationContext context, Node includedAncestor, NodeDataProxy<Histogram> ancestorObserved, Histogram ancestorDeltaBase, DeltaDiff ancestorDeltaDiff) {
-        DeltaDiff.Map deltaDiffMap = context.deltaDiffMap;
+        DeltaDiffMap deltaDiffMap = context.deltaDiffMap;
         Observed observed = context.observed;
         ExpectedModel expectedModel = context.expectedModel;
         DeltaDiff deltaDiff = deltaDiffMap.get(node);
@@ -167,7 +171,7 @@ public class Minimizer implements org.leialearns.api.command.Minimizer {
                     deltaDiff.subtractFrom(deltaChange);
                 }
 
-                DeltaDiff.Operator operator = DeltaDiff.getOperatorSubtract(nowIncluded);
+                HistogramOperator operator = SUBTRACT_FROM.derive(nowIncluded);
 
                 deltaHelper.add(deltaDiffMap, observed, node.getParent());
                 Node a = node;
@@ -243,7 +247,7 @@ public class Minimizer implements org.leialearns.api.command.Minimizer {
             }
 
             // Modify the ancestor data to reflect the toggled node
-            DeltaDiff.Operator operator = DeltaDiff.getOperatorAdd(nowIncluded);
+            HistogramOperator operator = ADD_TO.derive(nowIncluded);
             modification.modify(operator, ancestorData);
 
             if (ancestorData.isEmpty()) {
@@ -312,11 +316,11 @@ public class Minimizer implements org.leialearns.api.command.Minimizer {
 
     protected class MinimizationContext {
         private final Runtime runtime = Runtime.getRuntime();
-        private final DeltaDiff.Map deltaDiffMap;
+        private final DeltaDiffMap deltaDiffMap;
         private final Observed observed;
         private ExpectedModel expectedModel;
         private final Session session;
-        protected MinimizationContext(DeltaDiff.Map deltaDiffMap, Observed observed, ExpectedModel expectedModel, Session session) {
+        protected MinimizationContext(DeltaDiffMap deltaDiffMap, Observed observed, ExpectedModel expectedModel, Session session) {
             this.deltaDiffMap = deltaDiffMap;
             this.observed = observed;
             this.expectedModel = expectedModel;

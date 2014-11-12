@@ -6,6 +6,9 @@ import org.leialearns.enumerations.ModelType;
 import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.logic.model.histogram.DeltaDiff;
 import org.leialearns.api.model.histogram.Histogram;
+import org.leialearns.logic.model.histogram.DeltaDiffImpl;
+import org.leialearns.logic.model.histogram.DeltaDiffMap;
+import org.leialearns.logic.model.histogram.HistogramOperator;
 import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
 import org.slf4j.Logger;
@@ -19,6 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static org.leialearns.logic.model.histogram.HistogramOperator.ADD_TO;
 import static org.leialearns.logic.utilities.Static.getVersionOrdinal;
 import static org.leialearns.utilities.Display.display;
 
@@ -114,7 +118,7 @@ public class DeltaHelper {
         }
     }
 
-    public void getDeltaDiff(DeltaDiff.Map deltaDiffMap, Observed observed, ExpectedModel expectedModel) {
+    public void getDeltaDiff(DeltaDiffMap deltaDiffMap, Observed observed, ExpectedModel expectedModel) {
         Toggled oldToggled = observed.getToggled();
         Toggled newToggled;
         if (expectedModel instanceof Expected) {
@@ -151,10 +155,10 @@ public class DeltaHelper {
                 if (isIncluded != wasIncluded) {
                     logger.debug("  " + wasIncluded + " -> " + isIncluded);
                     DeltaDiff mutation = createDeltaDiff(node, observed, "mutation");
-                    DeltaDiff.Operator operator;
+                    HistogramOperator operator;
                     mutation.add(observed.createHistogram(node));
                     mutation.subtract(observed.createDeltaHistogram(node));
-                    operator = DeltaDiff.getOperatorAdd(isIncluded);
+                    operator = ADD_TO.derive(isIncluded);
                     add(deltaDiffMap, observed, node.getParent(), expectedModel, mutation, operator);
                 }
             }
@@ -162,14 +166,14 @@ public class DeltaHelper {
         }
     }
 
-    public void add(DeltaDiff.Map deltaDiffMap, Observed observed, Node node) {
+    public void add(DeltaDiffMap deltaDiffMap, Observed observed, Node node) {
         if (node != null) {
             add(deltaDiffMap, observed, node.getParent());
             createDeltaDiff(deltaDiffMap, node, observed);
         }
     }
 
-    protected void add(DeltaDiff.Map deltaDiffMap, Observed observed, Node node, ExpectedModel expectedModel, DeltaDiff mutation, DeltaDiff.Operator operator) {
+    protected void add(DeltaDiffMap deltaDiffMap, Observed observed, Node node, ExpectedModel expectedModel, DeltaDiff mutation, HistogramOperator operator) {
         if (node != null) {
             if (expectedModel.isIncluded(node)) {
                 add(deltaDiffMap, observed, node.getParent());
@@ -182,7 +186,7 @@ public class DeltaHelper {
         }
     }
 
-    protected DeltaDiff createDeltaDiff(DeltaDiff.Map deltaDiffMap, Node node, Observed observed) {
+    protected DeltaDiff createDeltaDiff(DeltaDiffMap deltaDiffMap, Node node, Observed observed) {
         DeltaDiff result = null;
         if (deltaDiffMap.containsKey(node)) {
             result = deltaDiffMap.get(node);
@@ -202,14 +206,14 @@ public class DeltaHelper {
     }
 
     public DeltaDiff createDeltaDiff(Node node, Observed observed, String label) {
-        return new DeltaDiff(node, observed, label);
+        return new DeltaDiffImpl(node, observed, label);
     }
 
     public HashDeltaDiffMap createHashDeltaDiffMap() {
         return new HashDeltaDiffMap();
     }
 
-    public class HashDeltaDiffMap extends HashMap<Node,DeltaDiff> implements DeltaDiff.Map {}
+    public class HashDeltaDiffMap extends HashMap<Node,DeltaDiff> implements DeltaDiffMap {}
 
     protected Map<Node, Boolean> getToggledNodes(Iterable<Version> versions) {
         return getToggledNodes(null, versions);
