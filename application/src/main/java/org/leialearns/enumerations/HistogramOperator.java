@@ -1,4 +1,4 @@
-package org.leialearns.logic.model.histogram;
+package org.leialearns.enumerations;
 
 import java.util.HashMap;
 import java.util.Map;

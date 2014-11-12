@@ -1,9 +1,9 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.logic.model.histogram.DeltaDiff;
+import org.leialearns.api.model.histogram.DeltaDiff;
 import org.leialearns.api.model.histogram.Histogram;
-import org.leialearns.logic.model.histogram.DeltaDiffMap;
+import org.leialearns.api.model.histogram.DeltaDiffMap;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.logic.structure.Structure;
 import org.slf4j.Logger;

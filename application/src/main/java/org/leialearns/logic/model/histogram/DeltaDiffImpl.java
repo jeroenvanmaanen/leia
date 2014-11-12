@@ -1,21 +1,25 @@
 package org.leialearns.logic.model.histogram;
 
+import org.leialearns.api.model.histogram.DeltaDiff;
 import org.leialearns.api.model.histogram.Histogram;
+import org.leialearns.api.model.histogram.HistogramFactory;
 import org.leialearns.api.model.histogram.Modifiable;
-import org.leialearns.logic.model.Observed;
+import org.leialearns.enumerations.HistogramOperator;
 import org.leialearns.logic.structure.Node;
 
 public class DeltaDiffImpl implements DeltaDiff {
     private final Node node;
     private final Histogram deltaAdditions;
     private final Histogram deltaSubtractions;
+    private final HistogramFactory histogramFactory;
 
-    public DeltaDiffImpl(Node node, Observed observed, String label) {
+    public DeltaDiffImpl(Node node, String label, HistogramFactory histogramFactory) {
         this.node = node;
+        this.histogramFactory = histogramFactory;
         String suffix = (label != null && label.length() > 0 ? ": " + label : "");
-        deltaAdditions = observed.createTransientHistogram("Delta additions" + suffix);
+        deltaAdditions = createTransientHistogram("Delta additions" + suffix);
         deltaAdditions.setLocation(() -> String.valueOf(node));
-        deltaSubtractions = observed.createTransientHistogram("Delta subtractions" + suffix);
+        deltaSubtractions = createTransientHistogram("Delta subtractions" + suffix);
         deltaSubtractions.setLocation(() -> String.valueOf(node));
     }
 
@@ -62,6 +66,12 @@ public class DeltaDiffImpl implements DeltaDiff {
             default:
                 throw new IllegalArgumentException("Unknown operator: " + operator);
         }
+    }
+
+    private Histogram createTransientHistogram(String label) {
+        Histogram result = histogramFactory.createHistogram();
+        result.setLabel(label);
+        return result;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.leialearns.command.minimizer;
 
+import org.leialearns.api.model.histogram.HistogramFactory;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.api.interaction.Symbol;
@@ -7,7 +8,7 @@ import org.leialearns.logic.model.DeltaHelper;
 import org.leialearns.api.model.common.NodeDataProxy;
 import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.logic.model.CounterLogger;
-import org.leialearns.logic.model.histogram.DeltaDiff;
+import org.leialearns.api.model.histogram.DeltaDiff;
 import org.leialearns.api.model.expectation.Expectation;
 import org.leialearns.logic.model.ExpectedModel;
 import org.leialearns.api.model.expectation.Fraction;
@@ -15,8 +16,8 @@ import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.logic.model.Observed;
 import org.leialearns.logic.model.Toggled;
 import org.leialearns.logic.model.Version;
-import org.leialearns.logic.model.histogram.DeltaDiffMap;
-import org.leialearns.logic.model.histogram.HistogramOperator;
+import org.leialearns.api.model.histogram.DeltaDiffMap;
+import org.leialearns.enumerations.HistogramOperator;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
@@ -29,8 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.leialearns.logic.model.histogram.HistogramOperator.ADD_TO;
-import static org.leialearns.logic.model.histogram.HistogramOperator.SUBTRACT_FROM;
+import static org.leialearns.enumerations.HistogramOperator.ADD_TO;
+import static org.leialearns.enumerations.HistogramOperator.SUBTRACT_FROM;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 /**
@@ -49,6 +50,9 @@ public class Minimizer implements org.leialearns.api.command.Minimizer {
 
     @Autowired
     private DeltaHelper deltaHelper;
+
+    @Autowired
+    private HistogramFactory histogramFactory;
 
     @Autowired
     private CounterLogger counterLogger;
@@ -164,7 +168,7 @@ public class Minimizer implements org.leialearns.api.command.Minimizer {
                 logger.info("Toggle: " + node);
                 expectedModel = context.expectedModel;
                 context.expectedModel = toggled;
-                DeltaDiff deltaChange = deltaHelper.createDeltaDiff(node, observed, "toggle");
+                DeltaDiff deltaChange = histogramFactory.createDeltaDiff(node, "toggle");
                 deltaChange.add(observedHistogram.getData());
                 deltaChange.subtract(deltaBase);
                 if (deltaDiff != null) {
@@ -173,7 +177,7 @@ public class Minimizer implements org.leialearns.api.command.Minimizer {
 
                 HistogramOperator operator = SUBTRACT_FROM.derive(nowIncluded);
 
-                deltaHelper.add(deltaDiffMap, observed, node.getParent());
+                deltaHelper.add(deltaDiffMap, node.getParent());
                 Node a = node;
                 do {
                     a = a.getParent();
@@ -221,7 +225,7 @@ public class Minimizer implements org.leialearns.api.command.Minimizer {
         long currentDescriptionLength = descriptionLength(ancestorData, ancestorExpectation, symbols);
         long newDescriptionLength = 0L;
 
-        DeltaDiff modification = deltaHelper.createDeltaDiff(null, observed, "evaluate");
+        DeltaDiff modification = histogramFactory.createDeltaDiff(null, "evaluate");
         modification.add(observedHistogramProxy.getData());
         if (deltaDiff != null) {
             deltaDiff.subtractFrom(modification);

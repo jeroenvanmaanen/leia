@@ -1,5 +1,6 @@
 package org.leialearns.logic.model;
 
+import org.leialearns.api.model.histogram.HistogramFactory;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
@@ -9,15 +10,13 @@ import org.leialearns.api.model.common.NodeDataProxy;
 import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.api.model.histogram.CounterUpdate;
 import org.leialearns.api.model.histogram.Histogram;
-import org.leialearns.logic.model.histogram.HistogramObject;
 import org.leialearns.logic.model.histogram.TransientCounter;
 import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +26,9 @@ import static org.leialearns.utilities.Display.displayParts;
 public class ObservedHelper {
     private static final Logger logger = LoggerFactory.getLogger(new Object(){}.getClass().getEnclosingClass());
 
+    @Autowired
+    private HistogramFactory histogramFactory;
+
     @BridgeOverride
     public Histogram createTransientHistogram(Observed observed, String label) {
         Histogram result = createTransientHistogram(observed);
@@ -35,7 +37,7 @@ public class ObservedHelper {
     }
 
     public Histogram createTransientHistogram(@SuppressWarnings("unused") Observed observed) {
-        return createHistogram();
+        return histogramFactory.createHistogram();
     }
 
     @BridgeOverride
@@ -66,7 +68,7 @@ public class ObservedHelper {
             }
         }
         if (histogram == null) {
-            histogram = createHistogram();
+            histogram = histogramFactory.createHistogram();
             if (label != null && label.length() > 0) {
                 histogram.setLabel(label);
             }
@@ -85,12 +87,6 @@ public class ObservedHelper {
             owner.putHistogram(proxy);
         }
         return proxy;
-    }
-
-    @Bean
-    @Scope(value = "prototype")
-    public Histogram createHistogram() {
-        return new HistogramObject();
     }
 
     @BridgeOverride

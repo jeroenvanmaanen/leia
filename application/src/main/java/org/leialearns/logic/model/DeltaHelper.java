@@ -1,14 +1,14 @@
 package org.leialearns.logic.model;
 
+import org.leialearns.api.model.histogram.HistogramFactory;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.api.interaction.InteractionContext;
-import org.leialearns.logic.model.histogram.DeltaDiff;
+import org.leialearns.api.model.histogram.DeltaDiff;
 import org.leialearns.api.model.histogram.Histogram;
-import org.leialearns.logic.model.histogram.DeltaDiffImpl;
-import org.leialearns.logic.model.histogram.DeltaDiffMap;
-import org.leialearns.logic.model.histogram.HistogramOperator;
+import org.leialearns.api.model.histogram.DeltaDiffMap;
+import org.leialearns.enumerations.HistogramOperator;
 import org.leialearns.logic.session.Session;
 import org.leialearns.logic.structure.Node;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static org.leialearns.logic.model.histogram.HistogramOperator.ADD_TO;
+import static org.leialearns.enumerations.HistogramOperator.ADD_TO;
 import static org.leialearns.logic.utilities.Static.getVersionOrdinal;
 import static org.leialearns.utilities.Display.display;
 
@@ -31,6 +31,9 @@ public class DeltaHelper {
 
     @Autowired
     private CheckHelper checkHelper;
+
+    @Autowired
+    private HistogramFactory histogramFactory;
 
     @BridgeOverride
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
@@ -154,39 +157,39 @@ public class DeltaHelper {
                 boolean isIncluded = expectedModel.isIncluded(node);
                 if (isIncluded != wasIncluded) {
                     logger.debug("  " + wasIncluded + " -> " + isIncluded);
-                    DeltaDiff mutation = createDeltaDiff(node, observed, "mutation");
+                    DeltaDiff mutation = histogramFactory.createDeltaDiff(node, "mutation");
                     HistogramOperator operator;
                     mutation.add(observed.createHistogram(node));
                     mutation.subtract(observed.createDeltaHistogram(node));
                     operator = ADD_TO.derive(isIncluded);
-                    add(deltaDiffMap, observed, node.getParent(), expectedModel, mutation, operator);
+                    add(deltaDiffMap, node.getParent(), expectedModel, mutation, operator);
                 }
             }
             logger.debug("}");
         }
     }
 
-    public void add(DeltaDiffMap deltaDiffMap, Observed observed, Node node) {
+    public void add(DeltaDiffMap deltaDiffMap, Node node) {
         if (node != null) {
-            add(deltaDiffMap, observed, node.getParent());
-            createDeltaDiff(deltaDiffMap, node, observed);
+            add(deltaDiffMap, node.getParent());
+            createDeltaDiff(deltaDiffMap, node);
         }
     }
 
-    protected void add(DeltaDiffMap deltaDiffMap, Observed observed, Node node, ExpectedModel expectedModel, DeltaDiff mutation, HistogramOperator operator) {
+    protected void add(DeltaDiffMap deltaDiffMap, Node node, ExpectedModel expectedModel, DeltaDiff mutation, HistogramOperator operator) {
         if (node != null) {
             if (expectedModel.isIncluded(node)) {
-                add(deltaDiffMap, observed, node.getParent());
+                add(deltaDiffMap, node.getParent());
             } else {
-                add(deltaDiffMap, observed, node.getParent(), expectedModel, mutation, operator);
+                add(deltaDiffMap, node.getParent(), expectedModel, mutation, operator);
             }
-            DeltaDiff deltaDiff = createDeltaDiff(deltaDiffMap, node, observed);
+            DeltaDiff deltaDiff = createDeltaDiff(deltaDiffMap, node);
             logger.debug("  Mutation: " + mutation);
             mutation.modify(operator, deltaDiff);
         }
     }
 
-    protected DeltaDiff createDeltaDiff(DeltaDiffMap deltaDiffMap, Node node, Observed observed) {
+    protected DeltaDiff createDeltaDiff(DeltaDiffMap deltaDiffMap, Node node) {
         DeltaDiff result = null;
         if (deltaDiffMap.containsKey(node)) {
             result = deltaDiffMap.get(node);
@@ -196,17 +199,13 @@ public class DeltaHelper {
             if (parent != null && (!deltaDiffMap.containsKey(parent) || deltaDiffMap.get(parent) == null)) {
                 throw new IllegalArgumentException("Parent of node not in deltaDiffMap: " + node);
             }
-            result = createDeltaDiff(node, observed, "add");
+            result = histogramFactory.createDeltaDiff(node, "add");
             deltaDiffMap.put(node, result);
             logger.debug("  New delta diff: " + result);
         } else {
             logger.debug("  Data diff exists: " + result);
         }
         return result;
-    }
-
-    public DeltaDiff createDeltaDiff(Node node, Observed observed, String label) {
-        return new DeltaDiffImpl(node, observed, label);
     }
 
     public HashDeltaDiffMap createHashDeltaDiffMap() {
