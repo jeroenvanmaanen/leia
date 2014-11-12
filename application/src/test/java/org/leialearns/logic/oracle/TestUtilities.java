@@ -1,4 +1,4 @@
-package org.leialearns.logic.utilities;
+package org.leialearns.logic.oracle;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

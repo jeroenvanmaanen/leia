@@ -245,7 +245,7 @@
         <property name="interactionContextUri" value="http://leialearns.org/test/encounter" />
     </bean>
 
-    <bean id="oracle" class="org.leialearns.logic.utilities.Oracle">
+    <bean id="oracle" class="org.leialearns.logic.oracle.Oracle">
         <property name="data" value="/leia-oracle.data" />
     </bean>
 

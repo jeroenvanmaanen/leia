@@ -1,4 +1,4 @@
-package org.leialearns.logic.utilities;
+package org.leialearns.logic.oracle;
 
 import org.leialearns.api.interaction.Symbol;
 import org.leialearns.api.model.expectation.Expectation;
@@ -7,6 +7,7 @@ import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.api.session.Root;
 import org.leialearns.api.session.Session;
+import org.leialearns.logic.utilities.PrefixFree;
 import org.leialearns.utilities.Pair;
 import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TypedIterable;

@@ -17,7 +17,7 @@ import org.leialearns.api.session.Root;
 import org.leialearns.api.session.Session;
 import org.leialearns.api.structure.Node;
 import org.leialearns.api.structure.Structure;
-import org.leialearns.logic.utilities.Oracle;
+import org.leialearns.logic.oracle.Oracle;
 import org.leialearns.utilities.ExecutionListener;
 import org.leialearns.utilities.GraphDumper;
 import org.leialearns.utilities.Setting;
@@ -39,7 +39,7 @@ import java.util.TreeSet;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.leialearns.logic.utilities.TestUtilities.assertAtEnd;
+import static org.leialearns.logic.oracle.TestUtilities.assertAtEnd;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 @RunWith(SpringJUnit4ClassRunner.class)

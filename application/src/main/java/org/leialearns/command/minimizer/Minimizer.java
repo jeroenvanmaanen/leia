@@ -22,7 +22,7 @@ import org.leialearns.api.structure.Node;
 import org.leialearns.api.structure.Structure;
 import org.leialearns.logic.model.CounterLogger;
 import org.leialearns.logic.model.DeltaHelper;
-import org.leialearns.logic.utilities.Oracle;
+import org.leialearns.logic.oracle.Oracle;
 import org.leialearns.utilities.Setting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

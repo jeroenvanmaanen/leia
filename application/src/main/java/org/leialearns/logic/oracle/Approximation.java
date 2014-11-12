@@ -1,4 +1,4 @@
-package org.leialearns.logic.utilities;
+package org.leialearns.logic.oracle;
 
 import org.leialearns.api.model.expectation.Fraction;
 import org.leialearns.logic.model.expectation.TransientFraction;
