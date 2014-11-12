@@ -13,7 +13,7 @@ public interface Structure {
     /**
      * Returns the identifying URI of this structure.
      * @return The identifying URI of this structure
-     * @see org.leialearns.logic.session.Root#createInteractionContext(String, String, String, String)
+     * @see org.leialearns.api.session.Root#createInteractionContext(String, String, String, String)
      */
     String getURI();
 

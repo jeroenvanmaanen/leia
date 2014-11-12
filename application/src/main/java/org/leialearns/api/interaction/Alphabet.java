@@ -21,7 +21,7 @@ public interface Alphabet extends Comparable<Alphabet> {
     /**
      * Returns the identifying URI of this alphabet.
      * @return The identifying URI of this alphabet
-     * @see org.leialearns.logic.session.Root#createInteractionContext(String, String, String, String)
+     * @see org.leialearns.api.session.Root#createInteractionContext(String, String, String, String)
      */
     String getURI();
 

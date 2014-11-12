@@ -1,4 +1,4 @@
-package org.leialearns.logic.session;
+package org.leialearns.api.session;
 
 import org.leialearns.api.enumerations.AccessMode;
 import org.leialearns.api.enumerations.ModelType;

@@ -1,5 +1,6 @@
 package org.leialearns.graph.session;
 
+import org.leialearns.api.session.Root;
 import org.leialearns.bridge.BridgeFactory;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.bridge.FarObject;
@@ -10,7 +11,6 @@ import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.structure.StructureDAO;
 import org.leialearns.graph.structure.StructureDTO;
 import org.leialearns.logic.session.NeedsRoot;
-import org.leialearns.logic.session.Root;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

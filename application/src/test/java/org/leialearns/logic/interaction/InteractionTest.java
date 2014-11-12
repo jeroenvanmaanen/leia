@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.leialearns.api.interaction.Alphabet;
 import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.api.interaction.Symbol;
-import org.leialearns.logic.session.Root;
+import org.leialearns.api.session.Root;
 import org.leialearns.utilities.ExecutionListener;
 import org.leialearns.utilities.TestUtilities;
 import org.leialearns.utilities.TransactionHelper;

@@ -1,8 +1,8 @@
 package org.leialearns.logic.model.expectation;
 
 import org.leialearns.api.model.expectation.Fraction;
+import org.leialearns.api.session.Root;
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.logic.session.Root;
 
 public class FractionHelper {
 
