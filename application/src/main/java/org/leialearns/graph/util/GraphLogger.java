@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static java.lang.String.format;
-import static org.leialearns.logic.utilities.Static.compare;
+import static org.leialearns.logic.common.Static.compare;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 public class GraphLogger {
@@ -31,7 +31,7 @@ public class GraphLogger {
     @Autowired
     ExecutionEngine executionEngine;
 
-    public void log(String label, Object object, int radius) {
+    public void log(String label, Object object, @SuppressWarnings("unused") int radius) {
         Long nodeId;
         if (object instanceof NodeBacked) {
             nodeId = ((NodeBacked) object).getNodeId();

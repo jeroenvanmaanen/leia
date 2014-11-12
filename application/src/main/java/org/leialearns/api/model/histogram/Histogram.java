@@ -1,7 +1,7 @@
 package org.leialearns.api.model.histogram;
 
+import org.leialearns.api.common.NodeData;
 import org.leialearns.api.interaction.Symbol;
-import org.leialearns.api.model.common.NodeData;
 import org.leialearns.utilities.TypedIterable;
 
 import java.util.function.Function;

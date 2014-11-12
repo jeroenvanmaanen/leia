@@ -1,12 +1,12 @@
 package org.leialearns.api.session;
 
+import org.leialearns.api.common.NodeDataProxy;
 import org.leialearns.api.enumerations.AccessMode;
 import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.api.model.Counted;
 import org.leialearns.api.model.Toggled;
 import org.leialearns.api.model.Version;
-import org.leialearns.api.model.common.NodeDataProxy;
 import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.api.structure.Node;
 

@@ -1,7 +1,7 @@
 package org.leialearns.logic.session;
 
+import org.leialearns.api.common.NodeDataProxy;
 import org.leialearns.api.model.Version;
-import org.leialearns.api.model.common.NodeDataProxy;
 import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.api.structure.Node;
 import org.leialearns.bridge.BridgeOverride;

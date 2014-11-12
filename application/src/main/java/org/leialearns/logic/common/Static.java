@@ -1,4 +1,4 @@
-package org.leialearns.logic.utilities;
+package org.leialearns.logic.common;
 
 import org.leialearns.api.model.TypedVersionExtension;
 import org.leialearns.api.model.Version;

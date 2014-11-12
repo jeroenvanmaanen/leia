@@ -1,7 +1,7 @@
 package org.leialearns.api.model.expectation;
 
+import org.leialearns.api.common.Locus;
 import org.leialearns.bridge.NearIterable;
-import org.leialearns.api.model.common.Locus;
 
 public interface Estimate extends Locus {
     Fraction getFraction();

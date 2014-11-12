@@ -1,16 +1,16 @@
 package org.leialearns.logic.model;
 
+import org.leialearns.api.common.NodeDataProxy;
 import org.leialearns.api.interaction.Symbol;
 import org.leialearns.api.model.ExpectedModel;
 import org.leialearns.api.model.Toggled;
 import org.leialearns.api.model.Version;
-import org.leialearns.api.model.common.NodeDataProxy;
 import org.leialearns.api.model.expectation.Estimate;
 import org.leialearns.api.model.expectation.Expectation;
 import org.leialearns.api.model.expectation.Fraction;
 import org.leialearns.api.session.Root;
 import org.leialearns.api.structure.Node;
-import org.leialearns.logic.model.common.NodeDataProxyImpl;
+import org.leialearns.logic.common.NodeDataProxyImpl;
 import org.leialearns.logic.model.expectation.ExpectationObject;
 import org.leialearns.logic.model.expectation.TransientFraction;
 import org.slf4j.Logger;

@@ -1,6 +1,6 @@
 package org.leialearns.api.model;
 
-import org.leialearns.api.model.common.NodeDataProxy;
+import org.leialearns.api.common.NodeDataProxy;
 import org.leialearns.api.model.histogram.CounterUpdate;
 import org.leialearns.api.model.histogram.DeltaDiffMap;
 import org.leialearns.api.model.histogram.Histogram;

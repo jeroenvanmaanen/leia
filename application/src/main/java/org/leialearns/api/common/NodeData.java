@@ -1,4 +1,4 @@
-package org.leialearns.api.model.common;
+package org.leialearns.api.common;
 
 import java.util.function.Supplier;
 

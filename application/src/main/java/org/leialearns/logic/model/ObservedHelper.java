@@ -1,5 +1,6 @@
 package org.leialearns.logic.model;
 
+import org.leialearns.api.common.NodeDataProxy;
 import org.leialearns.api.enumerations.AccessMode;
 import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.api.interaction.Symbol;
@@ -8,7 +9,6 @@ import org.leialearns.api.model.ExpectedModel;
 import org.leialearns.api.model.Observed;
 import org.leialearns.api.model.Toggled;
 import org.leialearns.api.model.Version;
-import org.leialearns.api.model.common.NodeDataProxy;
 import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.api.model.histogram.CounterUpdate;
 import org.leialearns.api.model.histogram.Histogram;
@@ -16,7 +16,7 @@ import org.leialearns.api.model.histogram.HistogramFactory;
 import org.leialearns.api.session.Session;
 import org.leialearns.api.structure.Node;
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.logic.model.common.NodeDataProxyImpl;
+import org.leialearns.logic.common.NodeDataProxyImpl;
 import org.leialearns.logic.model.histogram.TransientCounter;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;

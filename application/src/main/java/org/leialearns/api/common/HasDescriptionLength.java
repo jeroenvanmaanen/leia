@@ -1,4 +1,4 @@
-package org.leialearns.logic.utilities;
+package org.leialearns.api.common;
 
 /**
  * <p>Provides a method to get the description length of the implementing object. This depends of the availability

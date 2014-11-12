@@ -1,5 +1,6 @@
 package org.leialearns.command.minimizer;
 
+import org.leialearns.api.common.NodeDataProxy;
 import org.leialearns.api.enumerations.AccessMode;
 import org.leialearns.api.enumerations.HistogramOperator;
 import org.leialearns.api.enumerations.ModelType;
@@ -8,7 +9,6 @@ import org.leialearns.api.model.ExpectedModel;
 import org.leialearns.api.model.Observed;
 import org.leialearns.api.model.Toggled;
 import org.leialearns.api.model.Version;
-import org.leialearns.api.model.common.NodeDataProxy;
 import org.leialearns.api.model.expectation.Expectation;
 import org.leialearns.api.model.expectation.Fraction;
 import org.leialearns.api.model.histogram.Counter;

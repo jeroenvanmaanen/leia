@@ -1,8 +1,8 @@
 package org.leialearns.api.interaction;
 
+import org.leialearns.api.common.HasDescriptionLength;
 import org.leialearns.api.enumerations.Direction;
 import org.leialearns.bridge.NearIterable;
-import org.leialearns.logic.utilities.HasDescriptionLength;
 
 /**
  * <p>Defines the unit of communication.</p>

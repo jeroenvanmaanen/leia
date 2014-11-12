@@ -1,10 +1,10 @@
-package org.leialearns.logic.utilities;
+package org.leialearns.logic.common;
 
 import java.math.BigInteger;
 
 /**
  * Provides static functions to calculate the description length of a {@link java.math.BigInteger}. See
- * {@link HasDescriptionLength} for more information on the importance of description lengths in the context of
+ * {@link org.leialearns.api.common.HasDescriptionLength} for more information on the importance of description lengths in the context of
  * <b>LEIA</b>.
  */
 public class DescriptionLength {

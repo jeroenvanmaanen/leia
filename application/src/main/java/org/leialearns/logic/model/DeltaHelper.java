@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import static org.leialearns.api.enumerations.HistogramOperator.ADD_TO;
-import static org.leialearns.logic.utilities.Static.getVersionOrdinal;
+import static org.leialearns.logic.common.Static.getVersionOrdinal;
 import static org.leialearns.utilities.Display.display;
 
 public class DeltaHelper {

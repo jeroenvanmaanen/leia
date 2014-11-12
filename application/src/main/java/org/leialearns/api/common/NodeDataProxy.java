@@ -1,4 +1,4 @@
-package org.leialearns.api.model.common;
+package org.leialearns.api.common;
 
 import org.leialearns.api.model.Version;
 import org.leialearns.api.structure.Node;
