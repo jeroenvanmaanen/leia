@@ -1,13 +1,10 @@
 package org.leialearns.graph.session;
 
-import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.graph.common.IdDaoSupport;
 import org.leialearns.graph.interaction.InteractionContextDTO;
-import org.leialearns.graph.model.CountedDTO;
 import org.leialearns.graph.model.ToggledDAO;
 import org.leialearns.graph.model.ToggledDTO;
-import org.leialearns.graph.model.VersionDAO;
 import org.leialearns.graph.model.VersionDTO;
 import org.leialearns.graph.structure.NodeDTO;
 import org.leialearns.utilities.TypedIterable;
@@ -23,9 +20,6 @@ public class SessionDAO extends IdDaoSupport<SessionDTO> {
 
     @Autowired
     private SessionRepository repository;
-
-    @Autowired
-    private VersionDAO versionDAO;
 
     @Autowired
     private ToggledDAO toggledDAO;
@@ -58,14 +52,6 @@ public class SessionDAO extends IdDaoSupport<SessionDTO> {
             }
             logger.debug("}");
         }
-    }
-
-    @BridgeOverride
-    public CountedDTO createCountedVersion(SessionDTO owner) {
-        VersionDTO version = versionDAO.createVersion(owner, ModelType.COUNTED);
-        CountedDTO result = versionDAO.createCountedVersion();
-        result.setVersion(version);
-        return result;
     }
 
     @BridgeOverride

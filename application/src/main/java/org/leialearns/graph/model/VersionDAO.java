@@ -66,6 +66,14 @@ public class VersionDAO extends IdDaoSupport<VersionDTO> {
     }
 
     @BridgeOverride
+    public CountedDTO createCountedVersion(SessionDTO owner) {
+        VersionDTO version = createVersion(owner, ModelType.COUNTED);
+        CountedDTO result = createCountedVersion();
+        result.setVersion(version);
+        return result;
+    }
+
+    @BridgeOverride
     public VersionDTO findVersion(SessionDTO owner, long ordinal) {
         InteractionContextDTO context = owner.getInteractionContext();
         logger.debug("Find version: {}.#{}", owner, ordinal);
