@@ -1,4 +1,4 @@
-package org.leialearns.graph.util;
+package org.leialearns.graph.common;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

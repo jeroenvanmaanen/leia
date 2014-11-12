@@ -1,7 +1,7 @@
 package org.leialearns.graph.model;
 
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.graph.IdDaoSupport;
+import org.leialearns.graph.common.IdDaoSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

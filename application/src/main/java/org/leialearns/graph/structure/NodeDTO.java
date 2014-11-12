@@ -4,7 +4,7 @@ import org.leialearns.api.enumerations.Direction;
 import org.leialearns.api.structure.Node;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.graph.HasId;
+import org.leialearns.graph.common.HasId;
 import org.leialearns.graph.interaction.SymbolDTO;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Fetch;
@@ -16,7 +16,7 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-import static org.leialearns.graph.IdDaoSupport.toID;
+import static org.leialearns.graph.common.IdDaoSupport.toID;
 import static org.leialearns.utilities.Static.equal;
 import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;

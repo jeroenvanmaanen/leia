@@ -1,8 +1,8 @@
 package org.leialearns.graph.interaction;
 
-import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.graph.IdDaoSupport;
 import org.leialearns.api.interaction.Alphabet;
+import org.leialearns.bridge.BridgeOverride;
+import org.leialearns.graph.common.IdDaoSupport;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -2,7 +2,7 @@ package org.leialearns.graph.model;
 
 import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.api.model.Toggled;
-import org.leialearns.graph.IdDaoSupport;
+import org.leialearns.graph.common.IdDaoSupport;
 import org.leialearns.graph.session.SessionDTO;
 import org.leialearns.graph.structure.NodeDTO;
 import org.slf4j.Logger;

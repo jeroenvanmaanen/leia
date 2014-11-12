@@ -1,9 +1,9 @@
 package org.leialearns.graph.model;
 
+import org.leialearns.api.model.expectation.Fraction;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.graph.HasId;
-import org.leialearns.api.model.expectation.Fraction;
+import org.leialearns.graph.common.HasId;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;

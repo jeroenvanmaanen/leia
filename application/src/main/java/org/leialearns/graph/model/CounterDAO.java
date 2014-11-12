@@ -5,7 +5,7 @@ import org.leialearns.api.model.Version;
 import org.leialearns.api.structure.Node;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.bridge.FactoryAccessor;
-import org.leialearns.graph.IdDaoSupport;
+import org.leialearns.graph.common.IdDaoSupport;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.interaction.SymbolDTO;

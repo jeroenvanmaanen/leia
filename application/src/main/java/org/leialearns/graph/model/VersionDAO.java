@@ -3,7 +3,7 @@ package org.leialearns.graph.model;
 import org.leialearns.api.enumerations.AccessMode;
 import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.graph.IdDaoSupport;
+import org.leialearns.graph.common.IdDaoSupport;
 import org.leialearns.graph.interaction.InteractionContextDAO;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.session.SessionDTO;

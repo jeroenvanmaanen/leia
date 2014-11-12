@@ -2,7 +2,7 @@ package org.leialearns.graph.structure;
 
 import org.leialearns.api.enumerations.Direction;
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.graph.IdDaoSupport;
+import org.leialearns.graph.common.IdDaoSupport;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.graph.interaction.SymbolDTO;
 import org.leialearns.utilities.BaseExpression;

@@ -3,7 +3,7 @@ package org.leialearns.graph.model;
 import org.leialearns.api.enumerations.AccessMode;
 import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.graph.IdDaoSupport;
+import org.leialearns.graph.common.IdDaoSupport;
 import org.leialearns.graph.session.SessionDTO;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;

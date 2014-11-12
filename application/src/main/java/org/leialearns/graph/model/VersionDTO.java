@@ -6,7 +6,7 @@ import org.leialearns.api.model.Version;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.graph.HasId;
+import org.leialearns.graph.common.HasId;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.session.SessionDTO;
 import org.leialearns.utilities.ExceptionWrapper;
@@ -20,7 +20,7 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import java.io.Serializable;
 
-import static org.leialearns.graph.IdDaoSupport.toID;
+import static org.leialearns.graph.common.IdDaoSupport.toID;
 import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Display.displayParts;
 import static org.leialearns.utilities.Static.equal;

@@ -1,10 +1,10 @@
 package org.leialearns.graph.interaction;
 
+import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.graph.HasId;
+import org.leialearns.graph.common.HasId;
 import org.leialearns.graph.model.VersionDTO;
-import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.graph.structure.StructureDTO;
 import org.neo4j.graphdb.Direction;
 import org.slf4j.Logger;

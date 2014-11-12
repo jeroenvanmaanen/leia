@@ -1,4 +1,4 @@
-package org.leialearns.graph;
+package org.leialearns.graph.common;
 
 public interface HasId {
     public void setId(Long id);

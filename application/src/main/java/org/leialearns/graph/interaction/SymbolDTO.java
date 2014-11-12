@@ -5,7 +5,7 @@ import org.leialearns.api.interaction.Symbol;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.graph.HasId;
+import org.leialearns.graph.common.HasId;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;

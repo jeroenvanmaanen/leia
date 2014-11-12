@@ -1,4 +1,4 @@
-package org.leialearns.graph;
+package org.leialearns.graph.common;
 
 import org.leialearns.bridge.FarObject;
 import org.leialearns.utilities.ExceptionWrapper;

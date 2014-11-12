@@ -15,7 +15,7 @@
     <!-- Database configuration -->
     <neo4j:repositories base-package="org.leialearns.graph" />
 
-    <bean id="graphLogger" class="org.leialearns.graph.util.GraphLogger" />
+    <bean id="graphLogger" class="org.leialearns.graph.common.GraphLogger" />
 
     <bean id="fractionDAO" class="org.leialearns.graph.model.FractionDAO" />
     <bean id="alphabetDAO" class="org.leialearns.graph.interaction.AlphabetDAO" />

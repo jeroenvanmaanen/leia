@@ -1,6 +1,5 @@
-package org.leialearns.graph.util;
+package org.leialearns.graph.common;
 
-import org.leialearns.graph.HasId;
 import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.cypher.javacompat.ExecutionResult;
 import org.neo4j.graphdb.Label;
