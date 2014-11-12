@@ -2,6 +2,7 @@ package org.leialearns.logic.model;
 
 import org.leialearns.api.interaction.Symbol;
 import org.leialearns.api.model.Counted;
+import org.leialearns.api.model.CounterLogger;
 import org.leialearns.api.model.Expected;
 import org.leialearns.api.model.ExpectedModel;
 import org.leialearns.api.model.Observed;
@@ -26,11 +27,11 @@ import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Display.show;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
-public class CounterLogger {
+public class CounterLoggerImpl implements CounterLogger {
     private static final double LOG10BASE2 = Math.log(10) / Math.log(2);
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
 
-    @BridgeOverride
+    @Override
     public void logCounters(Counted counted) {
         logCounters(counted.getVersion());
     }
@@ -79,7 +80,7 @@ public class CounterLogger {
         logCounters(label, (Node) null, null, version);
     }
 
-    @BridgeOverride
+    @Override
     public void logCounters(Node node, Version... version) {
         logCounters(null, node, null, version);
     }
@@ -320,5 +321,4 @@ public class CounterLogger {
             return result;
         }
     }
-
 }

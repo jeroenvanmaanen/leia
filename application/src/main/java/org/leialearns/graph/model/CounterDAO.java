@@ -1,6 +1,7 @@
 package org.leialearns.graph.model;
 
 import org.leialearns.api.enumerations.ModelType;
+import org.leialearns.api.model.CounterLogger;
 import org.leialearns.api.model.Version;
 import org.leialearns.api.structure.Node;
 import org.leialearns.bridge.BridgeOverride;
@@ -14,8 +15,6 @@ import org.leialearns.graph.structure.NodeDAO;
 import org.leialearns.graph.structure.NodeDTO;
 import org.leialearns.graph.structure.NodeRepository;
 import org.leialearns.graph.structure.StructureDTO;
-import org.leialearns.logic.common.Static;
-import org.leialearns.logic.model.CounterLogger;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +33,7 @@ import static org.leialearns.bridge.Static.getFarObject;
 import static org.leialearns.utilities.Display.asDisplay;
 import static org.leialearns.utilities.Display.show;
 import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.utilities.Static.notNull;
 
 public class CounterDAO extends IdDaoSupport<CounterDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
@@ -110,7 +110,7 @@ public class CounterDAO extends IdDaoSupport<CounterDTO> {
                 result.add(counter);
             }
         }
-        for (Node nearChild : Static.notNull(getChildren.apply(near))) {
+        for (Node nearChild : notNull(getChildren.apply(near))) {
             NodeDTO child = getFarObject(nearChild, NodeDTO.class);
             findCounters(version, getChildren, getInclude, child, result);
         }
