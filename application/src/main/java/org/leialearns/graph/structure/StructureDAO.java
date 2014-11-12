@@ -4,7 +4,7 @@ import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.interaction.SymbolDTO;
-import org.leialearns.logic.structure.Structure;
+import org.leialearns.api.structure.Structure;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

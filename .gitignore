@@ -4,4 +4,4 @@
 **/target
 /application/src/test/script/settings.sh
 /application/src/test/vagrant/vagrant_local.rb
-/application/src/text/resources/logging.properties
+/application/src/test/resources/logging.properties

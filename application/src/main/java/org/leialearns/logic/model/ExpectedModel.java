@@ -2,7 +2,7 @@ package org.leialearns.logic.model;
 
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.api.model.expectation.Expectation;
-import org.leialearns.logic.structure.Node;
+import org.leialearns.api.structure.Node;
 
 public interface ExpectedModel extends TypedVersionExtension {
     static final ExpectedModel EMPTY = new ExpectedModel() {

@@ -10,13 +10,13 @@ public enum ModelType {
 
     /**
      * Indicates a counted version that links {@link org.leialearns.api.model.histogram.Counter}s to
-     * &lt;{@link org.leialearns.logic.structure.Node},{@link org.leialearns.api.interaction.Symbol}&gt;-pairs
+     * &lt;{@link org.leialearns.api.structure.Node},{@link org.leialearns.api.interaction.Symbol}&gt;-pairs
      */
     COUNTED,
 
     /**
      * Indicates a version of the model of observed behavior that links {@link org.leialearns.api.model.histogram.Histogram}s to
-     * {@link org.leialearns.logic.structure.Node}s and has an associated delta version as well.
+     * {@link org.leialearns.api.structure.Node}s and has an associated delta version as well.
      */
     OBSERVED,
 
@@ -27,7 +27,7 @@ public enum ModelType {
     DELTA,
 
     /**
-     * Indicates a version that specifies a {@link org.leialearns.logic.structure.Node} to be either included in or excluded
+     * Indicates a version that specifies a {@link org.leialearns.api.structure.Node} to be either included in or excluded
      * from the model of expected behavior.
      */
     TOGGLED,

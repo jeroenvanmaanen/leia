@@ -12,7 +12,7 @@ import org.leialearns.api.model.histogram.CounterUpdate;
 import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.logic.model.histogram.TransientCounter;
 import org.leialearns.logic.session.Session;
-import org.leialearns.logic.structure.Node;
+import org.leialearns.api.structure.Node;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

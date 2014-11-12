@@ -1,6 +1,6 @@
 package org.leialearns.api.model.histogram;
 
-import org.leialearns.logic.structure.Node;
+import org.leialearns.api.structure.Node;
 
 /**
  * Convenience interface to move around {@link DeltaDiff}s for a collection of {@link Node}s.

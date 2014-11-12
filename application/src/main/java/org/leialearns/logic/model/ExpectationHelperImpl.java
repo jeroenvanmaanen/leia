@@ -9,7 +9,7 @@ import org.leialearns.logic.model.expectation.ExpectationObject;
 import org.leialearns.api.model.expectation.Fraction;
 import org.leialearns.logic.model.expectation.TransientFraction;
 import org.leialearns.logic.session.Root;
-import org.leialearns.logic.structure.Node;
+import org.leialearns.api.structure.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;

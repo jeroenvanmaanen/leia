@@ -14,7 +14,7 @@ import org.leialearns.graph.structure.NodeRepository;
 import org.leialearns.graph.structure.StructureDTO;
 import org.leialearns.logic.model.CounterLogger;
 import org.leialearns.logic.model.Version;
-import org.leialearns.logic.structure.Node;
+import org.leialearns.api.structure.Node;
 import org.leialearns.logic.utilities.Static;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;

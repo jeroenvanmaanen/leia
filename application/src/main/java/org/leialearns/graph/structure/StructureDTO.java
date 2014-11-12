@@ -3,7 +3,7 @@ package org.leialearns.graph.structure;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.graph.HasId;
-import org.leialearns.logic.structure.Structure;
+import org.leialearns.api.structure.Structure;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;

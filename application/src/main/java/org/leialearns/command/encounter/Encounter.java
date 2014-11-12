@@ -12,8 +12,8 @@ import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.logic.model.Version;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.session.Session;
-import org.leialearns.logic.structure.Node;
-import org.leialearns.logic.structure.Structure;
+import org.leialearns.api.structure.Node;
+import org.leialearns.api.structure.Structure;
 import org.leialearns.utilities.ExceptionWrapper;
 import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TypedIterable;
@@ -84,7 +84,7 @@ public class Encounter implements org.leialearns.api.command.Encounter {
 
     /**
      * Sets the maximum depth of nodes that will be marked extensible.
-     * (see {@link org.leialearns.logic.structure.Node#getExtensible()}) by the encounter (rather than relying on the
+     * (see {@link org.leialearns.api.structure.Node#getExtensible()}) by the encounter (rather than relying on the
      * optimizer to manage the extensibility of nodes).
      * @param autoExtendLimit The maximum depth of nodes that will be marked extensible
      */

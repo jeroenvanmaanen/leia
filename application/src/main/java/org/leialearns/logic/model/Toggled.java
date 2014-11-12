@@ -5,7 +5,7 @@ import org.leialearns.api.model.expectation.Estimate;
 import org.leialearns.api.model.expectation.Expectation;
 import org.leialearns.api.model.expectation.Fraction;
 import org.leialearns.logic.session.Root;
-import org.leialearns.logic.structure.Node;
+import org.leialearns.api.structure.Node;
 
 public interface Toggled extends ExpectedModel {
     Node getNode();

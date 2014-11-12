@@ -5,7 +5,7 @@ import org.leialearns.bridge.FarObject;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.graph.HasId;
 import org.leialearns.graph.interaction.SymbolDTO;
-import org.leialearns.logic.structure.Node;
+import org.leialearns.api.structure.Node;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -13,6 +13,7 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 import static org.leialearns.graph.IdDaoSupport.toID;
@@ -133,7 +134,7 @@ public class NodeDTO extends BaseBridgeFacet implements HasId, Serializable, Far
         return builder.toString();
     }
 
-    public int compareTo(NodeDTO other) {
+    public int compareTo(@NotNull NodeDTO other) {
         int result = Long.signum(structure.getId() - other.getStructure().getId());
         return (result == 0 ? Long.signum(id - other.getId()) : result);
     }

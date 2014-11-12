@@ -4,7 +4,7 @@ import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.api.model.expectation.Expectation;
 import org.leialearns.logic.session.NeedsRoot;
 import org.leialearns.logic.session.Root;
-import org.leialearns.logic.structure.Node;
+import org.leialearns.api.structure.Node;
 
 public interface ExpectationHelper extends NeedsRoot {
     @BridgeOverride

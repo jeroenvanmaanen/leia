@@ -8,7 +8,7 @@ import org.leialearns.api.model.common.NodeDataProxy;
 import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.logic.model.Toggled;
 import org.leialearns.logic.model.Version;
-import org.leialearns.logic.structure.Node;
+import org.leialearns.api.structure.Node;
 
 /**
  * Defines an object that can be used to create and/or obtain {@link org.leialearns.logic.model.Version}s of

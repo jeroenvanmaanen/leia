@@ -3,6 +3,8 @@ package org.leialearns.logic.structure;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.leialearns.api.structure.Node;
+import org.leialearns.api.structure.Structure;
 import org.leialearns.enumerations.Direction;
 import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.api.interaction.Symbol;

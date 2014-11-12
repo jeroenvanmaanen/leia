@@ -3,7 +3,7 @@ package org.leialearns.logic.model.histogram;
 import org.leialearns.api.model.histogram.DeltaDiff;
 import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.api.model.histogram.HistogramFactory;
-import org.leialearns.logic.structure.Node;
+import org.leialearns.api.structure.Node;
 import org.springframework.stereotype.Component;
 
 @Component

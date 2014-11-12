@@ -10,7 +10,7 @@ import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.api.model.histogram.DeltaDiffMap;
 import org.leialearns.enumerations.HistogramOperator;
 import org.leialearns.logic.session.Session;
-import org.leialearns.logic.structure.Node;
+import org.leialearns.api.structure.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

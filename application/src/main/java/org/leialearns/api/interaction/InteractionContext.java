@@ -3,7 +3,7 @@ package org.leialearns.api.interaction;
 import org.leialearns.enumerations.AccessMode;
 import org.leialearns.enumerations.ModelType;
 import org.leialearns.logic.model.Version;
-import org.leialearns.logic.structure.Structure;
+import org.leialearns.api.structure.Structure;
 
 /**
  * Defines the context of the exchange of information between <b>LEIA</b> and its environment.

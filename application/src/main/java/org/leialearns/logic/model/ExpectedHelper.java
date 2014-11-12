@@ -1,7 +1,7 @@
 package org.leialearns.logic.model;
 
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.logic.structure.Node;
+import org.leialearns.api.structure.Node;
 
 public class ExpectedHelper {
 

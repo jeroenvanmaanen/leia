@@ -3,7 +3,7 @@ package org.leialearns.logic.model.histogram;
 import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.api.interaction.Symbol;
 import org.leialearns.logic.model.Version;
-import org.leialearns.logic.structure.Node;
+import org.leialearns.api.structure.Node;
 
 import static org.leialearns.utilities.Display.displayParts;
 

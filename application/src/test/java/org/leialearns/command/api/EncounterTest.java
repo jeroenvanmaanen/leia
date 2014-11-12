@@ -11,7 +11,7 @@ import org.leialearns.logic.model.Counted;
 import org.leialearns.logic.model.Version;
 import org.leialearns.logic.session.Root;
 import org.leialearns.logic.session.Session;
-import org.leialearns.logic.structure.Structure;
+import org.leialearns.api.structure.Structure;
 import org.leialearns.utilities.ExecutionListener;
 import org.leialearns.utilities.GraphDumper;
 import org.leialearns.utilities.Setting;

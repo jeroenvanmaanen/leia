@@ -4,7 +4,7 @@ import org.leialearns.api.model.common.NodeDataProxy;
 import org.leialearns.api.model.histogram.CounterUpdate;
 import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.api.model.histogram.DeltaDiffMap;
-import org.leialearns.logic.structure.Node;
+import org.leialearns.api.structure.Node;
 import org.leialearns.utilities.TypedIterable;
 
 public interface Observed extends TypedVersionExtension {

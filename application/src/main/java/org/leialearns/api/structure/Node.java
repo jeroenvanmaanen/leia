@@ -1,4 +1,4 @@
-package org.leialearns.logic.structure;
+package org.leialearns.api.structure;
 
 import org.leialearns.enumerations.Direction;
 import org.leialearns.api.interaction.Symbol;

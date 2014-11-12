@@ -4,8 +4,8 @@ import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.api.model.histogram.DeltaDiff;
 import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.api.model.histogram.DeltaDiffMap;
-import org.leialearns.logic.structure.Node;
-import org.leialearns.logic.structure.Structure;
+import org.leialearns.api.structure.Node;
+import org.leialearns.api.structure.Structure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -5,7 +5,7 @@ import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.api.model.histogram.HistogramFactory;
 import org.leialearns.api.model.histogram.Modifiable;
 import org.leialearns.enumerations.HistogramOperator;
-import org.leialearns.logic.structure.Node;
+import org.leialearns.api.structure.Node;
 
 public class DeltaDiffImpl implements DeltaDiff {
     private final Node node;

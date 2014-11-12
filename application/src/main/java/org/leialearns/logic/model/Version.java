@@ -8,7 +8,7 @@ import org.leialearns.api.interaction.Symbol;
 import org.leialearns.api.model.expectation.Estimate;
 import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.logic.session.Session;
-import org.leialearns.logic.structure.Node;
+import org.leialearns.api.structure.Node;
 import org.leialearns.bridge.NearIterable;
 
 import java.util.function.Function;

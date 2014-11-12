@@ -1,5 +1,6 @@
 package org.leialearns.logic.structure;
 
+import org.leialearns.api.structure.Node;
 import org.leialearns.bridge.BridgeOverride;
 
 import static org.leialearns.utilities.Static.equal;
