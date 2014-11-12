@@ -2,6 +2,7 @@ package org.leialearns.graph.model;
 
 import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.api.model.Toggled;
+import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.graph.common.IdDaoSupport;
 import org.leialearns.graph.session.SessionDTO;
 import org.leialearns.graph.structure.NodeDTO;
@@ -26,7 +27,8 @@ public class ToggledDAO extends IdDaoSupport<ToggledDTO> {
         return repository;
     }
 
-    public ToggledDTO create(SessionDTO owner, NodeDTO node, boolean include) {
+    @BridgeOverride
+    public ToggledDTO createToggledVersion(SessionDTO owner, NodeDTO node, boolean include) {
         VersionDTO versionDTO = versionDAO.createVersion(owner, ModelType.TOGGLED);
         ToggledDTO dto = new ToggledDTO();
         dto.setVersion(versionDTO);

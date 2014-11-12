@@ -3,10 +3,7 @@ package org.leialearns.graph.session;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.graph.common.IdDaoSupport;
 import org.leialearns.graph.interaction.InteractionContextDTO;
-import org.leialearns.graph.model.ToggledDAO;
-import org.leialearns.graph.model.ToggledDTO;
 import org.leialearns.graph.model.VersionDTO;
-import org.leialearns.graph.structure.NodeDTO;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +17,6 @@ public class SessionDAO extends IdDaoSupport<SessionDTO> {
 
     @Autowired
     private SessionRepository repository;
-
-    @Autowired
-    private ToggledDAO toggledDAO;
 
     @Override
     protected SessionRepository getRepository() {
@@ -52,11 +46,6 @@ public class SessionDAO extends IdDaoSupport<SessionDTO> {
             }
             logger.debug("}");
         }
-    }
-
-    @BridgeOverride
-    public ToggledDTO createToggledVersion(SessionDTO owner, NodeDTO node, boolean include) {
-        return toggledDAO.create(owner, node, include);
     }
 
     @BridgeOverride

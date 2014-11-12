@@ -209,6 +209,7 @@
             <array>
                 <ref bean="sessionDAO"/>
                 <ref bean="versionDAO"/>
+                <ref bean="toggledDAO"/>
                 <null/>
                 <value type="java.lang.Class">org.leialearns.logic.session.SessionAugmenter</value>
             </array>
