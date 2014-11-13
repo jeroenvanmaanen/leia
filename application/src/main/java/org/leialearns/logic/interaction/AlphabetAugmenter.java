@@ -1,5 +1,6 @@
 package org.leialearns.logic.interaction;
 
+import org.leialearns.api.common.PrefixDecoder;
 import org.leialearns.api.interaction.Alphabet;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.BridgeOverride;
@@ -8,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.leialearns.utilities.Static.getLoggingClass;
 
@@ -16,6 +19,7 @@ import static org.leialearns.utilities.Static.getLoggingClass;
  */
 public class AlphabetAugmenter extends BaseBridgeFacet {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
+    private final Map<Long,Long> ordinalTranslation = new HashMap<>();
     private Setting<Long> fixatedDescriptionLength = new Setting<>("Fixated description length");
 
     /*
@@ -44,4 +48,22 @@ public class AlphabetAugmenter extends BaseBridgeFacet {
         return (Alphabet) getBridgeFacets().getNearObject();
     }
 
+    @BridgeOverride
+    public void prefixDecode(PrefixDecoder decoder) {
+        Alphabet alphabet = getAlphabet();
+        long numberOfSymbols = decoder.nextLong();
+        ordinalTranslation.clear();
+        for (long i = 0; i < numberOfSymbols; i++) {
+            String denotation = decoder.nextString();
+            long newIndex = alphabet.internalize(denotation).getOrdinal();
+            if (newIndex != i) {
+                ordinalTranslation.put(i, newIndex);
+            }
+        }
+    }
+
+    @BridgeOverride
+    public long translateOrdinal(Long i) {
+        return ordinalTranslation.containsKey(i) ? ordinalTranslation.get(i) : i;
+    }
 }

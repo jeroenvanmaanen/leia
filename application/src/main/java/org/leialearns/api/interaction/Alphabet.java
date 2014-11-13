@@ -1,5 +1,6 @@
 package org.leialearns.api.interaction;
 
+import org.leialearns.api.common.PrefixFree;
 import org.leialearns.bridge.NearIterable;
 
 /**
@@ -16,7 +17,7 @@ import org.leialearns.bridge.NearIterable;
  * So it is  best to add all symbols first, and then mark the alphabet as fixated, before calling
  * <code>isFixated</code> or querying the description length of any of its symbols.</p>
  */
-public interface Alphabet extends Comparable<Alphabet> {
+public interface Alphabet extends Comparable<Alphabet>, PrefixFree {
 
     /**
      * Returns the identifying URI of this alphabet.
@@ -50,6 +51,14 @@ public interface Alphabet extends Comparable<Alphabet> {
      * @return The largest ordinal of all symbols in this alphabet
      */
     Long findLargestSymbolOrdinal();
+
+    /**
+     * Returns the symbol in this alphabet with the given ordinal.
+     *
+     * @param ordinal The ordinal
+     * @return The symbol in this alphabet with the given ordinal
+     */
+    Symbol getSymbol(Long ordinal);
 
     /**
      * Returns the uniform description length for all symbols in this alphabet.

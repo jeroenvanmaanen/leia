@@ -3,10 +3,15 @@ package org.leialearns.logic.interaction;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.leialearns.api.common.PrefixDecoder;
+import org.leialearns.api.common.PrefixDecoderFactory;
+import org.leialearns.api.common.PrefixEncoder;
+import org.leialearns.api.common.PrefixEncoderFactory;
 import org.leialearns.api.interaction.Alphabet;
 import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.api.interaction.Symbol;
 import org.leialearns.api.session.Root;
+import org.leialearns.utilities.ExceptionWrapper;
 import org.leialearns.utilities.ExecutionListener;
 import org.leialearns.utilities.TestUtilities;
 import org.leialearns.utilities.TransactionHelper;
@@ -19,10 +24,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.leialearns.utilities.Display.display;
 import static org.leialearns.utilities.Static.getLoggingClass;
@@ -38,6 +46,12 @@ public class InteractionTest {
 
     @Autowired
     private Root root;
+
+    @Autowired
+    PrefixEncoderFactory prefixEncoderFactory;
+
+    @Autowired
+    PrefixDecoderFactory prefixDecoderFactory;
 
     @BeforeClass
     public static void beforeClass() throws IOException {
@@ -79,5 +93,49 @@ public class InteractionTest {
             assertEquals("Description length of 'light'", responseSymbolsDescriptionLength, light.descriptionLength());
             assertEquals("Description length of 'dim'", responseSymbolsDescriptionLength, dim.descriptionLength());
         });
+    }
+
+    @Test
+    public void testPrefixEncodeAlphabet() {
+        transactionHelper.runInTransaction(() -> {
+            try {
+                prefixEncodeAlphabet();
+            } catch (IOException exception) {
+                throw ExceptionWrapper.wrap(exception);
+            }
+        });
+    }
+
+    private void prefixEncodeAlphabet() throws IOException {
+        InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test-alphabet-prefix-free");
+        assertNotNull("Interaction context", interactionContext);
+        assertNotNull("Actions", interactionContext.getActions());
+        assertNotNull("Responses", interactionContext.getResponses());
+
+        Alphabet actions = interactionContext.getActions();
+        logger.debug("Actions: " + actions.toString());
+        actions.internalize("left");
+        actions.internalize("right");
+        StringWriter writer = new StringWriter();
+        PrefixEncoder encoder = prefixEncoderFactory.createReadablePrefixEncoder(writer);
+        actions.prefixEncode(encoder);
+        encoder.close();
+
+        String encoding = writer.toString();
+        logger.debug("Encoding: <![CDATA[\n" + encoding + "]]>");
+
+        Alphabet responses = interactionContext.getResponses();
+        assertNull(responses.findLargestSymbolOrdinal());
+        StringReader reader = new StringReader(encoding);
+        PrefixDecoder decoder = prefixDecoderFactory.createReadablePrefixDecoder(reader);
+        responses.prefixDecode(decoder);
+        Long largestSymbolOrdinal = responses.findLargestSymbolOrdinal();
+        assertEquals(actions.findLargestSymbolOrdinal(), largestSymbolOrdinal);
+        for (long i = 0; i <= largestSymbolOrdinal; i++) {
+            Symbol symbol = responses.getSymbol(i);
+            logger.debug("Decoded response symbol: {}", symbol);
+            Symbol action = actions.getSymbol(i);
+            assertEquals(action.getDenotation(), symbol.getDenotation());
+        }
     }
 }

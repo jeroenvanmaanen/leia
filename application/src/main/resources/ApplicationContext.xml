@@ -57,8 +57,10 @@
         <constructor-arg value="org.leialearns.graph.interaction.AlphabetDTO"/>
         <constructor-arg>
             <array>
+                <ref bean="alphabetHelper"/>
                 <ref bean="alphabetDAO"/>
                 <ref bean="symbolDAO"/>
+                <ref bean="symbolRepository"/>
                 <null/> <!-- AlphabetDTO -->
                 <value type="java.lang.Class">org.leialearns.logic.interaction.AlphabetAugmenter</value>
             </array>

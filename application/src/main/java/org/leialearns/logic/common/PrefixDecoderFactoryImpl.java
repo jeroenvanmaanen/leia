@@ -13,12 +13,12 @@ import java.io.Reader;
 public class PrefixDecoderFactoryImpl implements PrefixDecoderFactory {
 
     @Override
-    public PrefixDecoder createReadablePrefixEncoder(Reader reader) {
+    public PrefixDecoder createReadablePrefixDecoder(Reader reader) {
         return new PrefixDecoderImpl(reader);
     }
 
     @Override
-    public PrefixDecoder createBinaryPrefixEncoder(InputStream input) {
+    public PrefixDecoder createBinaryPrefixDecoder(InputStream input) {
         return new PrefixDecoderImpl(createBinaryReader(input));
     }
 

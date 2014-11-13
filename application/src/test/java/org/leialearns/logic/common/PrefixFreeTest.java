@@ -58,7 +58,7 @@ public class PrefixFreeTest {
         logger.debug("Encoding: <![CDATA[\n" + encoding + "]]>");
 
         StringReader reader = new StringReader(encoding);
-        PrefixDecoder prefixDecoder = prefixDecoderFactory.createReadablePrefixEncoder(reader);
+        PrefixDecoder prefixDecoder = prefixDecoderFactory.createReadablePrefixDecoder(reader);
         verify(prefixDecoder);
     }
 
@@ -115,7 +115,7 @@ public class PrefixFreeTest {
         }
 
         ByteArrayInputStream input = new ByteArrayInputStream(encoding);
-        PrefixDecoder prefixDecoder = prefixDecoderFactory.createBinaryPrefixEncoder(input);
+        PrefixDecoder prefixDecoder = prefixDecoderFactory.createBinaryPrefixDecoder(input);
         verify(prefixDecoder);
         Assert.assertEquals(0, prefixDecoder.nextInt()); // A padding bit to get a full byte
     }
