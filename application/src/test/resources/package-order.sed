@@ -1,5 +1,5 @@
 # Dependencies sort before LEIA
-s/:(com[.]google|java|org[.](google|apache|neo4j|slf4j|spring))/:[10]\1/g
+s/:(com[.]google|javax?|org[.](google|apache|neo4j|slf4j|spring[a-z]*)|scala)[.]/:[10]\1/g
 s/:(org[.]leialearns)/:[20]\1/g
 
 # Order of top-level packages
