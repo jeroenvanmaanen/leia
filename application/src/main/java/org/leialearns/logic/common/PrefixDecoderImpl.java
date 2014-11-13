@@ -1,0 +1,78 @@
+package org.leialearns.logic.common;
+
+import org.leialearns.api.common.PrefixDecoder;
+import org.leialearns.logic.utilities.Bit;
+import org.leialearns.logic.utilities.PrefixFree;
+import org.leialearns.utilities.ExceptionWrapper;
+import scala.math.BigInt;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+
+public class PrefixDecoderImpl implements PrefixDecoder {
+    private final Reader reader;
+
+    public PrefixDecoderImpl(Reader reader) {
+        this.reader = reader;
+    }
+
+    @Override
+    public int nextInt() {
+        return nextBigInteger().intValue();
+    }
+
+    @Override
+    public long nextLong() {
+        return nextBigInteger().longValue();
+    }
+
+    @Override
+    public BigInteger nextBigInteger() {
+        BigInt bigInt = PrefixFree.prefixDecode(reader);
+        return bigInt.bigInteger();
+    }
+
+    @Override
+    public int nextInt(int length) {
+        return nextBigInteger(length).intValue();
+    }
+
+    @Override
+    public long nextLong(int length) {
+        return nextBigInteger(length).longValue();
+    }
+
+    @Override
+    public BigInteger nextBigInteger(int length) {
+        BigInteger result = BigInteger.ZERO;
+        for (int i = 0; i < length; i++) {
+            Bit bit = PrefixFree.readBit(reader);
+            result = result.shiftLeft(1);
+            if (PrefixFree.asInt(bit) > 0) {
+                result = result.setBit(0);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public String nextString() {
+        int length = nextInt();
+        byte[] buffer = new byte[length];
+        for (int i = 0; i < length; i++) {
+            buffer[i] = (byte) nextInt(8);
+        }
+        try {
+            return new String(buffer, 0, length, "UTF-8");
+        } catch (UnsupportedEncodingException exception) {
+            throw ExceptionWrapper.wrap(exception);
+        }
+    }
+
+    @Override
+    public void close() throws IOException {
+        reader.close();
+    }
+}
