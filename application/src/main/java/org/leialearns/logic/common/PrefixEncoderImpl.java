@@ -97,6 +97,7 @@ public class PrefixEncoderImpl implements PrefixEncoder {
     public void append(boolean b) {
         append(b ? 1 : 0, 1);
         appendOriginal(Boolean.toString(b));
+        appendComment("\n");
     }
 
     @Override
@@ -106,13 +107,14 @@ public class PrefixEncoderImpl implements PrefixEncoder {
             int bitLength = BigInteger.valueOf(last).bitLength();
             append(e.ordinal(), bitLength);
             appendOriginal(e.name());
+            appendComment("\n");
         }
     }
 
     @Override
     public void appendComment(String s) {
         try {
-            writer.write(s.replace('O', '0').replace('I', 'i'));
+            writer.write(s.replace('O', '0').replace('I', '1'));
         } catch (IOException exception) {
             throw ExceptionWrapper.wrap(exception);
         }

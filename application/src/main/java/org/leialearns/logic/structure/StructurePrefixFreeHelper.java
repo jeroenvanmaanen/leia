@@ -39,6 +39,7 @@ public class StructurePrefixFreeHelper {
         Symbol symbol = node.getSymbol();
         encoder.append(symbol.getOrdinal());
         encoder.appendOriginal(symbol.getDenotation());
+        encoder.appendComment("\n");
         encoder.append(node.getDirection());
 
         encoder.append(node.getExtensible());
