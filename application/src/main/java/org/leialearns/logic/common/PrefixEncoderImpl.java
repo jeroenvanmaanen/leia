@@ -35,10 +35,10 @@ public class PrefixEncoderImpl implements PrefixEncoder {
     public void append(BigInteger i) {
         try {
             writer.write(PrefixFree.prefixEncode(i));
-            writer.write('\n');
         } catch (IOException exception) {
             throw ExceptionWrapper.wrap(exception);
         }
+        appendComment("\n");
     }
 
     @Override
@@ -70,10 +70,11 @@ public class PrefixEncoderImpl implements PrefixEncoder {
                 writer.write('O');
             }
             writer.write(denotation);
-            writer.write(String.format("(%s)\n", i));
         } catch (IOException exception) {
             throw ExceptionWrapper.wrap(exception);
         }
+        appendOriginal(String.valueOf(i));
+        appendComment("\n");
     }
 
     @Override
@@ -88,13 +89,40 @@ public class PrefixEncoderImpl implements PrefixEncoder {
         for (byte b : bytes) {
             append(b & 0xFF, 8);
         }
+        appendOriginal(format("\"%s\"", s.replace('"', '\'')));
+        appendComment("\n");
+    }
+
+    @Override
+    public void append(boolean b) {
+        append(b ? 1 : 0, 1);
+        appendOriginal(Boolean.toString(b));
+    }
+
+    @Override
+    public <E extends Enum<E>> void append(E e) {
+        int last = e.getClass().getEnumConstants().length - 1;
+        if (last > 0) {
+            int bitLength = BigInteger.valueOf(last).bitLength();
+            append(e.ordinal(), bitLength);
+            appendOriginal(e.name());
+        }
+    }
+
+    @Override
+    public void appendComment(String s) {
         try {
-            writer.write("(\"");
-            writer.write(s.replace('O', '0').replace('I', '1').replace('"', '\''));
-            writer.write("\")\n");
+            writer.write(s.replace('O', '0').replace('I', 'i'));
         } catch (IOException exception) {
             throw ExceptionWrapper.wrap(exception);
         }
+    }
+
+    @Override
+    public void appendOriginal(String s) {
+        appendComment("(");
+        appendComment(s);
+        appendComment(")");
     }
 
     @Override

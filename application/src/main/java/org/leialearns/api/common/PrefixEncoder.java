@@ -11,4 +11,8 @@ public interface PrefixEncoder extends Closeable {
     void append(long i, int length);
     void append(BigInteger i, int length);
     void append(String s);
+    void append(boolean b);
+    <E extends Enum<E>> void append(E e);
+    void appendComment(String s);
+    void appendOriginal(String s);
 }

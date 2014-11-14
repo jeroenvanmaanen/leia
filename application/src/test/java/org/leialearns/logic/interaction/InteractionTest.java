@@ -26,6 +26,8 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -107,7 +109,9 @@ public class InteractionTest {
     }
 
     private void prefixEncodeAlphabet() throws IOException {
-        InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test-alphabet-prefix-free");
+        DateFormat dateFormat = DateFormat.getDateTimeInstance();
+        String timestamp = dateFormat.format(new Date());
+        InteractionContext interactionContext = root.createInteractionContext("http://leialearns.org/test-alphabet-prefix-free/" + timestamp);
         assertNotNull("Interaction context", interactionContext);
         assertNotNull("Actions", interactionContext.getActions());
         assertNotNull("Responses", interactionContext.getResponses());

@@ -11,4 +11,8 @@ public interface PrefixDecoder extends Closeable {
     long nextLong(int length);
     BigInteger nextBigInteger(int length);
     String nextString();
+    boolean nextBoolean();
+    <E extends Enum<E>> E nextEnum(Class<E> type);
+    <T> void addHelper(T helper, Class<T> type);
+    <T> T getHelper(Class<T> type);
 }

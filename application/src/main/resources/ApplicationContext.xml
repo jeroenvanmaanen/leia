@@ -199,6 +199,7 @@
         <constructor-arg value="org.leialearns.graph.structure.StructureDTO"/>
         <constructor-arg>
             <array>
+                <ref bean="structurePrefixFreeHelper"/>
                 <ref bean="structureDAO"/>
                 <ref bean="nodeDAO"/>
             </array>

@@ -10,9 +10,12 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PrefixDecoderImpl implements PrefixDecoder {
     private final Reader reader;
+    private final Map<Class<?>,Object> helpers = new HashMap<>();
 
     public PrefixDecoderImpl(Reader reader) {
         this.reader = reader;
@@ -69,6 +72,34 @@ public class PrefixDecoderImpl implements PrefixDecoder {
         } catch (UnsupportedEncodingException exception) {
             throw ExceptionWrapper.wrap(exception);
         }
+    }
+
+    @Override
+    public boolean nextBoolean() {
+        int code = nextInt(1);
+        return code >= 1;
+    }
+
+    @Override
+    public <E extends Enum<E>> E nextEnum(Class<E> type) {
+        E[] constants = type.getEnumConstants();
+        int last = constants.length - 1;
+        if (last >= 0) {
+            int bitLength = BigInteger.valueOf(last).bitLength();
+            int index = nextInt(bitLength);
+            return constants[index];
+        }
+        return null;
+    }
+
+    @Override
+    public <T> void addHelper(T helper, Class<T> type) {
+        helpers.put(type, helper);
+    }
+
+    @Override
+    public <T> T getHelper(Class<T> type) {
+        return type.cast(helpers.get(type));
     }
 
     @Override
