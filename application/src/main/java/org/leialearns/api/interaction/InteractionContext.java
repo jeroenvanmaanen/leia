@@ -1,5 +1,6 @@
 package org.leialearns.api.interaction;
 
+import org.leialearns.api.common.PrefixFree;
 import org.leialearns.api.enumerations.AccessMode;
 import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.api.model.Version;
@@ -8,7 +9,7 @@ import org.leialearns.api.structure.Structure;
 /**
  * Defines the context of the exchange of information between <b>LEIA</b> and its environment.
  */
-public interface InteractionContext extends Comparable<InteractionContext> {
+public interface InteractionContext extends Comparable<InteractionContext>, PrefixFree {
 
     /**
      * Returns the identifying URI of this interaction context.

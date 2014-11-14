@@ -87,6 +87,7 @@
         <constructor-arg value="org.leialearns.graph.interaction.InteractionContextDTO"/>
         <constructor-arg>
             <array>
+                <ref bean="interactionContextPrefixHelper"/>
                 <ref bean="interactionContextDAO"/>
                 <ref bean="versionDAO"/>
             </array>
