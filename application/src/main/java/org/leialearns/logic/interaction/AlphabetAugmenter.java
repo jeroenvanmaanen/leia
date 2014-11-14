@@ -50,6 +50,7 @@ public class AlphabetAugmenter extends BaseBridgeFacet {
 
     @BridgeOverride
     public void prefixDecode(PrefixDecoder decoder) {
+        decoder.nextString();
         Alphabet alphabet = getAlphabet();
         long numberOfSymbols = decoder.nextLong();
         ordinalTranslation.clear();

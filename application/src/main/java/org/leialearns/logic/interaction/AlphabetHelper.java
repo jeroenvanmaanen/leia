@@ -14,6 +14,7 @@ public class AlphabetHelper {
 
     @BridgeOverride
     public void prefixEncode(Alphabet alphabet, PrefixEncoder encoder) {
+        encoder.append(alphabet.getURI());
         Long largestOrdinal = alphabet.findLargestSymbolOrdinal();
         logger.debug("Largest ordinal: {}", largestOrdinal);
         if (largestOrdinal == null) {
