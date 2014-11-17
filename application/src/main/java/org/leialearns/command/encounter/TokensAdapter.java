@@ -1,7 +1,6 @@
 package org.leialearns.command.encounter;
 
 import org.leialearns.utilities.ExceptionWrapper;
-import org.leialearns.utilities.Expression;
 import org.leialearns.utilities.NullStream;
 import org.leialearns.utilities.Setting;
 import org.slf4j.Logger;
@@ -23,13 +22,8 @@ import static org.leialearns.utilities.Static.getLoggingClass;
  */
 public class TokensAdapter implements StreamAdapter {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));
-    private final Setting<Pattern> tokenPattern = new Setting<Pattern>("Token pattern", new Expression<Pattern>() {
-        @Override
-        public Pattern get() {
-            return Pattern.compile("(.|\n)");
-        }
-    });
-    private final LinkedList<String> tokens = new LinkedList<String>();
+    private final Setting<Pattern> tokenPattern = new Setting<>("Token pattern", () -> Pattern.compile("(.|\n)"));
+    private final LinkedList<String> tokens = new LinkedList<>();
     private BufferedReader reader = new BufferedReader(new InputStreamReader(new NullStream()));
     private long skip = 0L;
     private Long limit = null;

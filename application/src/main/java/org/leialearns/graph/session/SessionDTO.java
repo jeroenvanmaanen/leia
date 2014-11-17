@@ -5,7 +5,7 @@ import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.FarObject;
 import org.leialearns.graph.common.HasId;
 import org.leialearns.graph.interaction.InteractionContextDTO;
-import org.leialearns.utilities.BaseExpression;
+import org.leialearns.utilities.BaseSupplier;
 import org.neo4j.graphdb.Direction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +60,7 @@ public class SessionDTO extends BaseBridgeFacet implements HasId, Serializable, 
     }
 
     public boolean equals(final Object other) {
-        logger.trace("Equals?: {}: {}: {}", new Object[]{id, other instanceof SessionDTO, new BaseExpression<String>() {
+        logger.trace("Equals?: {}: {}: {}", new Object[]{id, other instanceof SessionDTO, new BaseSupplier<String>() {
             public String get() {
                 String result;
                 if (other instanceof SessionDTO) {
