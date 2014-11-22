@@ -53,7 +53,7 @@ public class PrefixDecoderImpl implements PrefixDecoder {
         for (int i = 0; i < length; i++) {
             Bit bit = PrefixFree.readBit(reader);
             result = result.shiftLeft(1);
-            if (PrefixFree.asInt(bit) > 0) {
+            if (bit.asInt() > 0) {
                 result = result.setBit(0);
             }
         }

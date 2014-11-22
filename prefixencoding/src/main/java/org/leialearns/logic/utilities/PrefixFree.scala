@@ -94,11 +94,4 @@ object PrefixFree {
       case _ => readBit(reader)
     }
   }
-
-  def asInt(bit: Bit): Int = {
-    bit match {
-      case ZERO => 0
-      case ONE => 1
-    }
-  }
 }
