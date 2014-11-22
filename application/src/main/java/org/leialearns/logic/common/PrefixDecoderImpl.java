@@ -2,7 +2,7 @@ package org.leialearns.logic.common;
 
 import org.leialearns.api.common.PrefixDecoder;
 import org.leialearns.logic.utilities.Bit;
-import org.leialearns.logic.utilities.PrefixFree;
+import org.leialearns.logic.utilities.PrefixFreeBigInt;
 import org.leialearns.utilities.ExceptionWrapper;
 import scala.math.BigInt;
 
@@ -33,7 +33,7 @@ public class PrefixDecoderImpl implements PrefixDecoder {
 
     @Override
     public BigInteger nextBigInteger() {
-        BigInt bigInt = PrefixFree.prefixDecode(reader);
+        BigInt bigInt = PrefixFreeBigInt.prefixDecode(reader);
         return bigInt.bigInteger();
     }
 
@@ -51,7 +51,7 @@ public class PrefixDecoderImpl implements PrefixDecoder {
     public BigInteger nextBigInteger(int length) {
         BigInteger result = BigInteger.ZERO;
         for (int i = 0; i < length; i++) {
-            Bit bit = PrefixFree.readBit(reader);
+            Bit bit = PrefixFreeBigInt.readBit(reader);
             result = result.shiftLeft(1);
             if (bit.asInt() > 0) {
                 result = result.setBit(0);

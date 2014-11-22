@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory
 import java.math.BigInteger
 import java.io.{IOException, Reader}
 
-object PrefixFree {
+object PrefixFreeBigInt {
   val logger = LoggerFactory.getLogger(getClass)
   val one = BigInt.int2bigInt(1)
 

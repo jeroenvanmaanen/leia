@@ -25,8 +25,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.leialearns.logic.common.DescriptionLength.descriptionLength;
 import static org.leialearns.logic.common.DescriptionLength.toBinary;
-import static org.leialearns.logic.utilities.PrefixFree.prefixDecode;
-import static org.leialearns.logic.utilities.PrefixFree.prefixEncode;
+import static org.leialearns.logic.utilities.PrefixFreeBigInt.prefixDecode;
+import static org.leialearns.logic.utilities.PrefixFreeBigInt.prefixEncode;
 import static org.leialearns.utilities.Static.getLoggingClass;
 
 @RunWith(SpringJUnit4ClassRunner.class)

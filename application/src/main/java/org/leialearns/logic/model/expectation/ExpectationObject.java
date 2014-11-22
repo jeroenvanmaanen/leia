@@ -6,7 +6,7 @@ import org.leialearns.api.model.expectation.Expectation;
 import org.leialearns.api.model.expectation.Fraction;
 import org.leialearns.api.session.Root;
 import org.leialearns.logic.common.DescriptionLength;
-import org.leialearns.logic.utilities.PrefixFree;
+import org.leialearns.logic.utilities.PrefixFreeBigInt;
 import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
@@ -81,7 +81,7 @@ public class ExpectationObject implements Expectation {
         int missing = 0;
         StringBuilder builder = new StringBuilder("{E|");
         builder.append("#sym:");
-        builder.append(PrefixFree.prefixEncode(BigInteger.valueOf(symbols.size())));
+        builder.append(PrefixFreeBigInt.prefixEncode(BigInteger.valueOf(symbols.size())));
         for (Symbol symbol : symbols) {
             builder.append("|s#");
             builder.append(symbol.getOrdinal());
@@ -90,7 +90,7 @@ public class ExpectationObject implements Expectation {
                 Fraction fraction = fractions.get(symbol);
                 long index = fraction.getIndex();
                 index = index < 1 ? 1 : index + 1;
-                builder.append(PrefixFree.prefixEncode(BigInteger.valueOf(index)));
+                builder.append(PrefixFreeBigInt.prefixEncode(BigInteger.valueOf(index)));
             } else {
                 builder.append("I(0)");
                 missing++;

@@ -1,7 +1,7 @@
 package org.leialearns.logic.common;
 
 import org.leialearns.api.common.PrefixEncoder;
-import org.leialearns.logic.utilities.PrefixFree;
+import org.leialearns.logic.utilities.PrefixFreeBigInt;
 import org.leialearns.utilities.ExceptionWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class PrefixEncoderImpl implements PrefixEncoder {
     @Override
     public void append(BigInteger i) {
         try {
-            writer.write(PrefixFree.prefixEncode(i));
+            writer.write(PrefixFreeBigInt.prefixEncode(i));
         } catch (IOException exception) {
             throw ExceptionWrapper.wrap(exception);
         }

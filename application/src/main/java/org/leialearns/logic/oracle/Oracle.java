@@ -7,7 +7,7 @@ import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.api.session.Root;
 import org.leialearns.api.session.Session;
-import org.leialearns.logic.utilities.PrefixFree;
+import org.leialearns.logic.utilities.PrefixFreeBigInt;
 import org.leialearns.utilities.Pair;
 import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TypedIterable;
@@ -255,7 +255,7 @@ public class Oracle {
     }
 
     public Expectation prefixDecode(Reader code, Collection<Symbol> symbols) {
-        int domainSize = PrefixFree.prefixDecode(code).intValue();
+        int domainSize = PrefixFreeBigInt.prefixDecode(code).intValue();
         if (symbols.size() < domainSize) {
             throw new IllegalArgumentException("Not enough symbols: " + symbols.size() + " < " + domainSize);
         }
@@ -272,7 +272,7 @@ public class Oracle {
         long denominator = 0L;
         for (int i = 0; i < domainSize; i++) {
             Symbol symbol = symbolIterator.next();
-            long index = PrefixFree.prefixDecode(code).longValue();
+            long index = PrefixFreeBigInt.prefixDecode(code).longValue();
             logger.trace("Decode: {}: {}", symbol, index);
             if (index == 1) {
                 denominator++;

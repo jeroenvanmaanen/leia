@@ -28,7 +28,7 @@ import java.math.BigInteger;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/ApplicationContext.xml","/org/leialearns/AppTest-context.xml"})
 @TestExecutionListeners(value = {DependencyInjectionTestExecutionListener.class, ExecutionListener.class})
-public class PrefixFreeTest {
+public class PrefixFreeBigIntTest {
     private static final Logger logger = LoggerFactory.getLogger(new Object(){}.getClass().getEnclosingClass());
     private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
     private static final BigInteger LARGE = MAX_LONG.multiply(MAX_LONG);
