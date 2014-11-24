@@ -52,12 +52,12 @@ trait PrefixEncoderTrait { self: Writer =>
       logger.trace(s"Denotation: [$denotation]")
     }
 
-    val padding: Int = length - denotation.length
+    val padding = length - denotation.length
     if (padding < 0) {
       throw new IllegalArgumentException(s"Number too large: $length: ${i.toString(16).toUpperCase}")
     }
     try {
-      self.write('O' * padding)
+      self.write("O" * padding)
       self.write(denotation)
     } catch {
       case exception: IOException =>
