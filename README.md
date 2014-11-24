@@ -1,7 +1,7 @@
 LEIA
 ====
 
-Library for **L**earning **E**xpectations **I**ncrementally and **A**utonomously.
+Library for <b>L</b>earning <b>E</b>xpectations <b>I</b>ncrementally and <b>A</b>utonomously.
 
 See the [LEIA web site][LEIA].
 
