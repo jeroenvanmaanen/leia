@@ -10,7 +10,7 @@ import org.leialearns.api.model.expectation.Expectation;
 import org.leialearns.api.model.expectation.Fraction;
 import org.leialearns.api.session.Root;
 import org.leialearns.api.structure.Node;
-import org.leialearns.logic.common.NodeDataProxyImpl;
+import org.leialearns.logic.prefixfree.NodeDataProxyImpl;
 import org.leialearns.logic.model.expectation.ExpectationObject;
 import org.leialearns.logic.model.expectation.TransientFraction;
 import org.slf4j.Logger;

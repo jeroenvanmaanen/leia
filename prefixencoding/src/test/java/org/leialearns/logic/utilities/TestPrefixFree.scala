@@ -1,5 +1,6 @@
 package org.leialearns.logic.utilities
 
+import scala.util.control.Breaks
 import org.scalatest.FunSuite
 import org.slf4j.LoggerFactory
 import java.io.{IOException, StringReader}
@@ -16,6 +17,23 @@ class TestPrefixFree extends FunSuite {
       PrefixFreeBigInt.readBit(encodedReader)
     }
     assert(n == decoded)
+
+    val bitReader = new StringReader(encoded)
+    val loop = new Breaks
+    var i = 0
+    loop.breakable {
+      while (true) {
+        try {
+          PrefixFreeBigInt.readBit(bitReader)
+          i += 1
+        } catch {
+          case exception: IOException =>
+            loop.break()
+        }
+      }
+    }
+    val length = PrefixFreeBigInt.descriptionLength(n)
+    assert(i == length)
   }
 
   test("Composition of prefixDecode and prefixEncode should be the identity function") {

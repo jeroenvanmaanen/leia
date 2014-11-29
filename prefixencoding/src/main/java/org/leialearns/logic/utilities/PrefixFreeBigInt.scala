@@ -38,7 +38,7 @@ object PrefixFreeBigInt {
     if (n < 0) {
       throw new IllegalArgumentException("Value should be non-negative")
     }
-    prefixEncodeChunks(n + 1, 'I')
+    prefixEncodeChunks(n + 1, 'I', Nil).foldRight("" :: Nil)(appendChunk).mkString
   }
 
   /** @see #prefixEncode(BigInt) */
@@ -46,22 +46,35 @@ object PrefixFreeBigInt {
     prefixEncode(new BigInt(n))
   }
 
-  private def prefixEncodeChunks(n: BigInt, lastChunkFlag: Char): String = {
+  def descriptionLength(n: BigInt): Int = {
+    logger.debug("Start description length big integer: [%s]" format n)
+    if (n < 0) {
+      throw new IllegalArgumentException("Value should be non-negative")
+    }
+    prefixEncodeChunks(n + 1, 'I', Nil).foldLeft(0)(addChunk)
+  }
+
+  private def appendChunk(chunk: Triple[Char,String,BigInt], pieces: List[String]): List[String] = {
+    val (lastChunkFlag, remainder, n) = chunk
+    val newList = lastChunkFlag.toString :: ":1" :: remainder :: "(" :: n.toString() :: ")" :: pieces
+    if (n == one) {
+      newList
+    } else {
+      "/" :: newList
+    }
+  }
+
+  private def addChunk(accumulator: Int, chunk: Triple[Char,String,BigInt]): Int = {
+    accumulator + 1 + chunk._2.length
+  }
+
+  private def prefixEncodeChunks(n: BigInt, lastChunkFlag: Char, extra: List[Triple[Char,String,BigInt]]): List[Triple[Char,String,BigInt]] = {
     logger.trace("Prefix encode big integer: [" + n + "]")
     if (n == one) {
-      lastChunkFlag + ":1(1)"
+      (lastChunkFlag, "", n) :: extra
     } else {
       val remainder = toBinary(n).substring(1)
-      val builder: StringBuilder = new StringBuilder()
-      builder.append(prefixEncodeChunks(remainder.length, 'O'))
-      builder.append('/')
-      builder.append(lastChunkFlag)
-      builder.append(":1")
-      builder.append(remainder)
-      builder.append('(')
-      builder.append(n.toString())
-      builder.append(')')
-      builder.toString()
+      prefixEncodeChunks(remainder.length, 'O', (lastChunkFlag, remainder, n) :: extra)
     }
   }
 

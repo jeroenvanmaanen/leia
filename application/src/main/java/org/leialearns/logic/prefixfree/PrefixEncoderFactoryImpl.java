@@ -1,4 +1,4 @@
-package org.leialearns.logic.common;
+package org.leialearns.logic.prefixfree;
 
 import org.leialearns.api.common.PrefixEncoder;
 import org.leialearns.api.common.PrefixEncoderFactory;

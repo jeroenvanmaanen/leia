@@ -4,7 +4,7 @@ import org.leialearns.api.interaction.Alphabet;
 import org.leialearns.api.interaction.Symbol;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.logic.common.DescriptionLength;
+import org.leialearns.logic.prefixfree.DescriptionLength;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,13 +1,9 @@
-package org.leialearns.logic.common;
+package org.leialearns.api.common;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.leialearns.api.common.PrefixDecoder;
-import org.leialearns.api.common.PrefixDecoderFactory;
-import org.leialearns.api.common.PrefixEncoder;
-import org.leialearns.api.common.PrefixEncoderFactory;
 import org.leialearns.utilities.ExecutionListener;
 import org.leialearns.utilities.TestUtilities;
 import org.slf4j.Logger;

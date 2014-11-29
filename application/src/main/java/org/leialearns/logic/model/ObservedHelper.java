@@ -16,7 +16,7 @@ import org.leialearns.api.model.histogram.HistogramFactory;
 import org.leialearns.api.session.Session;
 import org.leialearns.api.structure.Node;
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.logic.common.NodeDataProxyImpl;
+import org.leialearns.logic.prefixfree.NodeDataProxyImpl;
 import org.leialearns.logic.model.histogram.TransientCounter;
 import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;

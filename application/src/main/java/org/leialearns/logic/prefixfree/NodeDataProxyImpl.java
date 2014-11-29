@@ -1,4 +1,4 @@
-package org.leialearns.logic.common;
+package org.leialearns.logic.prefixfree;
 
 import org.leialearns.api.common.NodeData;
 import org.leialearns.api.common.NodeDataProxy;

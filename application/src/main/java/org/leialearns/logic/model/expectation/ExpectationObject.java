@@ -5,7 +5,7 @@ import org.leialearns.api.model.expectation.Estimate;
 import org.leialearns.api.model.expectation.Expectation;
 import org.leialearns.api.model.expectation.Fraction;
 import org.leialearns.api.session.Root;
-import org.leialearns.logic.common.DescriptionLength;
+import org.leialearns.logic.prefixfree.DescriptionLength;
 import org.leialearns.logic.utilities.PrefixFreeBigInt;
 import org.leialearns.utilities.Setting;
 import org.leialearns.utilities.TypedIterable;
