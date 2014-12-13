@@ -34,11 +34,14 @@ object PrefixFreeBigInt {
     * @return The prefix-free code for the given number
     */
   def prefixEncode(n: BigInt): String = {
-    logger.debug("Start prefix encode big integer: [%s]" format n)
+    logger.debug(s"Start prefix encode big integer: [$n]")
     if (n < 0) {
       throw new IllegalArgumentException("Value should be non-negative")
     }
-    prefixEncodeChunks(n + 1, 'I', Nil).foldRight("" :: Nil)(appendChunk).mkString
+    def chunks = prefixEncodeChunks(n + 1, 'I', Nil)
+    logger.trace(s"Chunks: [$chunks}]")
+    def parts = chunks.foldRight("" :: Nil)(appendChunk)
+    parts.mkString
   }
 
   /** @see #prefixEncode(BigInt) */
@@ -47,7 +50,7 @@ object PrefixFreeBigInt {
   }
 
   def descriptionLength(n: BigInt): Int = {
-    logger.debug("Start description length big integer: [%s]" format n)
+    logger.debug(s"Start description length big integer: [$n]")
     if (n < 0) {
       throw new IllegalArgumentException("Value should be non-negative")
     }
@@ -69,7 +72,7 @@ object PrefixFreeBigInt {
   }
 
   private def prefixEncodeChunks(n: BigInt, lastChunkFlag: Char, extra: List[Triple[Char,String,BigInt]]): List[Triple[Char,String,BigInt]] = {
-    logger.trace("Prefix encode big integer: [" + n + "]")
+    logger.trace(s"Prefix encode big integer: [$n]")
     if (n == one) {
       (lastChunkFlag, "", n) :: extra
     } else {

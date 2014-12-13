@@ -10,6 +10,8 @@ class TestPrefixFree extends FunSuite {
 
   def singlePrefixEncodeBigInteger(n: BigInt) {
     val encoded = PrefixFreeBigInt.prefixEncode(n)
+    val encodedJava = PrefixFreeBigInt.prefixEncode(n.bigInteger)
+    assert(encodedJava == encoded)
     logger.info(s"Prefix-free: $n: [$encoded]")
     val encodedReader = new StringReader(encoded)
     val decoded = PrefixFreeBigInt.prefixDecode(encodedReader)
