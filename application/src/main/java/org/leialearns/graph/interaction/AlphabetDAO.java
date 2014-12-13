@@ -2,8 +2,8 @@ package org.leialearns.graph.interaction;
 
 import org.leialearns.api.interaction.Alphabet;
 import org.leialearns.bridge.BridgeOverride;
+import org.leialearns.common.TypedIterable;
 import org.leialearns.graph.common.IdDaoSupport;
-import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.leialearns.bridge.Static.getFarObject;
-import static org.leialearns.utilities.Display.display;
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Display.display;
+import static org.leialearns.common.Static.getLoggingClass;
 
 public class AlphabetDAO extends IdDaoSupport<AlphabetDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));

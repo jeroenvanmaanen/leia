@@ -21,9 +21,9 @@ import org.leialearns.api.session.Root;
 import org.leialearns.api.session.Session;
 import org.leialearns.api.structure.Node;
 import org.leialearns.api.structure.Structure;
+import org.leialearns.common.Setting;
 import org.leialearns.logic.model.DeltaHelper;
 import org.leialearns.logic.oracle.Oracle;
-import org.leialearns.utilities.Setting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.leialearns.api.enumerations.HistogramOperator.ADD_TO;
 import static org.leialearns.api.enumerations.HistogramOperator.SUBTRACT_FROM;
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.getLoggingClass;
 
 /**
  * Minimizes that total description length by optimizing the model of expected behavior.

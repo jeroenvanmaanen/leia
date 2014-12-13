@@ -17,11 +17,11 @@ import org.leialearns.api.session.Root;
 import org.leialearns.api.session.Session;
 import org.leialearns.api.structure.Node;
 import org.leialearns.api.structure.Structure;
+import org.leialearns.common.Setting;
 import org.leialearns.logic.oracle.Oracle;
-import org.leialearns.utilities.ExecutionListener;
+import org.leialearns.spring.test.ExecutionListener;
+import org.leialearns.spring.test.TestUtilities;
 import org.leialearns.utilities.GraphDumper;
-import org.leialearns.utilities.Setting;
-import org.leialearns.utilities.TestUtilities;
 import org.leialearns.utilities.TransactionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +39,8 @@ import java.util.TreeSet;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.leialearns.common.Static.getLoggingClass;
 import static org.leialearns.logic.oracle.TestUtilities.assertAtEnd;
-import static org.leialearns.utilities.Static.getLoggingClass;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/ApplicationContext.xml","/org/leialearns/AppTest-context.xml"})

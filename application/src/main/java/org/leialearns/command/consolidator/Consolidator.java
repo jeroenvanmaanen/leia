@@ -9,14 +9,14 @@ import org.leialearns.api.model.Toggled;
 import org.leialearns.api.model.Version;
 import org.leialearns.api.session.Root;
 import org.leialearns.api.session.Session;
-import org.leialearns.utilities.Setting;
+import org.leialearns.common.Setting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.getLoggingClass;
 
 /**
  * Consolidates toggled versions into a version of the model of expected behavior that can be queried efficiently.

@@ -6,9 +6,9 @@ import org.junit.runner.RunWith;
 import org.leialearns.api.command.Consolidator;
 import org.leialearns.api.session.Root;
 import org.leialearns.api.session.Session;
-import org.leialearns.utilities.ExecutionListener;
-import org.leialearns.utilities.Setting;
-import org.leialearns.utilities.TestUtilities;
+import org.leialearns.common.Setting;
+import org.leialearns.spring.test.ExecutionListener;
+import org.leialearns.spring.test.TestUtilities;
 import org.leialearns.utilities.TransactionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import java.io.IOException;
 
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.getLoggingClass;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/ApplicationContext.xml","/org/leialearns/AppTest-context.xml"})

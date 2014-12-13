@@ -4,8 +4,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.leialearns.api.model.expectation.Fraction;
-import org.leialearns.utilities.ExceptionWrapper;
-import org.leialearns.utilities.ExecutionListener;
+import org.leialearns.common.ExceptionWrapper;
+import org.leialearns.spring.test.ExecutionListener;
 import org.leialearns.utilities.TransactionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +23,11 @@ import java.math.BigInteger;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.leialearns.common.Static.getLoggingClass;
 import static org.leialearns.logic.prefixfree.DescriptionLength.descriptionLength;
 import static org.leialearns.logic.prefixfree.DescriptionLength.toBinary;
 import static org.leialearns.logic.utilities.PrefixFreeBigInt.prefixDecode;
 import static org.leialearns.logic.utilities.PrefixFreeBigInt.prefixEncode;
-import static org.leialearns.utilities.Static.getLoggingClass;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/ApplicationContext.xml","/org/leialearns/AppTest-context.xml"})
@@ -43,7 +43,7 @@ public class TestUtilities {
 
     @BeforeClass
     public static void beforeClass() throws IOException {
-        org.leialearns.utilities.TestUtilities.beforeClass(null);
+        org.leialearns.spring.test.TestUtilities.beforeClass(null);
     }
 
     @Test

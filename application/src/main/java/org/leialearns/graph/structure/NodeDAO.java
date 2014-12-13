@@ -2,20 +2,20 @@ package org.leialearns.graph.structure;
 
 import org.leialearns.api.enumerations.Direction;
 import org.leialearns.bridge.BridgeOverride;
+import org.leialearns.common.TypedIterable;
 import org.leialearns.graph.common.IdDaoSupport;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.graph.interaction.SymbolDTO;
 import org.leialearns.utilities.BaseSupplier;
-import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;
 
-import static org.leialearns.utilities.Display.asDisplay;
-import static org.leialearns.utilities.Static.equal;
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Display.asDisplay;
+import static org.leialearns.common.Static.equal;
+import static org.leialearns.common.Static.getLoggingClass;
 
 public class NodeDAO extends IdDaoSupport<NodeDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));

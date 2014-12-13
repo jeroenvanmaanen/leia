@@ -3,9 +3,9 @@ package org.leialearns.graph.structure;
 import org.leialearns.api.enumerations.Direction;
 import org.leialearns.api.structure.Structure;
 import org.leialearns.bridge.BridgeOverride;
+import org.leialearns.common.TypedIterable;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.graph.interaction.SymbolDTO;
-import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import static org.leialearns.bridge.Static.getFarObject;
-import static org.leialearns.utilities.Display.asDisplay;
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Display.asDisplay;
+import static org.leialearns.common.Static.getLoggingClass;
 
 @Transactional("neo4jTransactionManager")
 public class StructureDAO {

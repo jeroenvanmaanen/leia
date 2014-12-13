@@ -5,7 +5,7 @@ import org.leialearns.api.model.Version;
 import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.api.structure.Node;
 
-import static org.leialearns.utilities.Display.displayParts;
+import static org.leialearns.common.Display.displayParts;
 
 public class TransientCounter implements Counter {
     private final Symbol symbol;

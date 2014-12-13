@@ -1,16 +1,16 @@
 package org.leialearns.graph.session;
 
 import org.leialearns.bridge.BridgeOverride;
+import org.leialearns.common.TypedIterable;
 import org.leialearns.graph.common.IdDaoSupport;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.model.VersionDTO;
-import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.leialearns.utilities.Display.display;
-import static org.leialearns.utilities.Display.displayWithTypes;
+import static org.leialearns.common.Display.display;
+import static org.leialearns.common.Display.displayWithTypes;
 
 public class SessionDAO extends IdDaoSupport<SessionDTO> {
     private static final Logger logger = LoggerFactory.getLogger(new Object(){}.getClass().getEnclosingClass());

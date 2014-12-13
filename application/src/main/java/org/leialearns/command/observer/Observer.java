@@ -8,15 +8,15 @@ import org.leialearns.api.model.Observed;
 import org.leialearns.api.model.Version;
 import org.leialearns.api.session.Root;
 import org.leialearns.api.session.Session;
-import org.leialearns.utilities.ExceptionWrapper;
-import org.leialearns.utilities.Setting;
+import org.leialearns.common.ExceptionWrapper;
+import org.leialearns.common.Setting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.getLoggingClass;
 
 /**
  * Creates a new version of the model of observed behavior.

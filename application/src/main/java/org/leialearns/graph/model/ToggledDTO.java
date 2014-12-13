@@ -15,8 +15,8 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 import java.io.Serializable;
 
 import static org.leialearns.graph.common.IdDaoSupport.toID;
-import static org.leialearns.utilities.Display.displayParts;
-import static org.leialearns.utilities.Static.equal;
+import static org.leialearns.common.Display.displayParts;
+import static org.leialearns.common.Static.equal;
 
 @NodeEntity
 public class ToggledDTO extends BaseBridgeFacet implements HasId, Serializable, FarObject<Toggled> {

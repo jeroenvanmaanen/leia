@@ -3,7 +3,7 @@ package org.leialearns.logic.utilities
 import java.io.{UnsupportedEncodingException, Reader}
 import java.math.BigInteger
 
-import org.leialearns.utilities.ExceptionWrapper
+import org.leialearns.common.ExceptionWrapper
 
 import scala.collection.immutable.HashMap
 import scala.math.BigInt

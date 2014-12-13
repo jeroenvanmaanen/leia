@@ -1,6 +1,6 @@
 package org.leialearns.command.generator;
 
-import org.leialearns.utilities.ExceptionWrapper;
+import org.leialearns.common.ExceptionWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +18,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.getLoggingClass;
 
 public class Generator implements org.leialearns.api.command.Generator {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));

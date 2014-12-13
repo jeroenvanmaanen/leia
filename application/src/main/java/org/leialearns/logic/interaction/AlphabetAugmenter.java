@@ -4,7 +4,7 @@ import org.leialearns.api.common.PrefixDecoder;
 import org.leialearns.api.interaction.Alphabet;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.utilities.Setting;
+import org.leialearns.common.Setting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +12,7 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.getLoggingClass;
 
 /**
  * Implements the logic of alphabet objects insofar as it can be oblivious of the ORM framework.

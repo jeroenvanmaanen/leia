@@ -14,9 +14,9 @@ import org.leialearns.api.session.Root;
 import org.leialearns.api.session.Session;
 import org.leialearns.api.structure.Node;
 import org.leialearns.api.structure.Structure;
-import org.leialearns.utilities.ExceptionWrapper;
-import org.leialearns.utilities.Setting;
-import org.leialearns.utilities.TypedIterable;
+import org.leialearns.common.ExceptionWrapper;
+import org.leialearns.common.Setting;
+import org.leialearns.common.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +29,9 @@ import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
 
-import static org.leialearns.utilities.Display.display;
-import static org.leialearns.utilities.Display.show;
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Display.display;
+import static org.leialearns.common.Display.show;
+import static org.leialearns.common.Static.getLoggingClass;
 
 /**
  * Connects the <b>LEIA</b> system to its environment by feeding it tokens from a file. This encounter

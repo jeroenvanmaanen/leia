@@ -14,9 +14,9 @@ import org.leialearns.api.interaction.Symbol;
 import org.leialearns.api.session.Root;
 import org.leialearns.api.structure.Node;
 import org.leialearns.api.structure.Structure;
-import org.leialearns.utilities.ExceptionWrapper;
-import org.leialearns.utilities.ExecutionListener;
-import org.leialearns.utilities.Static;
+import org.leialearns.common.ExceptionWrapper;
+import org.leialearns.common.Static;
+import org.leialearns.spring.test.ExecutionListener;
 import org.leialearns.utilities.TestUtilities;
 import org.leialearns.utilities.TransactionHelper;
 import org.slf4j.Logger;
@@ -40,7 +40,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.leialearns.api.enumerations.Direction.ACTION;
 import static org.leialearns.api.enumerations.Direction.RESPONSE;
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.getLoggingClass;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/ApplicationContext.xml","/org/leialearns/AppTest-context.xml"})
@@ -62,7 +62,7 @@ public class StructureTest {
 
     @BeforeClass
     public static void beforeClass() throws IOException {
-        TestUtilities.beforeClass(null);
+        TestUtilities.beforeClass();
     }
 
     @Test

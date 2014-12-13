@@ -1,6 +1,6 @@
 package org.leialearns.executable;
 
-import org.leialearns.utilities.Setting;
+import org.leialearns.common.Setting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.NOPLogger;
@@ -20,7 +20,7 @@ import java.util.logging.LogRecord;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.leialearns.utilities.Static.join;
+import static org.leialearns.common.Static.join;
 
 /**
  * <p>Provides a formatter that can be used with <code>java.util.logging</code> to produce single-line log-entries that
@@ -152,7 +152,10 @@ public class SimpleFormatter extends Formatter {
             builder.append(part);
         }
         builder.append('\n');
+
+        @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
         Throwable thrown = logRecord.getThrown();
+
         if (thrown != null && logger.isDebugEnabled()) {
             StringWriter stringWriter = new StringWriter();
             PrintWriter printWriter = new PrintWriter(stringWriter);
@@ -187,7 +190,7 @@ public class SimpleFormatter extends Formatter {
     protected String reduceStackBlock(String block) {
         String result;
         Matcher matcher = HEAD_RE.matcher(block);
-        if (matcher == null || !matcher.matches()) {
+        if (!matcher.matches()) {
             result = ">>> SPLIT FAILED\n" + block;
         } else {
             String head = matcher.group(1);

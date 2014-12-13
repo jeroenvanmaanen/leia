@@ -5,10 +5,10 @@ import org.leialearns.api.model.expectation.Estimate;
 import org.leialearns.api.model.expectation.Expectation;
 import org.leialearns.api.model.expectation.Fraction;
 import org.leialearns.api.session.Root;
+import org.leialearns.common.Setting;
+import org.leialearns.common.TypedIterable;
 import org.leialearns.logic.prefixfree.DescriptionLength;
 import org.leialearns.logic.utilities.PrefixFreeBigInt;
-import org.leialearns.utilities.Setting;
-import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.TreeSet;
 import java.util.function.Supplier;
 
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.getLoggingClass;
 
 public class ExpectationObject implements Expectation {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));

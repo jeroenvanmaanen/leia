@@ -5,7 +5,7 @@ import org.leialearns.api.model.expectation.Fraction;
 import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 
-import static org.leialearns.utilities.Static.gcd;
+import static org.leialearns.common.Static.gcd;
 
 public class TransientFraction implements Fraction {
     private final long index;

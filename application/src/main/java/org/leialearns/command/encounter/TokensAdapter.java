@@ -1,8 +1,8 @@
 package org.leialearns.command.encounter;
 
-import org.leialearns.utilities.ExceptionWrapper;
+import org.leialearns.common.ExceptionWrapper;
+import org.leialearns.common.Setting;
 import org.leialearns.utilities.NullStream;
-import org.leialearns.utilities.Setting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.getLoggingClass;
 
 /**
  * Parses the input from the backing input stream to a stream of tokens. The concatenation of the tokens

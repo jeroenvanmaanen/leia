@@ -1,8 +1,8 @@
 package org.leialearns.logic.oracle;
 
 import org.leialearns.api.model.expectation.Fraction;
+import org.leialearns.common.TransformingIterable;
 import org.leialearns.logic.model.expectation.TransientFraction;
-import org.leialearns.utilities.TransformingIterable;
 
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;

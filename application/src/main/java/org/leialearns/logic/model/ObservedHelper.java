@@ -16,17 +16,17 @@ import org.leialearns.api.model.histogram.HistogramFactory;
 import org.leialearns.api.session.Session;
 import org.leialearns.api.structure.Node;
 import org.leialearns.bridge.BridgeOverride;
+import org.leialearns.common.TypedIterable;
 import org.leialearns.logic.prefixfree.NodeDataProxyImpl;
 import org.leialearns.logic.model.histogram.TransientCounter;
-import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.leialearns.utilities.Display.asDisplay;
-import static org.leialearns.utilities.Display.displayParts;
+import static org.leialearns.common.Display.asDisplay;
+import static org.leialearns.common.Display.displayParts;
 
 public class ObservedHelper {
     private static final Logger logger = LoggerFactory.getLogger(new Object(){}.getClass().getEnclosingClass());

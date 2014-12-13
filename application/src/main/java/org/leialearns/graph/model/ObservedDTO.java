@@ -14,7 +14,7 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 import java.io.Serializable;
 
 import static org.leialearns.graph.common.IdDaoSupport.toID;
-import static org.leialearns.utilities.Display.displayParts;
+import static org.leialearns.common.Display.displayParts;
 
 @NodeEntity
 public class ObservedDTO extends BaseBridgeFacet implements HasId, Serializable, FarObject<Observed> {

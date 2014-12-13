@@ -3,8 +3,8 @@ package org.leialearns.logic.model.histogram;
 import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.api.interaction.Symbol;
-import org.leialearns.utilities.Setting;
-import org.leialearns.utilities.TypedIterable;
+import org.leialearns.common.Setting;
+import org.leialearns.common.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.getLoggingClass;
 
 public class HistogramObject implements Histogram {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));

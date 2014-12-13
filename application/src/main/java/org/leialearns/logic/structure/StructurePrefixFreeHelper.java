@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.function.BiFunction;
 
-import static org.leialearns.utilities.Static.asList;
+import static org.leialearns.common.Static.asList;
 
 @Component
 public class StructurePrefixFreeHelper {

@@ -7,10 +7,10 @@ import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.api.session.Root;
 import org.leialearns.api.session.Session;
+import org.leialearns.common.Setting;
+import org.leialearns.common.TypedIterable;
 import org.leialearns.logic.utilities.PrefixFreeBigInt;
 import org.leialearns.utilities.Pair;
-import org.leialearns.utilities.Setting;
-import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +31,8 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// import static org.leialearns.utilities.Display.display;
-// import static org.leialearns.utilities.Display.asDisplay;
+// import static org.leialearns.common.Display.display;
+// import static org.leialearns.common.Display.asDisplay;
 
 public class Oracle {
     private static final Pattern WHITE_SPACE_RE = Pattern.compile("\\s+");

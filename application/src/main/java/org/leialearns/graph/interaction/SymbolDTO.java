@@ -13,10 +13,10 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import javax.validation.constraints.NotNull;
 
-import static org.leialearns.utilities.Display.displayParts;
-import static org.leialearns.utilities.Display.show;
+import static org.leialearns.common.Display.displayParts;
+import static org.leialearns.common.Display.show;
+import static org.leialearns.common.Static.equal;
 import static org.leialearns.utilities.L.literal;
-import static org.leialearns.utilities.Static.equal;
 import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 

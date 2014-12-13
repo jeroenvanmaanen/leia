@@ -3,7 +3,7 @@ package org.leialearns.logic.utilities
 import java.io.{UnsupportedEncodingException, IOException, Writer}
 import java.math.BigInteger
 
-import org.leialearns.utilities.ExceptionWrapper
+import org.leialearns.common.ExceptionWrapper
 import org.slf4j.LoggerFactory
 
 trait PrefixEncoderTrait { self: Writer =>

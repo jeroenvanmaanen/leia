@@ -3,16 +3,16 @@ package org.leialearns.graph.model;
 import org.leialearns.api.enumerations.AccessMode;
 import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.bridge.BridgeOverride;
+import org.leialearns.common.TypedIterable;
 import org.leialearns.graph.common.IdDaoSupport;
 import org.leialearns.graph.session.SessionDTO;
-import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.leialearns.utilities.Display.asDisplay;
-import static org.leialearns.utilities.Display.display;
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Display.asDisplay;
+import static org.leialearns.common.Display.display;
+import static org.leialearns.common.Static.getLoggingClass;
 
 public class ObservedDAO extends IdDaoSupport<ObservedDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));

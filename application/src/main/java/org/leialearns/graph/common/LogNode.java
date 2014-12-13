@@ -8,7 +8,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Function;
 
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.getLoggingClass;
 
 public class LogNode<T extends Comparable<T>> implements Comparable<LogNode<T>> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));

@@ -4,14 +4,14 @@ import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.api.model.histogram.Histogram;
 import org.leialearns.api.interaction.Symbol;
 import org.leialearns.api.model.histogram.HistogramTrace;
-import org.leialearns.utilities.Setting;
+import org.leialearns.common.Setting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.TreeSet;
 
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.getLoggingClass;
 
 public class HistogramTraceImpl implements HistogramTrace {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));

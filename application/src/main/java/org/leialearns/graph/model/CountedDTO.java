@@ -3,14 +3,14 @@ package org.leialearns.graph.model;
 import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.api.model.Counted;
 import org.leialearns.bridge.FarObject;
-import org.leialearns.utilities.Setting;
+import org.leialearns.common.Setting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static org.leialearns.bridge.Static.getFarObject;
-import static org.leialearns.utilities.Display.displayParts;
-import static org.leialearns.utilities.Static.equal;
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Display.displayParts;
+import static org.leialearns.common.Static.equal;
+import static org.leialearns.common.Static.getLoggingClass;
 
 public class CountedDTO implements FarObject<Counted> {
     private final transient Logger logger = LoggerFactory.getLogger(getLoggingClass(this));

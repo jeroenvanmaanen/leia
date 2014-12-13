@@ -20,8 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.leialearns.utilities.Static.getLoggingClass;
-import static org.leialearns.utilities.Static.toList;
+import static org.leialearns.common.Static.getLoggingClass;
+import static org.leialearns.common.Static.toList;
 
 /**
  * Helper for the {@link Expectation} near type. The interface {@link ExpectationHelper} is necessary, because the

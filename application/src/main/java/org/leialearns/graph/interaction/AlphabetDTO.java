@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Set;
 
-import static org.leialearns.utilities.Display.displayParts;
+import static org.leialearns.common.Display.displayParts;
 
 //import org.springframework.data.neo4j.annotation.Indexed; // TODO: remove
 

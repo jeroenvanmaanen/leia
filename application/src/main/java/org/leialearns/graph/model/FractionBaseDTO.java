@@ -8,7 +8,7 @@ import org.leialearns.graph.common.HasId;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-import static org.leialearns.utilities.Static.gcd;
+import static org.leialearns.common.Static.gcd;
 
 public abstract class FractionBaseDTO extends BaseBridgeFacet implements HasId, Serializable, Comparable<FractionBaseDTO>, FarObject<Fraction> {
 

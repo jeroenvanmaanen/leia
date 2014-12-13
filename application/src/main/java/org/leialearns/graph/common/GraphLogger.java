@@ -21,8 +21,8 @@ import java.util.Map;
 import java.util.Set;
 
 import static java.lang.String.format;
-import static org.leialearns.utilities.Static.compare;
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.compare;
+import static org.leialearns.common.Static.getLoggingClass;
 
 public class GraphLogger {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));

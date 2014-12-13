@@ -2,17 +2,17 @@ package org.leialearns.graph.model;
 
 import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.bridge.BridgeOverride;
+import org.leialearns.common.TypedIterable;
 import org.leialearns.graph.common.IdDaoSupport;
 import org.leialearns.graph.interaction.SymbolDTO;
 import org.leialearns.graph.structure.NodeDTO;
-import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;
 
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.getLoggingClass;
 
 public class EstimateDAO extends IdDaoSupport<EstimateDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));

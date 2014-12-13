@@ -1,8 +1,10 @@
 package org.leialearns.utilities;
 
-import static org.leialearns.utilities.Display.displayParts;
+import javax.validation.constraints.NotNull;
+
+import static org.leialearns.common.Display.displayParts;
+import static org.leialearns.common.Static.equal;
 import static org.leialearns.utilities.L.literal;
-import static org.leialearns.utilities.Static.equal;
 
 public class Pair<L extends Comparable<? super L>,R extends Comparable<? super R>> implements Comparable<Pair<L,R>> {
     private final L left;
@@ -37,7 +39,7 @@ public class Pair<L extends Comparable<? super L>,R extends Comparable<? super R
     }
 
     @Override
-    public int compareTo(Pair<L,R> pair) {
+    public int compareTo(@NotNull Pair<L,R> pair) {
         int result = compare(left, pair.left);
         return result == 0 ? compare(right, pair.right) : result;
     }

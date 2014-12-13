@@ -6,6 +6,7 @@ import org.leialearns.api.model.Version;
 import org.leialearns.api.structure.Node;
 import org.leialearns.bridge.BridgeOverride;
 import org.leialearns.bridge.FactoryAccessor;
+import org.leialearns.common.TypedIterable;
 import org.leialearns.graph.common.IdDaoSupport;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.graph.interaction.InteractionContextDTO;
@@ -15,7 +16,6 @@ import org.leialearns.graph.structure.NodeDAO;
 import org.leialearns.graph.structure.NodeDTO;
 import org.leialearns.graph.structure.NodeRepository;
 import org.leialearns.graph.structure.StructureDTO;
-import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +30,10 @@ import java.util.function.Function;
 
 import static java.lang.Boolean.TRUE;
 import static org.leialearns.bridge.Static.getFarObject;
-import static org.leialearns.utilities.Display.asDisplay;
-import static org.leialearns.utilities.Display.show;
-import static org.leialearns.utilities.Static.getLoggingClass;
-import static org.leialearns.utilities.Static.notNull;
+import static org.leialearns.common.Display.asDisplay;
+import static org.leialearns.common.Display.show;
+import static org.leialearns.common.Static.getLoggingClass;
+import static org.leialearns.common.Static.notNull;
 
 public class CounterDAO extends IdDaoSupport<CounterDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));

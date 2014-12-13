@@ -23,9 +23,9 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.Function;
 
-import static org.leialearns.utilities.Display.display;
-import static org.leialearns.utilities.Display.show;
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Display.display;
+import static org.leialearns.common.Display.show;
+import static org.leialearns.common.Static.getLoggingClass;
 
 public class CounterLoggerImpl implements CounterLogger {
     private static final double LOG10BASE2 = Math.log(10) / Math.log(2);

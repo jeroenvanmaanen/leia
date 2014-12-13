@@ -19,7 +19,7 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-import static org.leialearns.utilities.Display.displayParts;
+import static org.leialearns.common.Display.displayParts;
 
 @NodeEntity
 @TypeAlias("InteractionContext")

@@ -3,11 +3,11 @@ package org.leialearns.graph.model;
 import org.leialearns.api.enumerations.AccessMode;
 import org.leialearns.api.enumerations.ModelType;
 import org.leialearns.bridge.BridgeOverride;
+import org.leialearns.common.TypedIterable;
 import org.leialearns.graph.common.IdDaoSupport;
 import org.leialearns.graph.interaction.InteractionContextDAO;
 import org.leialearns.graph.interaction.InteractionContextDTO;
 import org.leialearns.graph.session.SessionDTO;
-import org.leialearns.utilities.TypedIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +17,9 @@ import org.springframework.context.annotation.Scope;
 import java.util.Date;
 import java.util.Set;
 
-import static org.leialearns.utilities.Display.asDisplay;
-import static org.leialearns.utilities.Display.display;
-import static org.leialearns.utilities.Static.equal;
+import static org.leialearns.common.Display.asDisplay;
+import static org.leialearns.common.Display.display;
+import static org.leialearns.common.Static.equal;
 
 public class VersionDAO extends IdDaoSupport<VersionDTO> {
     private static final Logger logger = LoggerFactory.getLogger(new Object(){}.getClass().getEnclosingClass());

@@ -1,5 +1,7 @@
 package org.leialearns.utilities;
 
+import org.leialearns.common.Display;
+
 /**
  * Provides a wrapped String that is not mangled by {@link Display#show(String)}.
  */

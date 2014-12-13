@@ -11,7 +11,7 @@ import org.leialearns.bridge.BridgeOverride;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.leialearns.utilities.Display.displayParts;
+import static org.leialearns.common.Display.displayParts;
 
 public class CheckHelper {
     private static final Logger logger = LoggerFactory.getLogger(new Object(){}.getClass().getEnclosingClass());

@@ -9,7 +9,7 @@ import org.leialearns.api.model.Version;
 import org.leialearns.api.structure.Node;
 import org.leialearns.bridge.BaseBridgeFacet;
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.utilities.Setting;
+import org.leialearns.common.Setting;
 
 import java.util.Collections;
 import java.util.HashMap;

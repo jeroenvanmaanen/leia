@@ -16,8 +16,8 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+import static org.leialearns.common.Static.equal;
 import static org.leialearns.graph.common.IdDaoSupport.toID;
-import static org.leialearns.utilities.Static.equal;
 import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 

@@ -29,7 +29,7 @@ import java.util.TreeMap;
 
 import static org.leialearns.api.enumerations.HistogramOperator.ADD_TO;
 import static org.leialearns.logic.common.Static.getVersionOrdinal;
-import static org.leialearns.utilities.Display.display;
+import static org.leialearns.common.Display.display;
 
 public class DeltaHelper {
     private static final Logger logger = LoggerFactory.getLogger(new Object(){}.getClass().getEnclosingClass());

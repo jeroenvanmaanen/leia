@@ -9,7 +9,7 @@ import org.leialearns.bridge.BaseBridgeFacet;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.leialearns.utilities.Static.equal;
+import static org.leialearns.common.Static.equal;
 
 public class HistogramCache extends BaseBridgeFacet {
     private final Map<HistogramKey,Histogram> cache = new HashMap<>();

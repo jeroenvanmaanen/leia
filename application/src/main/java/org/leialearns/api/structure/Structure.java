@@ -4,7 +4,7 @@ import org.leialearns.api.common.PrefixFree;
 import org.leialearns.api.enumerations.Direction;
 import org.leialearns.api.interaction.DirectedSymbol;
 import org.leialearns.api.interaction.Symbol;
-import org.leialearns.utilities.TypedIterable;
+import org.leialearns.common.TypedIterable;
 
 /**
  * Defines an object that contains the interaction history tree.

@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.leialearns.bridge.Static.getFarObject;
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.getLoggingClass;
 
 public class ToggledDAO extends IdDaoSupport<ToggledDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));

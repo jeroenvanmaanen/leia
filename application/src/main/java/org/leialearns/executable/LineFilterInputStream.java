@@ -1,6 +1,6 @@
 package org.leialearns.executable;
 
-import org.leialearns.utilities.Setting;
+import org.leialearns.common.Setting;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.getLoggingClass;
 
 public class ExpectedDAO extends IdDaoSupport<ExpectedDTO> {
     private final Logger logger = LoggerFactory.getLogger(getLoggingClass(this));

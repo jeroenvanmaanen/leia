@@ -2,8 +2,8 @@ package org.leialearns.graph;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.leialearns.utilities.ExecutionListener;
-import org.leialearns.utilities.Setting;
+import org.leialearns.common.Setting;
+import org.leialearns.spring.test.ExecutionListener;
 import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.cypher.javacompat.ExecutionResult;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -20,7 +20,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Static.getLoggingClass;
 
 import java.util.HashMap;
 import java.util.Map;

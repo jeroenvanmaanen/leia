@@ -4,11 +4,11 @@ import org.leialearns.api.common.NodeData;
 import org.leialearns.api.common.NodeDataProxy;
 import org.leialearns.api.model.Version;
 import org.leialearns.api.structure.Node;
-import org.leialearns.utilities.Setting;
+import org.leialearns.common.Setting;
 
 import java.util.function.BiFunction;
 
-import static org.leialearns.utilities.Display.displayParts;
+import static org.leialearns.common.Display.displayParts;
 import static org.leialearns.utilities.L.literal;
 
 public class NodeDataProxyImpl<Type extends NodeData<ItemType>,ItemType> implements NodeDataProxy<Type> {

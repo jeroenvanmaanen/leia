@@ -8,8 +8,8 @@ import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.api.interaction.Symbol;
 import org.leialearns.api.session.Root;
 import org.leialearns.api.session.Session;
-import org.leialearns.utilities.ExecutionListener;
-import org.leialearns.utilities.TestUtilities;
+import org.leialearns.spring.test.ExecutionListener;
+import org.leialearns.spring.test.TestUtilities;
 import org.leialearns.utilities.TransactionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +25,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.leialearns.utilities.Display.display;
-import static org.leialearns.utilities.Static.equal;
-import static org.leialearns.utilities.Static.getLoggingClass;
+import static org.leialearns.common.Display.display;
+import static org.leialearns.common.Static.equal;
+import static org.leialearns.common.Static.getLoggingClass;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/ApplicationContext.xml","/org/leialearns/AppTest-context.xml"})
