@@ -9,7 +9,7 @@ import org.leialearns.common.Setting;
 import java.util.function.BiFunction;
 
 import static org.leialearns.common.Display.displayParts;
-import static org.leialearns.utilities.L.literal;
+import static org.leialearns.common.L.literal;
 
 public class NodeDataProxyImpl<Type extends NodeData<ItemType>,ItemType> implements NodeDataProxy<Type> {
     private final Setting<Version> version = new Setting<>("Version");

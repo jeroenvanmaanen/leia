@@ -12,7 +12,7 @@ import org.leialearns.api.model.expectation.Fraction;
 import org.leialearns.api.model.histogram.Counter;
 import org.leialearns.api.structure.Node;
 import org.leialearns.bridge.BridgeOverride;
-import org.leialearns.utilities.Pair;
+import org.leialearns.common.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -2,11 +2,11 @@ package org.leialearns.graph.structure;
 
 import org.leialearns.api.enumerations.Direction;
 import org.leialearns.bridge.BridgeOverride;
+import org.leialearns.common.BaseSupplier;
 import org.leialearns.common.TypedIterable;
 import org.leialearns.graph.common.IdDaoSupport;
 import org.leialearns.graph.interaction.DirectedSymbolDTO;
 import org.leialearns.graph.interaction.SymbolDTO;
-import org.leialearns.utilities.BaseSupplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

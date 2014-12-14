@@ -1,8 +1,8 @@
 package org.leialearns.command.encounter;
 
 import org.leialearns.common.ExceptionWrapper;
+import org.leialearns.common.NullStream;
 import org.leialearns.common.Setting;
-import org.leialearns.utilities.NullStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
