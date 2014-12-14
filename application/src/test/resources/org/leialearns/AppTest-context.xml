@@ -18,7 +18,7 @@
     <bean id="graphDatabaseFactory" class="org.neo4j.graphdb.factory.GraphDatabaseFactory" />
 
     <!-- BEGIN embedded database -->
-    <bean id="graphDatabaseService" class="org.neo4j.graphdb.GraphDatabaseService" factory-bean="graphDatabaseFactory" factory-method="newEmbeddedDatabase" destroy-method="shutdown">
+    <bean id="graphDatabaseService" factory-bean="graphDatabaseFactory" factory-method="newEmbeddedDatabase" destroy-method="shutdown">
         <constructor-arg index="0" value="target/graphdb" />
     </bean>
     <!-- END embedded database -->
@@ -51,7 +51,7 @@
 
     <bean id="transactionHelper" class="org.leialearns.graph.GraphTransactionHelper" />
 
-    <bean id="graphDumper" class="org.leialearns.utilities.GraphDumper" />
+    <bean id="graphDumper" class="org.leialearns.graph.GraphDumper" />
 
     <bean id="interactionContextUri" class="java.lang.String">
         <constructor-arg value="http://leialearns.org/test/encounter"/>

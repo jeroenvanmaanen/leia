@@ -1,4 +1,4 @@
-package org.leialearns.utilities;
+package org.leialearns.graph;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Relationship;

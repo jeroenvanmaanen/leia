@@ -23,7 +23,7 @@ import org.leialearns.common.TypedIterable;
 import org.leialearns.spring.test.ExecutionListener;
 import org.leialearns.spring.test.TestUtilities;
 import org.leialearns.spring.test.TransactionHelper;
-import org.leialearns.utilities.GraphDumper;
+import org.leialearns.graph.GraphDumper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
