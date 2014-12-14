@@ -10,7 +10,7 @@ import org.leialearns.api.session.Root;
 import org.leialearns.api.session.Session;
 import org.leialearns.spring.test.ExecutionListener;
 import org.leialearns.spring.test.TestUtilities;
-import org.leialearns.utilities.TransactionHelper;
+import org.leialearns.spring.test.TransactionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

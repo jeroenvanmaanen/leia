@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.leialearns.api.model.expectation.Fraction;
 import org.leialearns.common.ExceptionWrapper;
 import org.leialearns.spring.test.ExecutionListener;
-import org.leialearns.utilities.TransactionHelper;
+import org.leialearns.spring.test.TransactionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

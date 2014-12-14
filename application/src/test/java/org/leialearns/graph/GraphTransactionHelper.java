@@ -1,6 +1,6 @@
 package org.leialearns.graph;
 
-import org.leialearns.utilities.TransactionHelper;
+import org.leialearns.spring.test.TransactionHelper;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional("neo4jTransactionManager")

@@ -13,7 +13,7 @@
     <properties>
         <java.version>1.8</java.version>
         <leialearns.version>1.0-SNAPSHOT</leialearns.version>
-        <leia-spring-test.version>0.1.1</leia-spring-test.version>
+        <leia-spring-test.version>0.1.2</leia-spring-test.version>
         <bridge-pattern.version>0.5.1</bridge-pattern.version>
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
