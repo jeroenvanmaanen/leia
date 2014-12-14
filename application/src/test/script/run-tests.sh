@@ -19,7 +19,7 @@ KEEP_DB='false'
 GO_NOW='false'
 OFFLINE=''
 ITERATIONS='2'
-SINGLE_TEST='org.leialearns.utilities.TestUtilities'
+SINGLE_TEST='org.leialearns.logic.oracle.TestUtilities'
 FINAL_TEST=''
 
 while [ "$#" -gt 0 -a ".${1#-}" != ".$1" ]

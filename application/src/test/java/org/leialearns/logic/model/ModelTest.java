@@ -3,7 +3,9 @@ package org.leialearns.logic.model;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.leialearns.api.enumerations.Direction;
 import org.leialearns.api.enumerations.ModelType;
+import org.leialearns.api.interaction.Alphabet;
 import org.leialearns.api.interaction.DirectedSymbol;
 import org.leialearns.api.interaction.InteractionContext;
 import org.leialearns.api.interaction.Symbol;
@@ -15,8 +17,8 @@ import org.leialearns.api.session.Session;
 import org.leialearns.api.structure.Node;
 import org.leialearns.api.structure.Structure;
 import org.leialearns.spring.test.ExecutionListener;
+import org.leialearns.spring.test.TestUtilities;
 import org.leialearns.spring.test.TransactionHelper;
-import org.leialearns.utilities.TestUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +54,7 @@ public class ModelTest {
     @Test
     public void testVersions() {
         transactionHelper.runInTransaction(() -> {
-            InteractionContext interactionContext = TestUtilities.setupNodes(root, "http://leialearns.org/test/nodes");
+            InteractionContext interactionContext = setupNodes(root, "http://leialearns.org/test/nodes");
             Session session = root.createSession(interactionContext);
             assertNotNull(session);
 
@@ -64,7 +66,7 @@ public class ModelTest {
     @Test
     public void testCounters() {
         transactionHelper.runInTransaction(() -> {
-            InteractionContext interactionContext = TestUtilities.setupNodes(root, "http://leialearns.org/test/nodes");
+            InteractionContext interactionContext = setupNodes(root, "http://leialearns.org/test/nodes");
             Session session = root.createSession(interactionContext);
             assertNotNull(session);
             Version version = session.findOrCreateLastVersion(ModelType.COUNTED, null);
@@ -88,6 +90,30 @@ public class ModelTest {
             Counter updatedCounter = counter.fresh();
             assertEquals(oldValue + 1, updatedCounter.getValue());
         });
+    }
+
+    public static InteractionContext setupNodes(Root root, String interactionContextURI) {
+        InteractionContext interactionContext = root.createInteractionContext(interactionContextURI);
+        assertNotNull(interactionContext);
+        Alphabet actions = interactionContext.getActions();
+        Symbol left = actions.internalize("left");
+        Symbol right = actions.internalize("right");
+        Alphabet responses = interactionContext.getResponses();
+        Symbol dark = responses.internalize("dark");
+        responses.internalize("light");
+
+        Structure structure = interactionContext.getStructure();
+        assertNotNull("Structure", structure);
+        Node leftNode = structure.findOrCreateNode(left, Direction.ACTION);
+        assertNotNull("Left node", leftNode);
+        Node rightNode = structure.findOrCreateNode(right, Direction.ACTION);
+        assertNotNull("Right node", rightNode);
+
+        structure.markExtensible(leftNode);
+        Node darkLeftNode = leftNode.findOrCreate(dark, Direction.RESPONSE);
+        assertNotNull(darkLeftNode);
+
+        return interactionContext;
     }
 
 }

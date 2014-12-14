@@ -17,8 +17,8 @@ import org.leialearns.api.structure.Structure;
 import org.leialearns.common.ExceptionWrapper;
 import org.leialearns.common.Static;
 import org.leialearns.spring.test.ExecutionListener;
+import org.leialearns.spring.test.TestUtilities;
 import org.leialearns.spring.test.TransactionHelper;
-import org.leialearns.utilities.TestUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +41,7 @@ import static org.junit.Assert.assertTrue;
 import static org.leialearns.api.enumerations.Direction.ACTION;
 import static org.leialearns.api.enumerations.Direction.RESPONSE;
 import static org.leialearns.common.Static.getLoggingClass;
+import static org.leialearns.logic.model.ModelTest.setupNodes;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/ApplicationContext.xml","/org/leialearns/AppTest-context.xml"})
@@ -72,7 +73,7 @@ public class StructureTest {
         try {
             transactionHelper.runInTransaction(() -> {
                 String uri = "http://leialearns.org/test/nodes";
-                InteractionContext interactionContext = TestUtilities.setupNodes(root, uri);
+                InteractionContext interactionContext = setupNodes(root, uri);
                 assertNotNull(interactionContext);
                 assertEquals(uri, interactionContext.getURI());
 
