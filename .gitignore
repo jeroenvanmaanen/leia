@@ -1,6 +1,7 @@
 .*
 **.iml
 /data
+/target
 **/target
 /application/src/test/script/settings.sh
 /application/src/test/vagrant/vagrant_local.rb
