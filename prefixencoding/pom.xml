@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.leialearns</groupId>
         <artifactId>leia-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.1-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>prefixencoding</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>LEIA learns - prefix encoding JAR</name>
@@ -35,12 +35,10 @@
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-            <version>${scala.version}</version>
         </dependency>
         <dependency>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest_2.10</artifactId>
-            <version>${scalatest.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -49,17 +47,8 @@
         <plugins>
             <!-- enable scala compiler -->
             <plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
-                <version>${maven-scala-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
                 <configuration>
                     <sourceDir>src/main/java</sourceDir>
                     <jvmArgs>
@@ -67,12 +56,40 @@
                         <jvmArg>-Xmx1024m</jvmArg>
                     </jvmArgs>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>doc-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
+
+            <!-- Add sources JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- enable scalatest -->
             <plugin>
               <groupId>org.scalatest</groupId>
               <artifactId>scalatest-maven-plugin</artifactId>
-              <version>1.0</version>
               <configuration>
                 <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
                 <junitxml>.</junitxml>
@@ -87,11 +104,11 @@
                 </execution>
               </executions>
             </plugin>
+
             <!-- disable default compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>default-compile</id>
@@ -103,11 +120,11 @@
                     </execution>
                 </executions>
             </plugin>
+
             <!-- disable surefire -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.7</version>
                 <configuration>
                     <skipTests>true</skipTests>
                 </configuration>
