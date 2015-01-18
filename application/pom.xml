@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>leia-executable</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>LEIA Learns - executable JAR</name>
