@@ -32,6 +32,10 @@
     <dependencies>
         <dependency>
             <groupId>org.leialearns</groupId>
+            <artifactId>leia-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.leialearns</groupId>
             <artifactId>common</artifactId>
         </dependency>
         <dependency>
